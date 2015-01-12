@@ -22,17 +22,17 @@ public class DualJoystickControl implements JoystickControl {
 
 	@Override
 	public double getX() {
-		return this.leftStick.getX();
+		return this.rightStick.getX();
 	}
 
 	@Override
 	public double getY() {
-		return this.leftStick.getY();
+		return this.rightStick.getY();
 	}
 
 	@Override
 	public double getTwist() {
-		return this.rightStick.getTwist();
+		return this.leftStick.getTwist();
 	}
 
 	@Override

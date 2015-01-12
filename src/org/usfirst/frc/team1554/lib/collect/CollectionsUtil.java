@@ -38,7 +38,7 @@ public class CollectionsUtil {
 	}
 
 	/**
-	 * Computer Capacity for least wasteful re-hashing.
+	 * Compute Capacity for least wasteful re-hashing.
 	 * 
 	 * @param size
 	 * @return

@@ -1,7 +1,10 @@
 package org.usfirst.frc.team1554.lib;
 
+import org.usfirst.frc.team1554.lib.io.Console;
+import org.usfirst.frc.team1554.lib.meta.RobotExecutionException;
 import org.usfirst.frc.team1554.lib.util.RoboUtils;
 
+import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary;
@@ -10,12 +13,40 @@ import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary.tReso
 import edu.wpi.first.wpilibj.communication.UsageReporting;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
+// TODO Listeners
 /**
+ * An Alternative (and hopefully enhanced) approach to {@link IterativeRobot}. For
+ * one this class is Abstract and requires the user to implement certain methods that
+ * just make sense. <br />
+ * <br />
+ * This implementation also uses a separate {@link RobotState} enum to manage State
+ * and State Transfer. This bot also uses the more abstract {@link JoystickControl}
+ * and {@link MotorScheme} classes to make getting started much easier and providing
+ * convenience methods for many things. Creating a {@link RobotDrive} is abstracted
+ * to {@link RoboUtils#makeRobotDrive(MotorScheme) makeRobotDrive} and basic movement
+ * is abstracted to {@link MotorScheme#updateDrive(RobotDrive, JoystickControl)
+ * MotorScheme.updateDrive} or even just {@link #updateDrive()}.<br />
+ * <br />
+ * This implementation is noticeably larger than IterativeBot due to the fact that
+ * instead of just initX() and periodicX(), this class uses Entrance, On, AND Exit
+ * methods. i.e. preX(), onX(), postX() for a probably more logical flow of
+ * initialization, execution and finalization between states.
+ * 
  * @author Matthew
  */
 public abstract class EnhancedIterativeRobot extends RobotBase {
 
+	/**
+	 * Representation of Current Robot State. This is the alternative solution to the
+	 * boolean flag switches in {@link IterativeRobot} that encapsulates method calls
+	 * as well.
+	 * 
+	 * @author Matthew
+	 */
 	public enum RobotState {
+		/**
+		 * Disabled Mode Handler
+		 */
 		DISABLED {
 			@Override
 			public void doPreMethod(EnhancedIterativeRobot bot) {
@@ -33,6 +64,9 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 				bot.postDisabled();
 			}
 		},
+		/**
+		 * Teleoperated Handler
+		 */
 		TELEOP {
 			@Override
 			public void doPreMethod(EnhancedIterativeRobot bot) {
@@ -50,6 +84,9 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 				bot.postTeleop();
 			}
 		},
+		/**
+		 * Autonomous Handler
+		 */
 		AUTONOMOUS {
 			@Override
 			public void doPreMethod(EnhancedIterativeRobot bot) {
@@ -67,6 +104,9 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 				bot.postAutonomous();
 			}
 		},
+		/**
+		 * Test Mode Handler
+		 */
 		TEST_MODE {
 			@Override
 			public void doPreMethod(EnhancedIterativeRobot bot) {
@@ -85,35 +125,80 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 			}
 		};
 
+		/**
+		 * Execute Appropriate preX() method. (State Entrance Method)
+		 * 
+		 * @param bot
+		 */
 		abstract public void doPreMethod(EnhancedIterativeRobot bot);
 
+		/**
+		 * Execute Appropriate onX() method. (State Execution Method)
+		 * 
+		 * @param bot
+		 */
 		abstract public void doOnMethod(EnhancedIterativeRobot bot);
 
+		/**
+		 * Execute Appropriate postX() method. (State Exit Method)
+		 * 
+		 * @param bot
+		 */
 		abstract public void doPostMethod(EnhancedIterativeRobot bot);
 	}
 
-	private final JoystickControl controls;
-	private final MotorScheme motorScheme;
-	private final RobotDrive drive;
+	private JoystickControl controls;
+	private MotorScheme motorScheme;
+	private RobotDrive drive;
 
-	private RobotState state = null;
+	private RobotState state = RobotState.DISABLED;
+	private boolean forceLive = false;
 
-	public EnhancedIterativeRobot(JoystickControl controls, MotorScheme motorScheme) {
-		this.controls = controls;
-		this.motorScheme = motorScheme;
-		this.drive = RoboUtils.makeRobotDrive(motorScheme);
+	public EnhancedIterativeRobot() {
 	}
 
 	@Override
-	protected void prestart() {
+	protected final void prestart() {
 		// Don't immediately enable robot
 	}
 
+	/**
+	 * Run Competition in an Infinite Loop akin to {@link IterativeRobot} but using
+	 * modern Java features such as enums ({@link RobotState}) and now with "Pre",
+	 * "On" and "Post" methods. Essentially states not have an Entrance method, a
+	 * During method and an Exit method. <br />
+	 * <br />
+	 * The general method call sequence in a state change is: <Br />
+	 * <br />
+	 * 
+	 * <pre>
+	 * {@code                             
+	 *                                   When Moving from State X to State Y
+	 *  startCompetition() -> preX() -> onX() -> postX() -> preY() -> ...
+	 *                          ^         |
+	 *                          |         | While Stil in State X
+	 *                          |<-------<-
+	 * }
+	 * </pre>
+	 * 
+	 * <br />
+	 * Where X is the Start State and Y is the End state. '...' represents the Y
+	 * version of this same loop which will then move to either State X or State Z. <br />
+	 * <br />
+	 * If the Robot reaches an exceptional state (throws an Exception) and it is not
+	 * caught by User Code, then the exception is logged and then thrown to WPILib to
+	 * be handled as appropriate.
+	 * 
+	 * @author Matthew Crocco
+	 */
 	@Override
-	public void startCompetition() {
+	public final void startCompetition() {
 		UsageReporting.report(tResourceType.kResourceType_Framework, tInstances.kFramework_Iterative);
 
 		onInitialization();
+		this.controls = getJoysticks();
+		this.motorScheme = getMotorScheme();
+		this.drive = RoboUtils.makeRobotDrive(this.motorScheme);
 
 		// We call this now (not in prestart like default) so that the robot
 		// won't enable until the initialization has finished. This is useful
@@ -121,84 +206,184 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 		// before the code is ready.
 		FRCNetworkCommunicationsLibrary.FRCNetworkCommunicationObserveUserProgramStarting();
 
-		LiveWindow.setEnabled(true);
-		while (true) {
-			if (isDisabled()) {
-				if (this.state != RobotState.DISABLED) {
-					this.state.doPostMethod(this);
-					this.state = RobotState.DISABLED;
-					this.state.doPreMethod(this);
+		LiveWindow.setEnabled(false);
+		this.state.doPreMethod(this);
+		try {
+			while (true) {
+				if (isDisabled()) {
+					if (this.state != RobotState.DISABLED) {
+						this.state.doPostMethod(this);
+						LiveWindow.setEnabled(false || this.forceLive);
+						this.state = RobotState.DISABLED;
+						this.state.doPreMethod(this);
+					}
+				} else if (isTest()) {
+					if (this.state != RobotState.TEST_MODE) {
+						this.state.doPostMethod(this);
+						LiveWindow.setEnabled(true);
+						this.state = RobotState.TEST_MODE;
+						this.state.doPreMethod(this);
+					}
+				} else if (isAutonomous()) {
+					if (this.state != RobotState.AUTONOMOUS) {
+						this.state.doPostMethod(this);
+						LiveWindow.setEnabled(false || this.forceLive);
+						this.state = RobotState.AUTONOMOUS;
+						this.state.doPreMethod(this);
+					}
+				} else {
+					if (this.state != RobotState.TELEOP) {
+						this.state.doPostMethod(this);
+						LiveWindow.setEnabled(false || this.forceLive);
+						this.state = RobotState.TELEOP;
+						this.state.doPreMethod(this);
+					}
 				}
-			} else if (isTest()) {
-				if (this.state != RobotState.TEST_MODE) {
-					this.state.doPostMethod(this);
-					this.state = RobotState.TEST_MODE;
-					this.state.doPreMethod(this);
-				}
-			} else if (isAutonomous()) {
-				if (this.state != RobotState.AUTONOMOUS) {
-					this.state.doPostMethod(this);
-					this.state = RobotState.AUTONOMOUS;
-					this.state.doPreMethod(this);
-				}
-			} else {
-				if (this.state != RobotState.TELEOP) {
-					this.state.doPostMethod(this);
-					this.state = RobotState.TELEOP;
-					this.state.doPreMethod(this);
-				}
-			}
 
-			if (this.m_ds.isNewControlData()) {
-				this.state.doOnMethod(this);
-			}
+				if (this.m_ds.isNewControlData()) {
+					this.state.doOnMethod(this);
+				}
 
-			this.m_ds.waitForData();
+				this.m_ds.waitForData();
+			}
+		} catch (final Throwable t) {
+			// This is the WORST Case Scenario. Only way to break out of the loop.
+			Console.exception(t, "Huh. Robot Code Missed Exception/Throwable.");
+			throw new RobotExecutionException("Robot Code did not catch Exception/Throwable! Crash Incoming!", t);
 		}
 	}
 
+	/**
+	 * Called before the Iterative Loop begins. Any and all variables should be
+	 * initialized here if not in the constructor. After this is called,
+	 * {@link #getJoysticks()} and {@link #getMotorScheme()} is called. If these are
+	 * null then an exception is thrown as they are required by
+	 * {@link EnhancedIterativeRobot}.
+	 */
 	abstract public void onInitialization();
 
+	/**
+	 * Code to execute before entering Disabled Mode.
+	 */
 	public void preDisabled() {
+		Console.info("DEFAULT PREDISABLED()! Override me!");
 	}
 
+	/**
+	 * Code to execute before entering Test Mode.
+	 */
 	public void preTest() {
+		Console.info("DEFAULT PRETEST()! Override me!");
 	}
 
+	/**
+	 * Code to execute before entering TeleOp.
+	 */
 	abstract public void preTeleop();
 
+	/**
+	 * Code to execute before entering Autonomous.
+	 */
 	abstract public void preAutonomous();
 
+	/**
+	 * Code to execute while Disabled. This is looped as quickly as possible.
+	 */
 	abstract public void onDisabled();
 
+	/**
+	 * Code to execute while in Test. This is looped as quickly as possible.
+	 */
 	abstract public void onTest();
 
+	/**
+	 * Code to execute while in Teleop. This is looped as quickly as possible.
+	 */
 	abstract public void onTeleop();
 
+	/**
+	 * Code to execute while in Autonomous. This is looped as quickly as possible.
+	 */
 	abstract public void onAutonomous();
 
+	/**
+	 * Code to execute while leaving Disabled Mode. Free or Reset State-Dependent
+	 * Resources and Objects here.
+	 */
 	public void postDisabled() {
+		Console.info("DEFAULT POSTDISABLED()! Override me!");
 	}
 
+	/**
+	 * Code to execute while leaving Test Mode. Free or Reset State-Dependent
+	 * Resources and Objects here.
+	 */
 	public void postTest() {
+		Console.info("DEFAULT POSTTEST()! Override me!");
 	}
 
+	/**
+	 * Code to execute while leaving Teleop. Free or Reset State-Dependent Resources
+	 * and Objects here.
+	 */
 	public void postTeleop() {
+		Console.info("DEFAULT POSTTELEOP()! Override me!");
 	}
 
+	/**
+	 * Code to execute while leaving Autonomous. Free or Reset State-Dependent
+	 * Resources and Objects here.
+	 */
 	public void postAutonomous() {
+		Console.info("DEFAULT POSTAUTONOMOUS()! Override me!");
 	}
 
-	public JoystickControl getJoysticks() {
-		return this.controls;
-	}
+	/**
+	 * Get Joystick Controls
+	 * 
+	 * @return
+	 */
+	abstract public JoystickControl getJoysticks();
 
-	public MotorScheme getMotorScheme() {
-		return this.motorScheme;
-	}
+	/**
+	 * Get Robot Motor Sheme
+	 * 
+	 * @return
+	 */
+	abstract public MotorScheme getMotorScheme();
 
+	/**
+	 * Get Robot Drive
+	 * 
+	 * @return
+	 */
 	public RobotDrive getDrive() {
 		return this.drive;
+	}
+
+	/**
+	 * Fprce LiveWindow to be available in ALL modes.
+	 * 
+	 * @param forceLiveWindow
+	 */
+	public void setLiveWindowForced(boolean forceLiveWindow) {
+		this.forceLive = forceLiveWindow;
+	}
+
+	/**
+	 * Is LiveWindow Force Available in ALL modes?
+	 * 
+	 * @return
+	 */
+	public boolean isLiveWindowForced() {
+		return this.forceLive;
+	}
+
+	/**
+	 * Update RobotDrive as appropriate with the current JoystickControls.
+	 */
+	public void updateDrive() {
+		this.motorScheme.getDriveManagement().updateDrive(this.drive, this.controls);
 	}
 
 }

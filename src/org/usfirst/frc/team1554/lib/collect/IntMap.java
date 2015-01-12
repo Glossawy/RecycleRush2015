@@ -5,6 +5,17 @@ import java.util.NoSuchElementException;
 
 import org.usfirst.frc.team1554.lib.util.MathUtils;
 
+// TODO Documentation
+/**
+ * Implementation of Cuckoo Hash Map with a Stash to store problematic hashes. This
+ * is inspired by similar implementations. <br />
+ * <br />
+ * Runs efficiently while being able to use primitive int keys.
+ * 
+ * @author Matthew
+ *
+ * @param <V>
+ */
 public class IntMap<V> {
 
 	private static final int PRIME2 = 0xb4b82e39;
