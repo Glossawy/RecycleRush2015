@@ -11,6 +11,9 @@ import org.usfirst.frc.team1554.lib.DualJoystickControl;
 import org.usfirst.frc.team1554.lib.EnhancedIterativeRobot;
 import org.usfirst.frc.team1554.lib.JoystickControl;
 import org.usfirst.frc.team1554.lib.MotorScheme;
+import org.usfirst.frc.team1554.lib.MotorScheme.DriveManager;
+
+import edu.wpi.first.wpilibj.RobotDrive.MotorType;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions
@@ -27,55 +30,78 @@ public class Robot extends EnhancedIterativeRobot {
 		super();
 
 		this.control = new DualJoystickControl(JOYSTICK_LEFT, JOYSTICK_RIGHT);
-		this.motors = MotorScheme.Builder.newFourMotorDrive(FL_DMOTOR, RL_DMOTOR, FR_DMOTOR, RR_DMOTOR).build();
+		this.motors = MotorScheme.Builder.newFourMotorDrive(FL_DMOTOR, RL_DMOTOR, FR_DMOTOR, RR_DMOTOR)
+				.setDriveManager(DriveManager.MECANUM_POLAR).build();
+		
 	}
 
 	@Override
 	public void onInitialization() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void postInitialization() {
+		getDrive().setInvertedMotor(MotorType.kFrontRight, true);
+		getDrive().setInvertedMotor(MotorType.kRearRight, true);
 	}
 
 	@Override
-	public void preTeleop() {
-
-	}
-
-	@Override
-	public void preAutonomous() {
-		updateDrive();
+	public void preDisabled() {
+		
 	}
 
 	@Override
 	public void onDisabled() {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
-	public void onTest() {
+	public void preAutonomous() {
 		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onTeleop() {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void onAutonomous() {
 		// TODO Auto-generated method stub
+		
+	}
 
+	@Override
+	public void preTeleop() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onTeleop() {
+		this.updateDrive();
+	}
+
+	@Override
+	public void preTest() {
+		
+	}
+	
+	@Override
+	public void onTest() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public JoystickControl getJoysticks() {
-		return this.control;
+		return control;
 	}
 
 	@Override
 	public MotorScheme getMotorScheme() {
-		return this.motors;
+		return motors;
 	}
+
+	
 
 }

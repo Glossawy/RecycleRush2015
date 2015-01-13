@@ -1,7 +1,5 @@
 package org.usfirst.frc.team1554.lib;
 
-import org.usfirst.frc.team1554.lib.io.Console;
-import org.usfirst.frc.team1554.lib.meta.RobotExecutionException;
 import org.usfirst.frc.team1554.lib.util.RoboUtils;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -199,6 +197,7 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 		this.controls = getJoysticks();
 		this.motorScheme = getMotorScheme();
 		this.drive = RoboUtils.makeRobotDrive(this.motorScheme);
+		postInitialization();
 
 		// We call this now (not in prestart like default) so that the robot
 		// won't enable until the initialization has finished. This is useful
@@ -208,34 +207,42 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 
 		LiveWindow.setEnabled(false);
 		this.state.doPreMethod(this);
-		try {
+//		try {
 			while (true) {
 				if (isDisabled()) {
 					if (this.state != RobotState.DISABLED) {
+						System.out.println("Exiting " + state.name());
 						this.state.doPostMethod(this);
 						LiveWindow.setEnabled(false || this.forceLive);
 						this.state = RobotState.DISABLED;
+						System.out.println("Entering " + state.name());
 						this.state.doPreMethod(this);
 					}
 				} else if (isTest()) {
 					if (this.state != RobotState.TEST_MODE) {
+						System.out.println("Exiting " + state.name());
 						this.state.doPostMethod(this);
 						LiveWindow.setEnabled(true);
 						this.state = RobotState.TEST_MODE;
+						System.out.println("Entering " + state.name());
 						this.state.doPreMethod(this);
 					}
 				} else if (isAutonomous()) {
 					if (this.state != RobotState.AUTONOMOUS) {
+						System.out.println("Exiting " + state.name());
 						this.state.doPostMethod(this);
 						LiveWindow.setEnabled(false || this.forceLive);
 						this.state = RobotState.AUTONOMOUS;
+						System.out.println("Entering " + state.name());
 						this.state.doPreMethod(this);
 					}
 				} else {
 					if (this.state != RobotState.TELEOP) {
+						System.out.println("Exiting " + state.name());
 						this.state.doPostMethod(this);
 						LiveWindow.setEnabled(false || this.forceLive);
 						this.state = RobotState.TELEOP;
+						System.out.println("Entering " + state.name());
 						this.state.doPreMethod(this);
 					}
 				}
@@ -246,11 +253,11 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 
 				this.m_ds.waitForData();
 			}
-		} catch (final Throwable t) {
-			// This is the WORST Case Scenario. Only way to break out of the loop.
-			Console.exception(t, "Huh. Robot Code Missed Exception/Throwable.");
-			throw new RobotExecutionException("Robot Code did not catch Exception/Throwable! Crash Incoming!", t);
-		}
+//		} catch (final Throwable t) {
+//			// This is the WORST Case Scenario. Only way to break out of the loop.
+//			Console.exception(t, "Huh. Robot Code Missed Exception/Throwable.");
+//			throw new RobotExecutionException("Robot Code did not catch Exception/Throwable! Crash Incoming!", t);
+//		}
 	}
 
 	/**
@@ -262,18 +269,42 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 	 */
 	abstract public void onInitialization();
 
+	public void postInitialization(){}
+	
 	/**
 	 * Code to execute before entering Disabled Mode.
 	 */
-	public void preDisabled() {
-		Console.info("DEFAULT PREDISABLED()! Override me!");
+	abstract public void preDisabled();
+
+	/**
+	 * Code to execute while Disabled. This is looped as quickly as possible.
+	 */
+	abstract public void onDisabled();
+
+	/**
+	 * Code to execute while leaving Disabled Mode. Free or Reset State-Dependent
+	 * Resources and Objects here.
+	 */
+	public void postDisabled() {
+		System.out.println("DEFAULT POSTDISABLED()! Override me!");
 	}
 
 	/**
-	 * Code to execute before entering Test Mode.
+	 * Code to execute before entering Autonomous.
 	 */
-	public void preTest() {
-		Console.info("DEFAULT PRETEST()! Override me!");
+	abstract public void preAutonomous();
+
+	/**
+	 * Code to execute while in Autonomous. This is looped as quickly as possible.
+	 */
+	abstract public void onAutonomous();
+
+	/**
+	 * Code to execute while leaving Autonomous. Free or Reset State-Dependent
+	 * Resources and Objects here.
+	 */
+	public void postAutonomous() {
+		System.out.println("DEFAULT POSTAUTONOMOUS()! Override me!");
 	}
 
 	/**
@@ -282,14 +313,24 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 	abstract public void preTeleop();
 
 	/**
-	 * Code to execute before entering Autonomous.
+	 * Code to execute while in Teleop. This is looped as quickly as possible.
 	 */
-	abstract public void preAutonomous();
+	abstract public void onTeleop();
 
 	/**
-	 * Code to execute while Disabled. This is looped as quickly as possible.
+	 * Code to execute while leaving Teleop. Free or Reset State-Dependent Resources
+	 * and Objects here.
 	 */
-	abstract public void onDisabled();
+	public void postTeleop() {
+		System.out.println("DEFAULT POSTTELEOP()! Override me!");
+	}
+
+	/**
+	 * Code to execute before entering Test Mode.
+	 */
+	public void preTest() {
+		System.out.println("DEFAULT PRETEST()! Override me!");
+	}
 
 	/**
 	 * Code to execute while in Test. This is looped as quickly as possible.
@@ -297,45 +338,11 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 	abstract public void onTest();
 
 	/**
-	 * Code to execute while in Teleop. This is looped as quickly as possible.
-	 */
-	abstract public void onTeleop();
-
-	/**
-	 * Code to execute while in Autonomous. This is looped as quickly as possible.
-	 */
-	abstract public void onAutonomous();
-
-	/**
-	 * Code to execute while leaving Disabled Mode. Free or Reset State-Dependent
-	 * Resources and Objects here.
-	 */
-	public void postDisabled() {
-		Console.info("DEFAULT POSTDISABLED()! Override me!");
-	}
-
-	/**
 	 * Code to execute while leaving Test Mode. Free or Reset State-Dependent
 	 * Resources and Objects here.
 	 */
 	public void postTest() {
-		Console.info("DEFAULT POSTTEST()! Override me!");
-	}
-
-	/**
-	 * Code to execute while leaving Teleop. Free or Reset State-Dependent Resources
-	 * and Objects here.
-	 */
-	public void postTeleop() {
-		Console.info("DEFAULT POSTTELEOP()! Override me!");
-	}
-
-	/**
-	 * Code to execute while leaving Autonomous. Free or Reset State-Dependent
-	 * Resources and Objects here.
-	 */
-	public void postAutonomous() {
-		Console.info("DEFAULT POSTAUTONOMOUS()! Override me!");
+		System.out.println("DEFAULT POSTTEST()! Override me!");
 	}
 
 	/**

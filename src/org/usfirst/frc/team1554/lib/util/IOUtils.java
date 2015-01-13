@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1554.lib.util;
 
-import java.io.ByteArrayOutputStream;
+import java.io.ByteArrayOutputStream; 
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;

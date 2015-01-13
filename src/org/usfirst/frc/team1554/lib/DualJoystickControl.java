@@ -37,10 +37,11 @@ public class DualJoystickControl implements JoystickControl {
 
 	@Override
 	public double getMagnitude() {
-		final double x = getX();
-		final double y = getY();
-
-		return Math.sqrt((x * x) + (y * y));
+//		final double x = getX();
+//		final double y = getY();
+//
+//		return Math.sqrt((x * x) + (y * y));
+		return rightStick.getMagnitude();
 	}
 
 	@Override

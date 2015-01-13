@@ -8,8 +8,8 @@ public final class Ref {
 	public static final class Channels {
 		public static final int FL_DMOTOR = 0;
 		public static final int RL_DMOTOR = 1;
-		public static final int FR_DMOTOR = 2;
-		public static final int RR_DMOTOR = 3;
+		public static final int FR_DMOTOR = 8;
+		public static final int RR_DMOTOR = 9;
 	}
 
 	public static final class Ports {

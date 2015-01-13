@@ -71,7 +71,7 @@ public interface MotorScheme {
 		MECANUM_POLAR {
 			@Override
 			void updateDrive(RobotDrive drive, JoystickControl c) {
-				drive.mecanumDrive_Polar(c.getMagnitude(), c.getDirectionRadians(), c.getTwist());
+				drive.mecanumDrive_Polar(c.getMagnitude(), c.getDirectionDegrees(), c.getTwist());
 			}
 		},
 		// TODO JoystickControl Hints
@@ -327,6 +327,10 @@ public interface MotorScheme {
 			builder.isDualChannel = false;
 			builder.driveMotors = new SpeedController[] { frontLeft, rearLeft, frontRight, rearRight };
 
+			for(SpeedController sc : builder.driveMotors) {
+				builder.additionalMotors.put(((PWM) sc).getChannel(), sc);
+			}
+			
 			return builder;
 		}
 
