@@ -35,7 +35,7 @@ public class Console {
 	/** The File Path Separator received from System Properties */
 	public static final String SEP = System.getProperty("file.separator");
 
-	private static final FileHandle logDir = new FileHandle("/home/lvuser/frc1554_logs");
+	private static final FileHandle logDir = new FileHandle("/home/lvuser");
 	private static FileHandler file;
 
 	static {

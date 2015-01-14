@@ -12,6 +12,7 @@ import org.usfirst.frc.team1554.lib.EnhancedIterativeRobot;
 import org.usfirst.frc.team1554.lib.JoystickControl;
 import org.usfirst.frc.team1554.lib.MotorScheme;
 import org.usfirst.frc.team1554.lib.MotorScheme.DriveManager;
+import org.usfirst.frc.team1554.lib.io.Console;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions
@@ -29,17 +30,14 @@ public class Robot extends EnhancedIterativeRobot {
 
 		this.control = new DualJoystickControl(JOYSTICK_LEFT, JOYSTICK_RIGHT);
 		this.motors = MotorScheme.Builder.newFourMotorDrive(FL_DMOTOR, RL_DMOTOR, FR_DMOTOR, RR_DMOTOR).setInverted(false, true).setDriveManager(DriveManager.MECANUM_POLAR).build();
-
 	}
 
 	@Override
 	public void onInitialization() {
-
 	}
 
 	@Override
 	public void preDisabled() {
-
 	}
 
 	@Override

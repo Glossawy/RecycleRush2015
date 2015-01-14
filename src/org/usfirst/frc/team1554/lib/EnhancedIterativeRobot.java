@@ -256,7 +256,8 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 			}
 		} catch (final Throwable t) {
 			// This is the WORST Case Scenario. Only way to break out of the loop.
-			Console.exception(t, "Huh. Robot Code Missed Exception/Throwable.");
+			System.err.println("Huh. Robot Code Missed Exception/Throwable.");
+			throw t;
 		}
 	}
 
