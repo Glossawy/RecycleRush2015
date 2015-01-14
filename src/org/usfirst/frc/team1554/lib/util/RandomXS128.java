@@ -38,8 +38,8 @@ public class RandomXS128 extends Random {
 
 		while (true) {
 			final long bits = nextLong() >>> 1;
-	final long value = bits % n;
-	if (((bits - value) + (n - 1)) >= 0) return value;
+			final long value = bits % n;
+			if (((bits - value) + (n - 1)) >= 0) return value;
 		}
 	}
 

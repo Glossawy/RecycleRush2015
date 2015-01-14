@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1554.lib;
 
+import org.usfirst.frc.team1554.lib.io.Console;
 import org.usfirst.frc.team1554.lib.util.RoboUtils;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -153,6 +154,7 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 	private boolean forceLive = false;
 
 	public EnhancedIterativeRobot() {
+		super();
 	}
 
 	@Override
@@ -196,8 +198,7 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 		onInitialization();
 		this.controls = getJoysticks();
 		this.motorScheme = getMotorScheme();
-		this.drive = RoboUtils.makeRobotDrive(this.motorScheme);
-		postInitialization();
+		this.drive = getMotorScheme().getRobotDrive();
 
 		// We call this now (not in prestart like default) so that the robot
 		// won't enable until the initialization has finished. This is useful
@@ -207,42 +208,42 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 
 		LiveWindow.setEnabled(false);
 		this.state.doPreMethod(this);
-//		try {
+		try {
 			while (true) {
 				if (isDisabled()) {
 					if (this.state != RobotState.DISABLED) {
-						System.out.println("Exiting " + state.name());
+						System.out.println("Exiting " + this.state.name());
 						this.state.doPostMethod(this);
 						LiveWindow.setEnabled(false || this.forceLive);
 						this.state = RobotState.DISABLED;
-						System.out.println("Entering " + state.name());
+						System.out.println("Entering " + this.state.name());
 						this.state.doPreMethod(this);
 					}
 				} else if (isTest()) {
 					if (this.state != RobotState.TEST_MODE) {
-						System.out.println("Exiting " + state.name());
+						System.out.println("Exiting " + this.state.name());
 						this.state.doPostMethod(this);
 						LiveWindow.setEnabled(true);
 						this.state = RobotState.TEST_MODE;
-						System.out.println("Entering " + state.name());
+						System.out.println("Entering " + this.state.name());
 						this.state.doPreMethod(this);
 					}
 				} else if (isAutonomous()) {
 					if (this.state != RobotState.AUTONOMOUS) {
-						System.out.println("Exiting " + state.name());
+						System.out.println("Exiting " + this.state.name());
 						this.state.doPostMethod(this);
 						LiveWindow.setEnabled(false || this.forceLive);
 						this.state = RobotState.AUTONOMOUS;
-						System.out.println("Entering " + state.name());
+						System.out.println("Entering " + this.state.name());
 						this.state.doPreMethod(this);
 					}
 				} else {
 					if (this.state != RobotState.TELEOP) {
-						System.out.println("Exiting " + state.name());
+						System.out.println("Exiting " + this.state.name());
 						this.state.doPostMethod(this);
 						LiveWindow.setEnabled(false || this.forceLive);
 						this.state = RobotState.TELEOP;
-						System.out.println("Entering " + state.name());
+						System.out.println("Entering " + this.state.name());
 						this.state.doPreMethod(this);
 					}
 				}
@@ -253,11 +254,10 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 
 				this.m_ds.waitForData();
 			}
-//		} catch (final Throwable t) {
-//			// This is the WORST Case Scenario. Only way to break out of the loop.
-//			Console.exception(t, "Huh. Robot Code Missed Exception/Throwable.");
-//			throw new RobotExecutionException("Robot Code did not catch Exception/Throwable! Crash Incoming!", t);
-//		}
+		} catch (final Throwable t) {
+			// This is the WORST Case Scenario. Only way to break out of the loop.
+			Console.exception(t, "Huh. Robot Code Missed Exception/Throwable.");
+		}
 	}
 
 	/**
@@ -269,8 +269,6 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 	 */
 	abstract public void onInitialization();
 
-	public void postInitialization(){}
-	
 	/**
 	 * Code to execute before entering Disabled Mode.
 	 */

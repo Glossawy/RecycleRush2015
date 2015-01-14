@@ -1,5 +1,10 @@
 package org.usfirst.frc.team1554.lib;
 
+import static edu.wpi.first.wpilibj.RobotDrive.MotorType.kFrontLeft;
+import static edu.wpi.first.wpilibj.RobotDrive.MotorType.kFrontRight;
+import static edu.wpi.first.wpilibj.RobotDrive.MotorType.kRearLeft;
+import static edu.wpi.first.wpilibj.RobotDrive.MotorType.kRearRight;
+
 import java.util.Map;
 
 import org.usfirst.frc.team1554.lib.collect.IntMap;
@@ -142,6 +147,8 @@ public interface MotorScheme {
 
 	DriveManager getDriveManagement();
 
+	RobotDrive getRobotDrive();
+
 	/**
 	 * Get a Motor by Name. Equivalent to nameMap().get(name);
 	 * 
@@ -261,8 +268,11 @@ public interface MotorScheme {
 	 */
 	public static class Builder implements IBuilder<MotorScheme> {
 
+		private static RobotDriveFactory<RobotDrive> driveFactory = RobotDriveFactory.DEFAULT;
+
 		private boolean isDualChannel;
 		private SpeedController[] driveMotors;
+		private final boolean[] inverted = { false, false, false, false };
 		private DriveManager dManager = DriveManager.TANK;
 		private final IntMap<SpeedController> additionalMotors = Maps.newIntMap(8);
 		private final Map<String, SpeedController> additionalMotorNames = Maps.newHashMap();
@@ -327,10 +337,10 @@ public interface MotorScheme {
 			builder.isDualChannel = false;
 			builder.driveMotors = new SpeedController[] { frontLeft, rearLeft, frontRight, rearRight };
 
-			for(SpeedController sc : builder.driveMotors) {
+			for (final SpeedController sc : builder.driveMotors) {
 				builder.additionalMotors.put(((PWM) sc).getChannel(), sc);
 			}
-			
+
 			return builder;
 		}
 
@@ -418,11 +428,41 @@ public interface MotorScheme {
 			return this;
 		}
 
+		public Builder setInverted(boolean frontLeft, boolean rearLeft, boolean frontRight, boolean rearRight) {
+			inverted[0] = frontLeft;
+			inverted[1] = rearLeft;
+			inverted[2] = frontRight;
+			inverted[3] = rearRight;
+
+			return this;
+		}
+
+		public Builder setInverted(boolean leftMotors, boolean rightMotors) {
+			return setInverted(leftMotors, leftMotors, rightMotors, rightMotors);
+		}
+
+		public static <T extends RobotDrive> void setDriveFactory(RobotDriveFactory<RobotDrive> factory) {
+			Builder.driveFactory = factory;
+		}
+
 		/**
 		 * Create the MotorScheme from this Builder's options.
 		 */
 		@Override
 		public MotorScheme build() {
+			final SpeedController[] m = driveMotors;
+			final RobotDrive drive;
+			if (isDualChannel) {
+				drive = Builder.driveFactory.createForTwoChannels(m[0], m[1]);
+			} else {
+				drive = Builder.driveFactory.createForFourChannels(m[0], m[1], m[2], m[3]);
+			}
+
+			drive.setInvertedMotor(kFrontLeft, inverted[0]);
+			drive.setInvertedMotor(kRearLeft, inverted[1]);
+			drive.setInvertedMotor(kFrontRight, inverted[2]);
+			drive.setInvertedMotor(kRearRight, inverted[3]);
+
 			return new MotorScheme() {
 
 				@Override
@@ -460,6 +500,10 @@ public interface MotorScheme {
 					return dManager;
 				}
 
+				@Override
+				public RobotDrive getRobotDrive() {
+					return drive;
+				}
 			};
 		}
 	}

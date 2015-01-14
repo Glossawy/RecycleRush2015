@@ -82,7 +82,11 @@ public class FileHandle {
 	}
 
 	public FileHandle child(String name) {
-		if (!this.file.isDirectory()) throw new RuntimeException("Cannot get child of a file! Must be a directory...");
+		if (!this.file.isDirectory()) if (this.file.exists())
+			throw new RuntimeException("Cannot get child of a file! Must be a directory...");
+		else {
+			mkdirs();
+		}
 
 		return new FileHandle(new File(this.file.getPath(), name));
 	}
