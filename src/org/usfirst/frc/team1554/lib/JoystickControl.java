@@ -26,5 +26,6 @@ public interface JoystickControl {
 	Runnable removeButtonAction(int bId, Hand side);
 
 	void swapJoysticks();
-
+	
+	void update();
 }

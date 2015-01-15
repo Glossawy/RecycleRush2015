@@ -1,18 +1,21 @@
 package org.usfirst.frc.team1554;
 
-import static org.usfirst.frc.team1554.Ref.Channels.FL_DMOTOR;
+import static org.usfirst.frc.team1554.Ref.Channels.FL_DMOTOR; 
 import static org.usfirst.frc.team1554.Ref.Channels.FR_DMOTOR;
 import static org.usfirst.frc.team1554.Ref.Channels.RL_DMOTOR;
 import static org.usfirst.frc.team1554.Ref.Channels.RR_DMOTOR;
 import static org.usfirst.frc.team1554.Ref.Ports.JOYSTICK_LEFT;
 import static org.usfirst.frc.team1554.Ref.Ports.JOYSTICK_RIGHT;
+import static org.usfirst.frc.team1554.Ref.Values.DRIVE_SCALE_FACTOR;
 
 import org.usfirst.frc.team1554.lib.DualJoystickControl;
 import org.usfirst.frc.team1554.lib.EnhancedIterativeRobot;
 import org.usfirst.frc.team1554.lib.JoystickControl;
 import org.usfirst.frc.team1554.lib.MotorScheme;
 import org.usfirst.frc.team1554.lib.MotorScheme.DriveManager;
-import org.usfirst.frc.team1554.lib.io.Console;
+
+import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.RobotDrive;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions
@@ -27,9 +30,13 @@ public class Robot extends EnhancedIterativeRobot {
 
 	public Robot() {
 		super();
-
+		
 		this.control = new DualJoystickControl(JOYSTICK_LEFT, JOYSTICK_RIGHT);
 		this.motors = MotorScheme.Builder.newFourMotorDrive(FL_DMOTOR, RL_DMOTOR, FR_DMOTOR, RR_DMOTOR).setInverted(false, true).setDriveManager(DriveManager.MECANUM_POLAR).build();
+		this.motors.getRobotDrive().setMaxOutput(DRIVE_SCALE_FACTOR);
+		
+		this.control.putButtonAction(1, () -> getDrive().setLeftRightMotorOutputs(1.0, -1.0), Hand.kRight);
+		this.control.putButtonAction(12, () -> this.control.swapJoysticks(), Hand.kRight);
 	}
 
 	@Override
@@ -67,6 +74,7 @@ public class Robot extends EnhancedIterativeRobot {
 	@Override
 	public void onTeleop() {
 		updateDrive();
+		control.update();
 	}
 
 	@Override
@@ -88,6 +96,11 @@ public class Robot extends EnhancedIterativeRobot {
 	@Override
 	public MotorScheme getMotorScheme() {
 		return this.motors;
+	}
+	
+	@Override
+	public RobotDrive getDrive() {
+		return this.motors.getRobotDrive();
 	}
 
 }

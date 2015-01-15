@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1554.lib;
 
 import org.usfirst.frc.team1554.lib.collect.IntMap;
+import org.usfirst.frc.team1554.lib.collect.IntMap.Keys;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.Joystick;
@@ -77,6 +78,18 @@ public class SingleJoystickControl implements JoystickControl {
 		if (bId > this.stick.getButtonCount()) throw new IllegalArgumentException("Button ID can't be greater than the joystick button count!: " + bId + " -> " + this.stick.getButtonCount() + " max");
 
 		return this.actions.remove(bId);
+	}
+
+	@Override
+	public void update() {
+		Keys keys = actions.keys();
+		
+		while(keys.hasNext) {
+			int id = keys.next();
+			
+			if(stick.getRawButton(id))
+				actions.get(id, null).run();
+		}
 	}
 
 }

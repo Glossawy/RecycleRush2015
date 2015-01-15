@@ -1,6 +1,5 @@
 package org.usfirst.frc.team1554.lib;
 
-import org.usfirst.frc.team1554.lib.io.Console;
 import org.usfirst.frc.team1554.lib.util.RoboUtils;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -146,10 +145,6 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 		abstract public void doPostMethod(EnhancedIterativeRobot bot);
 	}
 
-	private JoystickControl controls;
-	private MotorScheme motorScheme;
-	private RobotDrive drive;
-
 	private RobotState state = RobotState.DISABLED;
 	private boolean forceLive = false;
 
@@ -196,9 +191,6 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 		UsageReporting.report(tResourceType.kResourceType_Framework, tInstances.kFramework_Iterative);
 
 		onInitialization();
-		this.controls = getJoysticks();
-		this.motorScheme = getMotorScheme();
-		this.drive = getMotorScheme().getRobotDrive();
 
 		// We call this now (not in prestart like default) so that the robot
 		// won't enable until the initialization has finished. This is useful
@@ -363,9 +355,7 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 	 * 
 	 * @return
 	 */
-	public RobotDrive getDrive() {
-		return this.drive;
-	}
+	abstract public RobotDrive getDrive();
 
 	/**
 	 * Fprce LiveWindow to be available in ALL modes.
@@ -389,7 +379,7 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 	 * Update RobotDrive as appropriate with the current JoystickControls.
 	 */
 	public void updateDrive() {
-		this.motorScheme.getDriveManagement().updateDrive(this.drive, this.controls);
+		getMotorScheme().getDriveManagement().updateDrive(getDrive(), getJoysticks());
 	}
 
 }
