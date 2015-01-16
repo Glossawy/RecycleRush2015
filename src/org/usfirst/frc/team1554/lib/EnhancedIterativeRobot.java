@@ -1,10 +1,14 @@
 package org.usfirst.frc.team1554.lib;
 
+import org.usfirst.frc.team1554.lib.collect.IntMap.Values;
 import org.usfirst.frc.team1554.lib.util.RoboUtils;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.SensorBase;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary;
 import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary.tInstances;
 import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary.tResourceType;
@@ -382,4 +386,14 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 		getMotorScheme().getDriveManagement().updateDrive(getDrive(), getJoysticks());
 	}
 
+	@Override
+	public void free() {
+		Values<SpeedController> vals = getMotorScheme().pidMap().values();
+		
+		for(SpeedController sc = vals.next(); vals.hasNext; sc = vals.next()) 
+			if(sc instanceof PWM)
+				((PWM) sc).free();
+			else if (sc instanceof SensorBase)
+				((SensorBase) sc).free();
+	}
 }

@@ -18,7 +18,7 @@ public final class Ref {
 	}
 	
 	public static final class Values {
-		public static final double DRIVE_SCALE_FACTOR = 1.1;
+		public static final double DRIVE_SCALE_FACTOR = 1.275;
 	}
 
 }
