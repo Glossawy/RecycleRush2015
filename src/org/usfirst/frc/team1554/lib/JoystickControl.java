@@ -27,5 +27,9 @@ public interface JoystickControl {
 
 	void swapJoysticks();
 
+	void setTwistThreshold(double val);
+
+	void setMagnitudeThreshold(double val);
+
 	void update();
 }

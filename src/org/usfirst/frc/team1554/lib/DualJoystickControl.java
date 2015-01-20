@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import org.usfirst.frc.team1554.lib.collect.IntMap;
 import org.usfirst.frc.team1554.lib.collect.IntMap.Entry;
+import org.usfirst.frc.team1554.math.MathUtils;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.Joystick;
@@ -13,6 +14,8 @@ public class DualJoystickControl implements JoystickControl {
 	private Joystick leftStick, rightStick;
 	private IntMap<Runnable> leftActions = new IntMap<Runnable>(8);
 	private IntMap<Runnable> rightActions = new IntMap<Runnable>(8);
+
+	private double twistLim = 0.0, magLim = 0.0;
 
 	public DualJoystickControl(Joystick left, Joystick right) {
 		this.leftStick = left;
@@ -35,7 +38,8 @@ public class DualJoystickControl implements JoystickControl {
 
 	@Override
 	public double getTwist() {
-		return this.leftStick.getTwist();
+		final double twist = this.leftStick.getTwist();
+		return Math.abs(twist) <= this.twistLim ? 0.0 : twist - (this.twistLim * (twist < 0 ? -1 : 1));
 	}
 
 	@Override
@@ -43,7 +47,9 @@ public class DualJoystickControl implements JoystickControl {
 		final double x = getX();
 		final double y = getY();
 
-		return Math.sqrt((x * x) + (y * y));
+		final double mag = Math.sqrt((x * x) + (y * y));
+
+		return mag <= this.magLim ? 0.0 : mag - this.magLim;
 	}
 
 	@Override
@@ -76,6 +82,16 @@ public class DualJoystickControl implements JoystickControl {
 
 		this.leftStick = this.rightStick;
 		this.rightStick = temp;
+	}
+
+	@Override
+	public void setTwistThreshold(double val) {
+		this.twistLim = MathUtils.clamp(val, 0.0, 1.0);
+	}
+
+	@Override
+	public void setMagnitudeThreshold(double val) {
+		this.magLim = MathUtils.clamp(val, 0.0, 1.0);
 	}
 
 	@Override

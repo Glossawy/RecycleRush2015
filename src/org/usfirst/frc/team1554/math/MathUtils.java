@@ -171,4 +171,8 @@ public class MathUtils {
 		return log(2, x);
 	}
 
+	public static final int booleanToInt(boolean expression) {
+		return expression ? 1 : 0;
+	}
+
 }

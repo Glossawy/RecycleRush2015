@@ -7,6 +7,7 @@ import static org.usfirst.frc.team1554.Ref.Channels.RR_DMOTOR;
 import static org.usfirst.frc.team1554.Ref.Ports.JOYSTICK_LEFT;
 import static org.usfirst.frc.team1554.Ref.Ports.JOYSTICK_RIGHT;
 import static org.usfirst.frc.team1554.Ref.Values.DRIVE_SCALE_FACTOR;
+import static org.usfirst.frc.team1554.Ref.Values.*;
 
 import org.usfirst.frc.team1554.lib.DualJoystickControl;
 import org.usfirst.frc.team1554.lib.EnhancedIterativeRobot;
@@ -32,6 +33,8 @@ public class Robot extends EnhancedIterativeRobot {
 		super();
 
 		this.control = new DualJoystickControl(JOYSTICK_LEFT, JOYSTICK_RIGHT);
+		this.control.setMagnitudeThreshold(MAG_STICK_DEADBAND);
+		this.control.setTwistThreshold(TWIST_STICK_DEADBAND);
 		this.motors = MotorScheme.Builder.newFourMotorDrive(FL_DMOTOR, RL_DMOTOR, FR_DMOTOR, RR_DMOTOR).setInverted(false, true).setDriveManager(DriveManager.MECANUM_POLAR).build();
 		this.motors.getRobotDrive().setMaxOutput(DRIVE_SCALE_FACTOR);
 
