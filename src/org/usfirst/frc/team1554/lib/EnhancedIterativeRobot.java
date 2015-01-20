@@ -1,10 +1,7 @@
 package org.usfirst.frc.team1554.lib;
 
-import java.io.Console;
-import java.io.PrintStream;
-
 import org.usfirst.frc.team1554.lib.collect.IntMap.Values;
-import org.usfirst.frc.team1554.lib.io.comms.RoboComms;
+import org.usfirst.frc.team1554.lib.io.Console;
 import org.usfirst.frc.team1554.lib.util.RoboUtils;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -158,36 +155,6 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 
 	public EnhancedIterativeRobot() {
 		super();
-
-		// We are so intercepting the Error and Output Streams!
-		// But only to facilitate RoboComms Behavior
-		System.setOut(new PrintStream(System.out) {
-			@Override
-			public void println(String line) {
-				RoboComms.INSTANCE.writeLine(line);
-				super.println(line);
-			}
-
-			@Override
-			public void print(String line) {
-				RoboComms.INSTANCE.writeLine(line);
-				super.print(line);
-			}
-		});
-
-		System.setErr(new PrintStream(System.err) {
-			@Override
-			public void println(String line) {
-				RoboComms.INSTANCE.writeLine(line);
-				super.println(line);
-			}
-
-			@Override
-			public void print(String line) {
-				RoboComms.INSTANCE.writeLine(line);
-				super.print(line);
-			}
-		});
 	}
 
 	@Override
@@ -243,38 +210,38 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 			while (true) {
 				if (isDisabled()) {
 					if (this.state != RobotState.DISABLED) {
-						System.out.println("Exiting " + this.state.name());
+						Console.info("Exiting " + this.state.name());
 						this.state.doPostMethod(this);
 						LiveWindow.setEnabled(false || this.forceLive);
 						this.state = RobotState.DISABLED;
-						System.out.println("Entering " + this.state.name());
+						Console.info("Entering " + this.state.name());
 						this.state.doPreMethod(this);
 					}
 				} else if (isTest()) {
 					if (this.state != RobotState.TEST_MODE) {
-						System.out.println("Exiting " + this.state.name());
+						Console.info("Exiting " + this.state.name());
 						this.state.doPostMethod(this);
 						LiveWindow.setEnabled(true);
 						this.state = RobotState.TEST_MODE;
-						System.out.println("Entering " + this.state.name());
+						Console.info("Entering " + this.state.name());
 						this.state.doPreMethod(this);
 					}
 				} else if (isAutonomous()) {
 					if (this.state != RobotState.AUTONOMOUS) {
-						System.out.println("Exiting " + this.state.name());
+						Console.info("Exiting " + this.state.name());
 						this.state.doPostMethod(this);
 						LiveWindow.setEnabled(false || this.forceLive);
 						this.state = RobotState.AUTONOMOUS;
-						System.out.println("Entering " + this.state.name());
+						Console.info("Entering " + this.state.name());
 						this.state.doPreMethod(this);
 					}
 				} else {
 					if (this.state != RobotState.TELEOP) {
-						System.out.println("Exiting " + this.state.name());
+						Console.info("Exiting " + this.state.name());
 						this.state.doPostMethod(this);
 						LiveWindow.setEnabled(false || this.forceLive);
 						this.state = RobotState.TELEOP;
-						System.out.println("Entering " + this.state.name());
+						Console.info("Entering " + this.state.name());
 						this.state.doPreMethod(this);
 					}
 				}
@@ -288,6 +255,7 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 		} catch (final Throwable t) {
 			// This is the WORST Case Scenario. Only way to break out of the loop.
 			System.err.println("Huh. Robot Code Missed Exception/Throwable.");
+			Console.exception(t);
 			throw t;
 		}
 	}
@@ -316,7 +284,7 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 	 * Resources and Objects here.
 	 */
 	public void postDisabled() {
-		System.out.println("DEFAULT POSTDISABLED()! Override me!");
+		Console.info("DEFAULT POSTDISABLED()! Override me!");
 	}
 
 	/**
@@ -334,7 +302,7 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 	 * Resources and Objects here.
 	 */
 	public void postAutonomous() {
-		System.out.println("DEFAULT POSTAUTONOMOUS()! Override me!");
+		Console.info("DEFAULT POSTAUTONOMOUS()! Override me!");
 	}
 
 	/**
@@ -352,14 +320,14 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 	 * and Objects here.
 	 */
 	public void postTeleop() {
-		System.out.println("DEFAULT POSTTELEOP()! Override me!");
+		Console.info("DEFAULT POSTTELEOP()! Override me!");
 	}
 
 	/**
 	 * Code to execute before entering Test Mode.
 	 */
 	public void preTest() {
-		System.out.println("DEFAULT PRETEST()! Override me!");
+		Console.info("DEFAULT PRETEST()! Override me!");
 	}
 
 	/**
@@ -372,7 +340,7 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 	 * Resources and Objects here.
 	 */
 	public void postTest() {
-		System.out.println("DEFAULT POSTTEST()! Override me!");
+		Console.info("DEFAULT POSTTEST()! Override me!");
 	}
 
 	/**

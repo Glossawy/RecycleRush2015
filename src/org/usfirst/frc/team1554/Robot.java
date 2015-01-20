@@ -15,6 +15,7 @@ import org.usfirst.frc.team1554.lib.EnhancedIterativeRobot;
 import org.usfirst.frc.team1554.lib.JoystickControl;
 import org.usfirst.frc.team1554.lib.MotorScheme;
 import org.usfirst.frc.team1554.lib.MotorScheme.DriveManager;
+import org.usfirst.frc.team1554.lib.io.Console;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -49,12 +50,13 @@ public class Robot extends EnhancedIterativeRobot {
 
 	@Override
 	public void preDisabled() {
+		Console.info("Disabled");
+		
 	}
 
 	@Override
 	public void onDisabled() {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
