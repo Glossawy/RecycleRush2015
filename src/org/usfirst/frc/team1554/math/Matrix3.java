@@ -199,57 +199,23 @@ public class Matrix3 {
 		return this;
 	}
 
-	/**
-	 * Sets the matrix to the given matrix as a float array. The float array must
-	 * have at least 9 elements; the first 9 will be copied.
-	 * 
-	 * @param values
-	 *            The matrix, in float form, that is to be copied. Remember that this
-	 *            matrix is in <a
-	 *            href="http://en.wikipedia.org/wiki/Row-major_order#Column-major_order"
-	 *            >column major</a> order.
-	 * @return This matrix for the purpose of chaining methods together.
-	 */
 	public Matrix3 set(double[] values) {
 		System.arraycopy(values, 0, this.val, 0, this.val.length);
 		return this;
 	}
 
-	/**
-	 * Adds a translational component to the matrix in the 3rd column. The other
-	 * columns are untouched.
-	 * 
-	 * @param vector
-	 *            The translation vector.
-	 * @return This matrix for the purpose of chaining.
-	 */
 	public Matrix3 trn(Vector2 vector) {
 		this.val[M02] += vector.x;
 		this.val[M12] += vector.y;
 		return this;
 	}
 
-	/**
-	 * Adds a translational component to the matrix in the 3rd column. The other
-	 * columns are untouched.
-	 * 
-	 * @param x
-	 *            The x-component of the translation vector.
-	 * @param y
-	 *            The y-component of the translation vector.
-	 * @return This matrix for the purpose of chaining.
-	 */
 	public Matrix3 trn(double x, double y) {
 		this.val[M02] += x;
 		this.val[M12] += y;
 		return this;
 	}
 
-	/**
-	 * Transposes the current matrix.
-	 * 
-	 * @return This matrix for the purpose of chaining methods together.
-	 */
 	public Matrix3 transpose() {
 		// Where MXY you do not have to change MXX
 		final double v01 = this.val[M10];
@@ -267,16 +233,6 @@ public class Matrix3 {
 		return this;
 	}
 
-	/**
-	 * Postmultiplies this matrix by a translation matrix. Postmultiplication is also
-	 * used by OpenGL ES' 1.x glTranslate/glRotate/glScale.
-	 * 
-	 * @param x
-	 *            The x-component of the translation vector.
-	 * @param y
-	 *            The y-component of the translation vector.
-	 * @return This matrix for the purpose of chaining.
-	 */
 	public Matrix3 translate(double x, double y) {
 		this.temp[M00] = 1;
 		this.temp[M10] = 0;
@@ -293,14 +249,6 @@ public class Matrix3 {
 		return this;
 	}
 
-	/**
-	 * Postmultiplies this matrix by a translation matrix. Postmultiplication is also
-	 * used by OpenGL ES' 1.x glTranslate/glRotate/glScale.
-	 * 
-	 * @param translation
-	 *            The translation vector.
-	 * @return This matrix for the purpose of chaining.
-	 */
 	public Matrix3 translate(Vector2 translation) {
 		this.temp[M00] = 1;
 		this.temp[M10] = 0;
@@ -317,28 +265,10 @@ public class Matrix3 {
 		return this;
 	}
 
-	/**
-	 * Postmultiplies this matrix with a (counter-clockwise) rotation matrix.
-	 * Postmultiplication is also used by OpenGL ES' 1.x
-	 * glTranslate/glRotate/glScale.
-	 * 
-	 * @param degrees
-	 *            The angle in degrees
-	 * @return This matrix for the purpose of chaining.
-	 */
 	public Matrix3 rotate(double degrees) {
 		return rotateRad(Math.toRadians(degrees));
 	}
 
-	/**
-	 * Postmultiplies this matrix with a (counter-clockwise) rotation matrix.
-	 * Postmultiplication is also used by OpenGL ES' 1.x
-	 * glTranslate/glRotate/glScale.
-	 * 
-	 * @param radians
-	 *            The angle in radians
-	 * @return This matrix for the purpose of chaining.
-	 */
 	public Matrix3 rotateRad(double radians) {
 		if (radians == 0) return this;
 		final double cos = Math.cos(radians);
@@ -359,11 +289,6 @@ public class Matrix3 {
 		return this;
 	}
 
-	/**
-	 * Get the values in this matrix.
-	 * 
-	 * @return The float values that make up this matrix in column-major order.
-	 */
 	public double[] getValues() {
 		return this.val;
 	}

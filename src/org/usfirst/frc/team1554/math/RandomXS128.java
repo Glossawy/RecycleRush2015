@@ -1,16 +1,27 @@
 package org.usfirst.frc.team1554.math;
 
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class RandomXS128 extends Random {
 
+	private static final AtomicLong uniqueLong = new AtomicLong(8_682_522_807_148_012L);
 	private static final double DNORMALIZER = 1.0 / (1L << 53);
 	private static final double FNORMALIZER = 1.0 / (1L << 24);
 
 	private long seed1, seed2;
 
 	public RandomXS128() {
-		setSeed(new Random().nextLong());
+		long next;
+		for (;;) {
+			final long current = uniqueLong.get();
+			next = current * 181783497276652981L;
+			if (uniqueLong.compareAndSet(current, next)) {
+				break;
+			}
+		}
+
+		setSeed(next ^ System.nanoTime());
 	}
 
 	public RandomXS128(long seed) {

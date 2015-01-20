@@ -7,7 +7,8 @@ import static org.usfirst.frc.team1554.Ref.Channels.RR_DMOTOR;
 import static org.usfirst.frc.team1554.Ref.Ports.JOYSTICK_LEFT;
 import static org.usfirst.frc.team1554.Ref.Ports.JOYSTICK_RIGHT;
 import static org.usfirst.frc.team1554.Ref.Values.DRIVE_SCALE_FACTOR;
-import static org.usfirst.frc.team1554.Ref.Values.*;
+import static org.usfirst.frc.team1554.Ref.Values.MAG_STICK_DEADBAND;
+import static org.usfirst.frc.team1554.Ref.Values.TWIST_STICK_DEADBAND;
 
 import org.usfirst.frc.team1554.lib.DualJoystickControl;
 import org.usfirst.frc.team1554.lib.EnhancedIterativeRobot;

@@ -11,7 +11,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.logging.ConsoleHandler;
-import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -32,7 +31,7 @@ public class Console {
 	public static final String SEP = System.getProperty("file.separator");
 
 	// private static final FileHandle logDir = new FileHandle("/home/lvuser");
-	private static FileHandler file;
+	// private static FileHandler file;
 
 	static {
 		// logDir.mkdirs();
@@ -50,16 +49,16 @@ public class Console {
 		// file = new FileHandler(logFile.path(), false);
 
 		cons.setFormatter(new LogFormatter());
-		file.setFormatter(new LogFormatter());
+		// file.setFormatter(new LogFormatter());
 
 		logger.addHandler(cons);
-		logger.addHandler(file);
+		// logger.addHandler(file);
 
 		initialize();
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 			close(cons);
-			close(file);
-		}));
+			// close(file);
+			}));
 
 	}
 
