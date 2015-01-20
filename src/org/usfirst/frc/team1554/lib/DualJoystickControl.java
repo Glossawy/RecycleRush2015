@@ -1,7 +1,9 @@
 package org.usfirst.frc.team1554.lib;
 
+import java.util.Iterator;
+
 import org.usfirst.frc.team1554.lib.collect.IntMap;
-import org.usfirst.frc.team1554.lib.collect.IntMap.Keys;
+import org.usfirst.frc.team1554.lib.collect.IntMap.Entry;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.Joystick;
@@ -38,10 +40,10 @@ public class DualJoystickControl implements JoystickControl {
 
 	@Override
 	public double getMagnitude() {
-		 final double x = getX();
-		 final double y = getY();
-		
-		 return Math.sqrt((x * x) + (y * y));
+		final double x = getX();
+		final double y = getY();
+
+		return Math.sqrt((x * x) + (y * y));
 	}
 
 	@Override
@@ -68,10 +70,10 @@ public class DualJoystickControl implements JoystickControl {
 	public void swapJoysticks() {
 		final IntMap<Runnable> tmpMap = this.leftActions;
 		final Joystick temp = this.leftStick;
-		
-		this.leftActions = rightActions;
+
+		this.leftActions = this.rightActions;
 		this.rightActions = tmpMap;
-		
+
 		this.leftStick = this.rightStick;
 		this.rightStick = temp;
 	}
@@ -92,25 +94,27 @@ public class DualJoystickControl implements JoystickControl {
 
 		return actions.remove(bId);
 	}
-	
+
 	@Override
 	public void update() {
-		Keys ids = rightActions.keys();
-		
-		while(ids.hasNext) {
-			int bid = ids.next();
-			
-			if(rightStick.getRawButton(bid))
-				rightActions.get(bid, null).run();
+		Iterator<Entry<Runnable>> ids = this.rightActions.iterator();
+
+		while (ids.hasNext()) {
+			final Entry<Runnable> entry = ids.next();
+
+			if (this.rightStick.getRawButton(entry.key)) {
+				entry.value.run();
+			}
 		}
-		
-		ids = leftActions.keys();
-		while(ids.hasNext) {
-			int bid = ids.next();
-			
-			if(leftStick.getRawButton(bid))
-				leftActions.get(bid, null).run();
+
+		ids = this.leftActions.iterator();
+		while (ids.hasNext()) {
+			final Entry<Runnable> entry = ids.next();
+
+			if (this.leftStick.getRawButton(entry.key)) {
+				entry.value.run();
+			}
 		}
 	}
-	
+
 }

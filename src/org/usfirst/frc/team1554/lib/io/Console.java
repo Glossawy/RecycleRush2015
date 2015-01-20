@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 public class Console {
 
 	private static final Logger logger;
-//	private static final FileHandle logFile;
+	// private static final FileHandle logFile;
 
 	/** Max Number of .log Files allowed to exist in logs directory */
 	public static final int MAX_LOG_COUNT = 6;
@@ -31,22 +31,23 @@ public class Console {
 	/** The File Path Separator received from System Properties */
 	public static final String SEP = System.getProperty("file.separator");
 
-//	private static final FileHandle logDir = new FileHandle("/home/lvuser");
+	// private static final FileHandle logDir = new FileHandle("/home/lvuser");
 	private static FileHandler file;
 
 	static {
-//		logDir.mkdirs();
-//		final Date cur = new Date();
-//		final String logName = String.format("FRC1554_Robot-%tm-%<td-%<ty-%<tH#%<tM#%<tS.log", cur);
+		// logDir.mkdirs();
+		// final Date cur = new Date();
+		// final String logName =
+		// String.format("FRC1554_Robot-%tm-%<td-%<ty-%<tH#%<tM#%<tS.log", cur);
 		logger = Logger.getLogger("FRC1554");
-//		logFile = logDir.child(logName);
+		// logFile = logDir.child(logName);
 
 		Thread.currentThread().setName("FRC1554");
 		logger.setUseParentHandlers(false);
 		logger.setLevel(ALL);
 
 		final Handler cons = new ConsoleHandler();
-//			file = new FileHandler(logFile.path(), false);
+		// file = new FileHandler(logFile.path(), false);
 
 		cons.setFormatter(new LogFormatter());
 		file.setFormatter(new LogFormatter());
@@ -59,14 +60,14 @@ public class Console {
 			close(cons);
 			close(file);
 		}));
-		
+
 	}
 
-//	public static void logToFile(Object msg) {
-//		synchronized (logger) {
-//			getLogPrintStream(false).print(String.valueOf(msg));
-//		}
-//	}
+	// public static void logToFile(Object msg) {
+	// synchronized (logger) {
+	// getLogPrintStream(false).print(String.valueOf(msg));
+	// }
+	// }
 
 	/**
 	 * Does the same as {@link #log(Object, Level)} but goes further by taking a
@@ -393,107 +394,109 @@ public class Console {
 
 	}
 
-//	private static PrintStream logStream;
-//	private static PrintStream combinedStream;
-//
-//	/**
-//	 * Get a PrintStream connected to this Logging Utility. <br />
-//	 * <br />
-//	 * If combined == true then a PrintStream will be returned that will print to <br />
-//	 * all Appenders which would be the Console, Log File and any Appenders added
-//	 * using {@link #addLogTarget(Appender)}. <br />
-//	 * <br />
-//	 * If combined == false then a PrintStream will be returned connected ONLY to the
-//	 * Log File.
-//	 * 
-//	 * @param combined
-//	 *            - Whether or not to return a "combined" PrintStream
-//	 * @return
-//	 */
-//	public static synchronized PrintStream getLogPrintStream(boolean combined) {
-//		// This is really simple.
-//		// We only want ONE instance of these streams to EVER exist.
-//
-//		if (combined) {
-//			if (combinedStream == null) {
-//				// When Printing simply pass the text to the Logger
-//				// let it handle formatting.
-//				combinedStream = new PrintStream(System.out) {
-//					// Pre-compile End Line Pattern
-//					Pattern pattern = Pattern.compile("(\r?\n)+");
-//
-//					@Override
-//					public void print(String s) {
-//						Console.info(s);
-//					}
-//
-//					@Override
-//					public void print(Object obj) {
-//						Console.info(obj);
-//					}
-//
-//					@Override
-//					public void println(String s) {
-//						// Since having Line Endings would destroy the look of the
-//						// Log
-//						// replace all of the line endings with " "
-//						Console.info(this.pattern.matcher(s).replaceAll(" "));
-//					}
-//
-//					@Override
-//					public void println(Object obj) {
-//						println(String.valueOf(obj));
-//					}
-//				};
-//			}
-//
-//			return combinedStream;
-//		} else {
-//			if (logStream == null) {
-//				try {
-//					// Even Easier, Set up a PrintStream for the LogFile only.
-//					// Simply alter it to use a separate logger.
-//					logStream = new PrintStream(logFile.file()) {
-//						Logger logger = Logger.getLogger("Argus2-Stream");	// Stream
-//						// Logger
-//						Pattern pattern = Pattern.compile("(\r?\n)+");		// Pre-Compiled
-//						// Pattern
-//
-//						// On Initialization, let the new Logger use the old Loggers
-//						// FileHandler
-//						{
-//							this.logger.addHandler(file);
-//						}
-//
-//						@Override
-//						public void print(String s) {
-//							this.logger.info(s);
-//						}
-//
-//						@Override
-//						public void print(Object obj) {
-//							print(String.valueOf(obj));
-//						}
-//
-//						@Override
-//						public void println(String s) {
-//							// Replace All \r or \n or \r\n with
-//							// " " to prevent it from destroying log readability
-//							s = this.pattern.matcher(s).replaceAll(" ");
-//							this.logger.info(s);
-//						}
-//
-//						@Override
-//						public void println(Object obj) {
-//							println(String.valueOf(obj));
-//						}
-//
-//					};
-//				} catch (final FileNotFoundException e) {
-//					Console.exception(e);
-//				}
-//			}
-//			return logStream;
-//		}
-//	}
+	// private static PrintStream logStream;
+	// private static PrintStream combinedStream;
+	//
+	// /**
+	// * Get a PrintStream connected to this Logging Utility. <br />
+	// * <br />
+	// * If combined == true then a PrintStream will be returned that will print to
+	// <br />
+	// * all Appenders which would be the Console, Log File and any Appenders added
+	// * using {@link #addLogTarget(Appender)}. <br />
+	// * <br />
+	// * If combined == false then a PrintStream will be returned connected ONLY to
+	// the
+	// * Log File.
+	// *
+	// * @param combined
+	// * - Whether or not to return a "combined" PrintStream
+	// * @return
+	// */
+	// public static synchronized PrintStream getLogPrintStream(boolean combined) {
+	// // This is really simple.
+	// // We only want ONE instance of these streams to EVER exist.
+	//
+	// if (combined) {
+	// if (combinedStream == null) {
+	// // When Printing simply pass the text to the Logger
+	// // let it handle formatting.
+	// combinedStream = new PrintStream(System.out) {
+	// // Pre-compile End Line Pattern
+	// Pattern pattern = Pattern.compile("(\r?\n)+");
+	//
+	// @Override
+	// public void print(String s) {
+	// Console.info(s);
+	// }
+	//
+	// @Override
+	// public void print(Object obj) {
+	// Console.info(obj);
+	// }
+	//
+	// @Override
+	// public void println(String s) {
+	// // Since having Line Endings would destroy the look of the
+	// // Log
+	// // replace all of the line endings with " "
+	// Console.info(this.pattern.matcher(s).replaceAll(" "));
+	// }
+	//
+	// @Override
+	// public void println(Object obj) {
+	// println(String.valueOf(obj));
+	// }
+	// };
+	// }
+	//
+	// return combinedStream;
+	// } else {
+	// if (logStream == null) {
+	// try {
+	// // Even Easier, Set up a PrintStream for the LogFile only.
+	// // Simply alter it to use a separate logger.
+	// logStream = new PrintStream(logFile.file()) {
+	// Logger logger = Logger.getLogger("Argus2-Stream"); // Stream
+	// // Logger
+	// Pattern pattern = Pattern.compile("(\r?\n)+"); // Pre-Compiled
+	// // Pattern
+	//
+	// // On Initialization, let the new Logger use the old Loggers
+	// // FileHandler
+	// {
+	// this.logger.addHandler(file);
+	// }
+	//
+	// @Override
+	// public void print(String s) {
+	// this.logger.info(s);
+	// }
+	//
+	// @Override
+	// public void print(Object obj) {
+	// print(String.valueOf(obj));
+	// }
+	//
+	// @Override
+	// public void println(String s) {
+	// // Replace All \r or \n or \r\n with
+	// // " " to prevent it from destroying log readability
+	// s = this.pattern.matcher(s).replaceAll(" ");
+	// this.logger.info(s);
+	// }
+	//
+	// @Override
+	// public void println(Object obj) {
+	// println(String.valueOf(obj));
+	// }
+	//
+	// };
+	// } catch (final FileNotFoundException e) {
+	// Console.exception(e);
+	// }
+	// }
+	// return logStream;
+	// }
+	// }
 }

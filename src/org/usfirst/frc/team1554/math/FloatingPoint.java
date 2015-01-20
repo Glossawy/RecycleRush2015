@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1554.lib.util;
+package org.usfirst.frc.team1554.math;
 
 public class FloatingPoint {
 

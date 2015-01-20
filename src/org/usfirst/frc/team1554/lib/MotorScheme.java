@@ -292,7 +292,7 @@ public interface MotorScheme {
 			final Builder builder = new Builder();
 			builder.isDualChannel = true;
 			builder.driveMotors = new SpeedController[] { left, right };
-			
+
 			for (final SpeedController sc : builder.driveMotors) {
 				builder.additionalMotors.put(((PWM) sc).getChannel(), sc);
 			}

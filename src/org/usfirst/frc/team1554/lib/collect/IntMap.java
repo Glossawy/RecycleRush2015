@@ -3,7 +3,7 @@ package org.usfirst.frc.team1554.lib.collect;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.usfirst.frc.team1554.lib.util.MathUtils;
+import org.usfirst.frc.team1554.math.MathUtils;
 
 // TODO Documentation
 /**

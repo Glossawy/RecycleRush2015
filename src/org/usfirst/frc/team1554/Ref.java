@@ -16,7 +16,7 @@ public final class Ref {
 		public static final int JOYSTICK_LEFT = 0;
 		public static final int JOYSTICK_RIGHT = 1;
 	}
-	
+
 	public static final class Values {
 		public static final double DRIVE_SCALE_FACTOR = 1.275;
 	}

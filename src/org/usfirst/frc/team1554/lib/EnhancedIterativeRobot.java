@@ -1,6 +1,10 @@
 package org.usfirst.frc.team1554.lib;
 
+import java.io.Console;
+import java.io.PrintStream;
+
 import org.usfirst.frc.team1554.lib.collect.IntMap.Values;
+import org.usfirst.frc.team1554.lib.io.comms.RoboComms;
 import org.usfirst.frc.team1554.lib.util.RoboUtils;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -154,6 +158,36 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 
 	public EnhancedIterativeRobot() {
 		super();
+
+		// We are so intercepting the Error and Output Streams!
+		// But only to facilitate RoboComms Behavior
+		System.setOut(new PrintStream(System.out) {
+			@Override
+			public void println(String line) {
+				RoboComms.INSTANCE.writeLine(line);
+				super.println(line);
+			}
+
+			@Override
+			public void print(String line) {
+				RoboComms.INSTANCE.writeLine(line);
+				super.print(line);
+			}
+		});
+
+		System.setErr(new PrintStream(System.err) {
+			@Override
+			public void println(String line) {
+				RoboComms.INSTANCE.writeLine(line);
+				super.println(line);
+			}
+
+			@Override
+			public void print(String line) {
+				RoboComms.INSTANCE.writeLine(line);
+				super.print(line);
+			}
+		});
 	}
 
 	@Override
@@ -175,18 +209,19 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 	 *                                   When Moving from State X to State Y
 	 *  startCompetition() -> preX() -> onX() -> postX() -> preY() -> ...
 	 *                          ^         |
-	 *                          |         | While Stil in State X
+	 *                          |         | While Still in State X
 	 *                          |<-------<-
 	 * }
 	 * </pre>
 	 * 
 	 * <br />
-	 * Where X is the Start State and Y is the End state. '...' represents the Y
-	 * version of this same loop which will then move to either State X or State Z. <br />
+	 * Where X is the Start State and Y is the Proceeding State. '...' represents the
+	 * Y version of this same loop which will then move to either State X or State Z. <br />
 	 * <br />
 	 * If the Robot reaches an exceptional state (throws an Exception) and it is not
-	 * caught by User Code, then the exception is logged and then thrown to WPILib to
-	 * be handled as appropriate.
+	 * caught by User Code, then the exception is logged (By {@link Console} and
+	 * {@link RoboComms} by proxy) and then thrown to WPILib to be handled as
+	 * appropriate.
 	 * 
 	 * @author Matthew Crocco
 	 */
@@ -388,12 +423,13 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 
 	@Override
 	public void free() {
-		Values<SpeedController> vals = getMotorScheme().pidMap().values();
-		
-		for(SpeedController sc = vals.next(); vals.hasNext; sc = vals.next()) 
-			if(sc instanceof PWM)
+		final Values<SpeedController> vals = getMotorScheme().pidMap().values();
+
+		for (SpeedController sc = vals.next(); vals.hasNext; sc = vals.next())
+			if (sc instanceof PWM) {
 				((PWM) sc).free();
-			else if (sc instanceof SensorBase)
+			} else if (sc instanceof SensorBase) {
 				((SensorBase) sc).free();
+			}
 	}
 }

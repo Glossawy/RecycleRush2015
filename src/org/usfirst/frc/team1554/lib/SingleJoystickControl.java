@@ -1,7 +1,9 @@
 package org.usfirst.frc.team1554.lib;
 
+import java.util.Iterator;
+
 import org.usfirst.frc.team1554.lib.collect.IntMap;
-import org.usfirst.frc.team1554.lib.collect.IntMap.Keys;
+import org.usfirst.frc.team1554.lib.collect.IntMap.Entry;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.Joystick;
@@ -82,13 +84,14 @@ public class SingleJoystickControl implements JoystickControl {
 
 	@Override
 	public void update() {
-		Keys keys = actions.keys();
-		
-		while(keys.hasNext) {
-			int id = keys.next();
-			
-			if(stick.getRawButton(id))
-				actions.get(id, null).run();
+		final Iterator<Entry<Runnable>> entries = this.actions.iterator();
+
+		while (entries.hasNext()) {
+			final Entry<Runnable> entry = entries.next();
+
+			if (this.stick.getRawButton(entry.key)) {
+				entry.value.run();
+			}
 		}
 	}
 

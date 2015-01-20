@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1554;
 
-import static org.usfirst.frc.team1554.Ref.Channels.FL_DMOTOR; 
+import static org.usfirst.frc.team1554.Ref.Channels.FL_DMOTOR;
 import static org.usfirst.frc.team1554.Ref.Channels.FR_DMOTOR;
 import static org.usfirst.frc.team1554.Ref.Channels.RL_DMOTOR;
 import static org.usfirst.frc.team1554.Ref.Channels.RR_DMOTOR;
@@ -30,11 +30,11 @@ public class Robot extends EnhancedIterativeRobot {
 
 	public Robot() {
 		super();
-		
+
 		this.control = new DualJoystickControl(JOYSTICK_LEFT, JOYSTICK_RIGHT);
 		this.motors = MotorScheme.Builder.newFourMotorDrive(FL_DMOTOR, RL_DMOTOR, FR_DMOTOR, RR_DMOTOR).setInverted(false, true).setDriveManager(DriveManager.MECANUM_POLAR).build();
 		this.motors.getRobotDrive().setMaxOutput(DRIVE_SCALE_FACTOR);
-		
+
 		this.control.putButtonAction(1, () -> getDrive().setLeftRightMotorOutputs(1.0, -1.0), Hand.kRight);
 		this.control.putButtonAction(12, () -> this.control.swapJoysticks(), Hand.kRight);
 	}
@@ -74,7 +74,7 @@ public class Robot extends EnhancedIterativeRobot {
 	@Override
 	public void onTeleop() {
 		updateDrive();
-		control.update();
+		this.control.update();
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class Robot extends EnhancedIterativeRobot {
 	public MotorScheme getMotorScheme() {
 		return this.motors;
 	}
-	
+
 	@Override
 	public RobotDrive getDrive() {
 		return this.motors.getRobotDrive();
