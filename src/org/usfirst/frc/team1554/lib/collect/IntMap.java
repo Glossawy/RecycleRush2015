@@ -3,6 +3,8 @@ package org.usfirst.frc.team1554.lib.collect;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.usfirst.frc.team1554.lib.meta.Author;
+import org.usfirst.frc.team1554.lib.meta.Noteworthy;
 import org.usfirst.frc.team1554.math.MathUtils;
 
 // TODO Documentation
@@ -16,6 +18,8 @@ import org.usfirst.frc.team1554.math.MathUtils;
  *
  * @param <V>
  */
+@Author(name = "Matthew Crocco", msg = "matthewcrocco@gmail.com")
+@Noteworthy("Hashing, Space Over Time and Math below. Refrain from Editing!")
 public class IntMap<V> {
 
 	private static final int PRIME2 = 0xb4b82e39;

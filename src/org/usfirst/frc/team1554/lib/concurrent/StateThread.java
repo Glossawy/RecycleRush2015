@@ -1,7 +1,11 @@
-package org.usfirst.frc.team1554.lib.util;
+package org.usfirst.frc.team1554.lib.concurrent;
 
 import org.usfirst.frc.team1554.lib.io.Console;
+import org.usfirst.frc.team1554.lib.meta.Author;
+import org.usfirst.frc.team1554.lib.meta.Noteworthy;
 
+@Author(name = "Matthew Crocco", msg = "matthewcrocco@gmail.com")
+@Noteworthy("Multi-threaded Logic. Refrain from Editing!")
 public class StateThread extends Thread {
 
 	private final Runnable runnable;

@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1554.lib.io;
 
-import static java.util.logging.Level.ALL; 
+import static java.util.logging.Level.ALL;
 import static java.util.logging.Level.FINE;
 import static java.util.logging.Level.SEVERE;
 import static java.util.logging.Level.WARNING;
@@ -33,12 +33,9 @@ public class Console {
 		final ConsoleHandler cons = new ConsoleHandler();
 
 		try {
-			Method meth = StreamHandler.class.getDeclaredMethod(
-					"setOutputStream", OutputStream.class);
+			final Method meth = StreamHandler.class.getDeclaredMethod("setOutputStream", OutputStream.class);
 			meth.invoke(cons, System.out);
-		} catch (IllegalAccessException | IllegalArgumentException
-				| InvocationTargetException | NoSuchMethodException
-				| SecurityException e) {
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			Console.exception(e);
 		}
 
@@ -56,9 +53,8 @@ public class Console {
 	/**
 	 * Does the same as {@link #log(Object, Level)} but goes further by taking a
 	 * Throwable and <br />
-	 * passing it to
-	 * {@link Logger#log(org.apache.log4j.Priority, Object, Throwable)} to be
-	 * parsed. <br />
+	 * passing it to {@link Logger#log(org.apache.log4j.Priority, Object, Throwable)}
+	 * to be parsed. <br />
 	 * <br />
 	 * The Throwable is parsed independently by each Appender. <br />
 	 * In a normal use case this is ConsoleAppender and RollingFileAppender. <br />
@@ -119,8 +115,8 @@ public class Console {
 	}
 
 	/**
-	 * Write a Stack Trace to the log with the given additional message. Writes
-	 * 16 Stack Trace Elements at most.
+	 * Write a Stack Trace to the log with the given additional message. Writes 16
+	 * Stack Trace Elements at most.
 	 * 
 	 * @param msg
 	 */
@@ -132,13 +128,11 @@ public class Console {
 
 		debug("");
 		debug(border);
-		debug(String.format("|| Detailed Stack Trace of %s[%s] Thread",
-				current.getName(), current.getId()));
+		debug(String.format("|| Detailed Stack Trace of %s[%s] Thread", current.getName(), current.getId()));
 		debug("|| Trace Message: " + String.valueOf(msg));
 		debug(border);
 		for (int i = 2; (i < 18) && (i < trace.length); i++) {
-			debug(String.format("||   at %s%s", trace[i].toString(), (i < 15)
-					&& (i < (trace.length - 1)) ? "..." : ""));
+			debug(String.format("||   at %s%s", trace[i].toString(), (i < 15) && (i < (trace.length - 1)) ? "..." : ""));
 			lines++;
 		}
 		debug(border);
@@ -148,8 +142,7 @@ public class Console {
 	}
 
 	/**
-	 * Does the same as {@link #bigWarning(Object)} but prints "null" as the
-	 * message.
+	 * Does the same as {@link #bigWarning(Object)} but prints "null" as the message.
 	 */
 	public static void bigWarning() {
 		bigWarning("");
@@ -176,16 +169,14 @@ public class Console {
 	 * @param msg
 	 */
 	public static void bigWarning(Object msg) {
-		final StackTraceElement[] trace = Thread.currentThread()
-				.getStackTrace();
+		final StackTraceElement[] trace = Thread.currentThread().getStackTrace();
 		final String border = "****************************************";
 		warn("");
 		warn(border);
 		warn("* Warning! - " + String.valueOf(msg));
 		warn(border);
 		for (int i = 2; (i < 8) && (i < trace.length); i++) {
-			warn(String.format("*   at %s%s", trace[i].toString(), (i < 7)
-					&& (i < (trace.length - 1)) ? "..." : ""));
+			warn(String.format("*   at %s%s", trace[i].toString(), (i < 7) && (i < (trace.length - 1)) ? "..." : ""));
 		}
 		warn(border);
 		warn("");
@@ -232,8 +223,7 @@ public class Console {
 	}
 
 	/**
-	 * Write an Exception to the Log with the full Stack Trace and the given
-	 * details.
+	 * Write an Exception to the Log with the full Stack Trace and the given details.
 	 * 
 	 * @param e
 	 * @param details
@@ -258,8 +248,7 @@ public class Console {
 		}
 
 		if (t != null) {
-			cause(t, t.getLocalizedMessage() + " causing a "
-					+ e.getClass().getName(), 1);
+			cause(t, t.getLocalizedMessage() + " causing a " + e.getClass().getName(), 1);
 		}
 
 		error(header);
@@ -279,8 +268,7 @@ public class Console {
 		final StackTraceElement[] elements = t.getStackTrace();
 		final String tabs = repeat("\t", depth);
 		final String causer = tabs + "===============CAUSED BY===============";
-		final String separator = tabs
-				+ "=======================================";
+		final String separator = tabs + "=======================================";
 		final Throwable cause = t.getCause();
 
 		error(causer);
@@ -297,8 +285,7 @@ public class Console {
 		}
 
 		if (cause != null) {
-			cause(cause, cause.getLocalizedMessage() + " causing a "
-					+ t.getClass().getName(), ++depth);
+			cause(cause, cause.getLocalizedMessage() + " causing a " + t.getClass().getName(), ++depth);
 		}
 
 		error(causer);
@@ -315,8 +302,7 @@ public class Console {
 	}
 
 	private static final void close(Handler handler) {
-		if (handler == null)
-			return;
+		if (handler == null) return;
 
 		try {
 			handler.close();
@@ -340,10 +326,7 @@ public class Console {
 			final String msg = formatMessage(record);
 			final Level lev = record.getLevel();
 
-			return String.format(this.format, this.date,
-					record.getLoggerName(), lev == WARNING ? "WARN"
-							: lev == FINE ? "DEBUG" : lev == SEVERE ? "ERROR"
-									: lev.getName(), msg);
+			return String.format(this.format, this.date, record.getLoggerName(), lev == WARNING ? "WARN" : lev == FINE ? "DEBUG" : lev == SEVERE ? "ERROR" : lev.getName(), msg);
 		}
 
 	}

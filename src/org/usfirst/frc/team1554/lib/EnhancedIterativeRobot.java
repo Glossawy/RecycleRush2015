@@ -37,7 +37,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  * 
  * @author Matthew
  */
-public abstract class EnhancedIterativeRobot extends RobotBase {
+public abstract class EnhancedIterativeRobot extends RobotBase implements Disposable {
 
 	/**
 	 * Representation of Current Robot State. This is the alternative solution to the
@@ -257,6 +257,8 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 			System.err.println("Huh. Robot Code Missed Exception/Throwable.");
 			Console.exception(t);
 			throw t;
+		} finally {
+			free();
 		}
 	}
 
@@ -390,7 +392,7 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 	}
 
 	@Override
-	public void free() {
+	public final void free() {
 		final Values<SpeedController> vals = getMotorScheme().pidMap().values();
 
 		for (SpeedController sc = vals.next(); vals.hasNext; sc = vals.next())
@@ -400,4 +402,8 @@ public abstract class EnhancedIterativeRobot extends RobotBase {
 				((SensorBase) sc).free();
 			}
 	}
+
+	@Override
+	abstract public void dispose();
+
 }

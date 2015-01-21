@@ -14,7 +14,7 @@ public final class RoboUtils {
 	}
 
 	/**
-	 * Previously Built a RobotDrive, now delegatest to
+	 * Previously Built a RobotDrive, now delegates to
 	 * {@link MotorScheme#getRobotDrive() MotorScheme}.
 	 * 
 	 * @param scheme

@@ -1,5 +1,8 @@
 package org.usfirst.frc.team1554;
 
+import static org.usfirst.frc.team1554.Ref.Buttons.ID_DISABLE_TWIST;
+import static org.usfirst.frc.team1554.Ref.Buttons.ID_SWAP_JOYSTICKS;
+import static org.usfirst.frc.team1554.Ref.Buttons.ID_TURBO_DRIVE;
 import static org.usfirst.frc.team1554.Ref.Channels.FL_DMOTOR;
 import static org.usfirst.frc.team1554.Ref.Channels.FR_DMOTOR;
 import static org.usfirst.frc.team1554.Ref.Channels.RL_DMOTOR;
@@ -13,11 +16,11 @@ import static org.usfirst.frc.team1554.Ref.Values.TWIST_STICK_DEADBAND;
 import org.usfirst.frc.team1554.lib.DualJoystickControl;
 import org.usfirst.frc.team1554.lib.EnhancedIterativeRobot;
 import org.usfirst.frc.team1554.lib.JoystickControl;
+import org.usfirst.frc.team1554.lib.JoystickControl.Hand;
 import org.usfirst.frc.team1554.lib.MotorScheme;
 import org.usfirst.frc.team1554.lib.MotorScheme.DriveManager;
 import org.usfirst.frc.team1554.lib.io.Console;
 
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.RobotDrive;
 
 /**
@@ -34,24 +37,27 @@ public class Robot extends EnhancedIterativeRobot {
 	public Robot() {
 		super();
 
+		Console.debug("Creating and Initializing Controls/Motor Scheme...");
 		this.control = new DualJoystickControl(JOYSTICK_LEFT, JOYSTICK_RIGHT);
 		this.control.setMagnitudeThreshold(MAG_STICK_DEADBAND);
 		this.control.setTwistThreshold(TWIST_STICK_DEADBAND);
 		this.motors = MotorScheme.Builder.newFourMotorDrive(FL_DMOTOR, RL_DMOTOR, FR_DMOTOR, RR_DMOTOR).setInverted(false, true).setDriveManager(DriveManager.MECANUM_POLAR).build();
 		this.motors.getRobotDrive().setMaxOutput(DRIVE_SCALE_FACTOR);
 
-		this.control.putButtonAction(1, () -> getDrive().setLeftRightMotorOutputs(1.0, -1.0), Hand.kRight);
-		this.control.putButtonAction(12, () -> this.control.swapJoysticks(), Hand.kRight);
+		Console.debug("Initializing Button Actions...");
+		this.control.putButtonAction(ID_TURBO_DRIVE, () -> getDrive().setLeftRightMotorOutputs(1.0, -1.0), Hand.RIGHT);
+		this.control.putButtonAction(ID_SWAP_JOYSTICKS, () -> this.control.swapJoysticks(), Hand.RIGHT);
+		this.control.putButtonAction(ID_DISABLE_TWIST, () -> this.control.setDisableTwistAxis(Hand.LEFT, !this.control.getDisableTwistAxis(Hand.LEFT)), Hand.LEFT);
+		this.control.putButtonAction(ID_DISABLE_TWIST, () -> this.control.setDisableTwistAxis(Hand.RIGHT, !this.control.getDisableTwistAxis(Hand.RIGHT)), Hand.RIGHT);
 	}
 
 	@Override
 	public void onInitialization() {
+		Console.debug("Initialization Complete!");
 	}
 
 	@Override
 	public void preDisabled() {
-		Console.info("Disabled");
-		
 	}
 
 	@Override
@@ -79,8 +85,8 @@ public class Robot extends EnhancedIterativeRobot {
 
 	@Override
 	public void onTeleop() {
-		updateDrive();
 		this.control.update();
+		updateDrive();
 	}
 
 	@Override
@@ -107,6 +113,11 @@ public class Robot extends EnhancedIterativeRobot {
 	@Override
 	public RobotDrive getDrive() {
 		return this.motors.getRobotDrive();
+	}
+
+	@Override
+	public void dispose() {
+		Console.debug("Disposing Resources...");
 	}
 
 }

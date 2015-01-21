@@ -1,9 +1,12 @@
 package org.usfirst.frc.team1554.lib;
 
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.Joystick;
 
 public interface JoystickControl {
+
+	public enum Hand {
+		LEFT, RIGHT, BOTH;
+	}
 
 	double getX();
 
@@ -16,6 +19,8 @@ public interface JoystickControl {
 	double getDirectionRadians();
 
 	double getDirectionDegrees();
+
+	boolean getDisableTwistAxis(Hand side);
 
 	Joystick leftJoystick();
 
@@ -30,6 +35,8 @@ public interface JoystickControl {
 	void setTwistThreshold(double val);
 
 	void setMagnitudeThreshold(double val);
+
+	void setDisableTwistAxis(Hand side, boolean disable);
 
 	void update();
 }

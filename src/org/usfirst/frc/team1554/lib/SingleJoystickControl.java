@@ -6,7 +6,6 @@ import org.usfirst.frc.team1554.lib.collect.IntMap;
 import org.usfirst.frc.team1554.lib.collect.IntMap.Entry;
 import org.usfirst.frc.team1554.math.MathUtils;
 
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.Joystick;
 
 public class SingleJoystickControl implements JoystickControl {
@@ -14,6 +13,7 @@ public class SingleJoystickControl implements JoystickControl {
 	private final Joystick stick;
 	private final IntMap<Runnable> actions = new IntMap<Runnable>(8);
 
+	private boolean disableTwist = false;
 	private double twistLim = 0.0, magLim = 0.0;
 
 	public SingleJoystickControl(Joystick stick) {
@@ -36,6 +36,7 @@ public class SingleJoystickControl implements JoystickControl {
 
 	@Override
 	public double getTwist() {
+		if (this.disableTwist) return 0;
 		final double twist = this.stick.getTwist();
 		return Math.abs(twist) <= this.twistLim ? 0.0 : twist - (this.twistLim * (twist < 0 ? -1 : 1));
 	}
@@ -58,6 +59,11 @@ public class SingleJoystickControl implements JoystickControl {
 	@Override
 	public double getDirectionDegrees() {
 		return Math.toDegrees(getDirectionRadians());
+	}
+
+	@Override
+	public boolean getDisableTwistAxis(Hand side) {
+		return this.disableTwist;
 	}
 
 	@Override
@@ -109,6 +115,11 @@ public class SingleJoystickControl implements JoystickControl {
 				entry.value.run();
 			}
 		}
+	}
+
+	@Override
+	public void setDisableTwistAxis(Hand side, boolean disable) {
+		this.disableTwist = disable;
 	}
 
 }
