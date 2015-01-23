@@ -1,8 +1,7 @@
 package org.usfirst.frc.team1554;
 
-import java.nio.ByteBuffer;
+import java.nio.ByteBuffer; 
 
-import com.ni.vision.NIVision;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.image.HSLImage;
 import edu.wpi.first.wpilibj.image.NIVisionException;
@@ -73,9 +72,11 @@ public final class Camera {
 		}
 	}
 	
-	private static final ByteBuffer imgData = ByteBuffer.allocate(5000);
 	private static final USBCamera cam = new USBCamera(Ref.CAM_NAME);
 	private static final CameraServer server = CameraServer.getInstance();
+	private static CameraFPS curFPS = Ref.Values.CAM_FPS;
+	private static CameraSize curSize = Ref.Values.CAM_SIZE;
+	private static CameraResolution curRes = Ref.Values.CAM_RES;
 	
 	static {
 		cam.setExposureAuto();
@@ -101,14 +102,43 @@ public final class Camera {
 	
 	public static RGBImage getImageRGB() throws NIVisionException {
 		RGBImage image = new RGBImage();
-		NIVision.Priv_ReadJPEGString_C(image.image, imgData.array());
+		cam.getImage(image.image);
 		return image;
 	}
 	
 	public static HSLImage getImageHSL() throws NIVisionException {
 		HSLImage image = new HSLImage();
-		NIVision.Priv_ReadJPEGString_C(image.image, imgData.array());
+		cam.getImage(image.image);
 		return image;
+	}
+	
+	public static void getImageData(ByteBuffer buffer) {
+		cam.getImageData(buffer);
+	}
+	
+	public static CameraAccessor getCamera() {
+		return new CameraAccessor() {
+			
+			@Override
+			public CameraResolution getResolution() {
+				return curRes;
+			}
+			
+			@Override
+			public CameraSize getImageSize() {
+				return curSize;
+			}
+			
+			@Override
+			public HSLImage getImage() throws NIVisionException {
+				return getImageHSL();
+			}
+			
+			@Override
+			public CameraFPS getFPS() {
+				return curFPS;
+			}
+		};
 	}
 	
 }
