@@ -1,15 +1,11 @@
 package org.usfirst.frc.team1554.lib;
 
-import org.usfirst.frc.team1554.lib.collect.IntMap.Values;
 import org.usfirst.frc.team1554.lib.io.Console;
 import org.usfirst.frc.team1554.lib.util.RoboUtils;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.SensorBase;
-import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary;
 import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary.tInstances;
 import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary.tResourceType;
@@ -256,7 +252,7 @@ public abstract class EnhancedIterativeRobot extends RobotBase implements Dispos
 			// This is the WORST Case Scenario. Only way to break out of the loop.
 			System.err.println("Huh. Robot Code Missed Exception/Throwable.");
 			Console.exception(t);
-			throw t;
+			RoboUtils.exceptionToDS(t);
 		} finally {
 			free();
 		}
@@ -366,6 +362,8 @@ public abstract class EnhancedIterativeRobot extends RobotBase implements Dispos
 	 */
 	abstract public RobotDrive getDrive();
 
+	abstract public BasicSense getBasicSenses();
+	
 	/**
 	 * Fprce LiveWindow to be available in ALL modes.
 	 * 
@@ -388,19 +386,16 @@ public abstract class EnhancedIterativeRobot extends RobotBase implements Dispos
 	 * Update RobotDrive as appropriate with the current JoystickControls.
 	 */
 	public void updateDrive() {
-		getMotorScheme().getDriveManagement().updateDrive(getDrive(), getJoysticks());
+		getMotorScheme().getDriveManagement().updateDrive(getDrive(), getJoysticks(), getBasicSenses());
 	}
 
 	@Override
 	public final void free() {
-		final Values<SpeedController> vals = getMotorScheme().pidMap().values();
-
-		for (SpeedController sc = vals.next(); vals.hasNext; sc = vals.next())
-			if (sc instanceof PWM) {
-				((PWM) sc).free();
-			} else if (sc instanceof SensorBase) {
-				((SensorBase) sc).free();
-			}
+		getMotorScheme().dispose();
+		getJoysticks().dispose();
+		getBasicSenses().dispose();
+		
+		dispose();
 	}
 
 	@Override

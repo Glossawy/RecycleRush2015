@@ -4,6 +4,10 @@ public class RobotExecutionException extends RuntimeException {
 
 	private static final long serialVersionUID = -8118879964921602813L;
 
+	RobotExecutionException() {
+		super();
+	}
+	
 	public RobotExecutionException(String message) {
 		super(message);
 	}

@@ -16,6 +16,7 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.nio.file.Paths;
 import java.util.NoSuchElementException;
 
 import org.usfirst.frc.team1554.lib.util.IOUtils;
@@ -23,13 +24,14 @@ import org.usfirst.frc.team1554.lib.util.IOUtils;
 public class FileHandle {
 
 	private final File file;
+	public static final String base = "/home/lvuser";
 
 	public FileHandle(File file) {
 		this.file = file;
 	}
 
 	public FileHandle(String path) {
-		this(new File(path));
+		this(Paths.get(base, path).toFile());
 	}
 
 	public String path() {
@@ -93,6 +95,14 @@ public class FileHandle {
 
 	public boolean isDirectory() {
 		return this.file.isDirectory();
+	}
+	
+	public boolean create() {
+		try {
+			return this.file.createNewFile();
+		} catch(IOException e) {
+			return false;
+		}
 	}
 
 	public void mkdirs() {

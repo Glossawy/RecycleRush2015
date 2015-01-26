@@ -1,11 +1,11 @@
 package org.usfirst.frc.team1554.lib;
-
+ 
 import java.util.Iterator;
-import java.util.Properties;
+import java.util.prefs.Preferences;
 
 import org.usfirst.frc.team1554.lib.collect.IntMap;
 import org.usfirst.frc.team1554.lib.collect.IntMap.Entry;
-import org.usfirst.frc.team1554.math.MathUtils;
+import org.usfirst.frc.team1554.lib.math.MathUtils;
 
 import edu.wpi.first.wpilibj.Joystick;
 
@@ -13,14 +13,18 @@ public class DualJoystickControl implements JoystickControl {
 
 	public static final String LEFT_STICK_TWIST_DISABLE = "joystick.left.twist";
 	public static final String RIGHT_STICK_TWIST_DISABLE = "joystick.right.twist";
-
+	public static final String LEFT_STICK_DO_CUTOFF = "joystick.left.cutoff";
+	public static final String RIGHT_STICK_DO_CUTOFF = "joystick.right.cutoff";
+	
+	
 	private Joystick leftStick, rightStick;
-	private final Properties properties = new Properties();
+	private final Preferences prefs = Preferences.userNodeForPackage(DualJoystickControl.class);
 	private IntMap<Runnable> leftActions = new IntMap<Runnable>(8);
 	private IntMap<Runnable> rightActions = new IntMap<Runnable>(8);
 
 	private double twistLim = 0.0, magLim = 0.0;
-
+	private boolean dampen = false;
+	
 	public DualJoystickControl(Joystick left, Joystick right) {
 		this.leftStick = left;
 		this.rightStick = right;
@@ -42,20 +46,23 @@ public class DualJoystickControl implements JoystickControl {
 
 	@Override
 	public double getTwist() {
-		if (Boolean.parseBoolean(this.properties.getProperty(LEFT_STICK_TWIST_DISABLE))) return 0;
-
+		if (prefs.getBoolean(LEFT_STICK_TWIST_DISABLE, false)) return 0;
+		boolean cutoff = prefs.getBoolean(LEFT_STICK_DO_CUTOFF, false);
+		
 		final double twist = this.leftStick.getTwist();
-		return Math.abs(twist) <= this.twistLim ? 0.0 : twist - (this.twistLim * (twist < 0 ? -1 : 1));
+		return Math.abs(twist) <= this.twistLim ? 0.0 : cutoff ? twist : twist - (this.twistLim * (twist < 0 ? -1 : 1));
 	}
 
 	@Override
 	public double getMagnitude() {
+		final boolean cutoff = prefs.getBoolean(RIGHT_STICK_DO_CUTOFF, false);
 		final double x = getX();
 		final double y = getY();
 
 		final double mag = Math.sqrt((x * x) + (y * y));
 
-		return mag <= this.magLim ? 0.0 : mag - this.magLim;
+		return mag <= this.magLim ? 0.0 : cutoff ? mag : mag - this.magLim;
+//		return mag <= this.magLim ? 0.0 : mag;
 	}
 
 	@Override
@@ -72,14 +79,19 @@ public class DualJoystickControl implements JoystickControl {
 	public boolean getDisableTwistAxis(Hand side) {
 		switch (side) {
 		case LEFT:
-			return Boolean.parseBoolean(this.properties.getProperty(LEFT_STICK_TWIST_DISABLE));
+			return prefs.getBoolean(LEFT_STICK_TWIST_DISABLE, false);
 		case RIGHT:
-			return Boolean.parseBoolean(this.properties.getProperty(RIGHT_STICK_TWIST_DISABLE));
+			return prefs.getBoolean(RIGHT_STICK_TWIST_DISABLE, false);
 		case BOTH:
-			return Boolean.parseBoolean(this.properties.getProperty(LEFT_STICK_TWIST_DISABLE)) && Boolean.parseBoolean(this.properties.getProperty(RIGHT_STICK_TWIST_DISABLE));
+			return prefs.getBoolean(LEFT_STICK_TWIST_DISABLE, false) && prefs.getBoolean(RIGHT_STICK_TWIST_DISABLE, false);
 		default:
 			return false;
 		}
+	}
+	
+	@Override
+	public boolean dampenOutputs() {
+		return dampen;
 	}
 
 	@Override
@@ -96,18 +108,28 @@ public class DualJoystickControl implements JoystickControl {
 	public void swapJoysticks() {
 		final IntMap<Runnable> tmpMap = this.leftActions;
 		final Joystick temp = this.leftStick;
-		final boolean tbool = Boolean.parseBoolean(this.properties.getProperty(LEFT_STICK_TWIST_DISABLE));
-
+		final boolean tbool = prefs.getBoolean(LEFT_STICK_TWIST_DISABLE, false);
+		final boolean cbool = prefs.getBoolean(LEFT_STICK_DO_CUTOFF, false);
+		
+		// Swap Left-Right Dependent Parameters
 		this.leftActions = this.rightActions;
 		this.rightActions = tmpMap;
 
 		this.leftStick = this.rightStick;
 		this.rightStick = temp;
 
-		this.properties.setProperty(LEFT_STICK_TWIST_DISABLE, this.properties.getProperty(RIGHT_STICK_TWIST_DISABLE));
-		this.properties.setProperty(RIGHT_STICK_TWIST_DISABLE, Boolean.toString(tbool));
+		prefs.putBoolean(LEFT_STICK_TWIST_DISABLE, prefs.getBoolean(RIGHT_STICK_TWIST_DISABLE, false));
+		prefs.putBoolean(RIGHT_STICK_TWIST_DISABLE, tbool);
+		
+		prefs.putBoolean(LEFT_STICK_DO_CUTOFF, prefs.getBoolean(RIGHT_STICK_DO_CUTOFF, false));
+		prefs.putBoolean(RIGHT_STICK_DO_CUTOFF, cbool);
 	}
 
+	@Override
+	public void setDampenOutputs(boolean dampen) {
+		this.dampen = dampen;
+	}
+	
 	@Override
 	public void setTwistThreshold(double val) {
 		this.twistLim = MathUtils.clamp(val, 0.0, 1.0);
@@ -123,14 +145,30 @@ public class DualJoystickControl implements JoystickControl {
 
 		switch (side) {
 		case LEFT:
-			this.properties.setProperty(LEFT_STICK_TWIST_DISABLE, Boolean.toString(disable));
+			prefs.putBoolean(LEFT_STICK_TWIST_DISABLE, disable);
 			break;
 		case RIGHT:
-			this.properties.setProperty(RIGHT_STICK_TWIST_DISABLE, Boolean.toString(disable));
+			prefs.putBoolean(RIGHT_STICK_TWIST_DISABLE, disable);
 			break;
 		case BOTH:
-			this.properties.setProperty(LEFT_STICK_TWIST_DISABLE, Boolean.toString(disable));
-			this.properties.setProperty(RIGHT_STICK_TWIST_DISABLE, Boolean.toString(disable));
+			setDisableTwistAxis(Hand.LEFT, disable);
+			setDisableTwistAxis(Hand.RIGHT, disable);
+			break;
+		}
+	}
+	
+	@Override
+	public void setJoystickCutoff(Hand side, boolean cutoff) {
+		switch(side) {
+		case LEFT:
+			prefs.putBoolean(LEFT_STICK_DO_CUTOFF, cutoff);
+			break;
+		case RIGHT:
+			prefs.putBoolean(RIGHT_STICK_DO_CUTOFF, cutoff);
+			break;
+		case BOTH:
+			setJoystickCutoff(Hand.LEFT, cutoff);
+			setJoystickCutoff(Hand.RIGHT, cutoff);
 			break;
 		}
 	}
@@ -186,5 +224,8 @@ public class DualJoystickControl implements JoystickControl {
 			}
 		}
 	}
+	
+	@Override
+	public void dispose() {}
 
 }

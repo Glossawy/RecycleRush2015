@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1554.math;
+package org.usfirst.frc.team1554.lib.math;
 
 public class Vector3 {
 

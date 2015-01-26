@@ -1,12 +1,14 @@
 package org.usfirst.frc.team1554.lib.util;
-
-import java.lang.reflect.Array;
+ 
+import java.lang.reflect.Array; 
 import java.lang.reflect.Field;
 
 import org.usfirst.frc.team1554.lib.MotorScheme;
 import org.usfirst.frc.team1554.lib.meta.RobotExecutionException;
 
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary;
+import edu.wpi.first.wpilibj.communication.HALControlWord;
 
 public final class RoboUtils {
 
@@ -22,6 +24,40 @@ public final class RoboUtils {
 	 */
 	public static final RobotDrive makeRobotDrive(MotorScheme scheme) {
 		return scheme.getRobotDrive();
+	}
+	
+	public static final void writeToDS(String message) {
+		HALControlWord controlWord = FRCNetworkCommunicationsLibrary.HALGetControlWord();
+		if(controlWord.getDSAttached()) {
+			FRCNetworkCommunicationsLibrary.HALSetErrorData(message);
+		}
+	}
+	
+	public static final void exceptionToDS(Throwable t) {
+		StackTraceElement[] stackTrace = t.getStackTrace();
+		StringBuilder message = new StringBuilder();
+		final String separator = "===\n";
+		final Throwable cause = t.getCause();
+		
+		message.append("Exception of type ").append(t.getClass().getName()).append('\n');
+		message.append("Message: ").append(t.getMessage()).append('\n');
+		message.append(separator);
+		message.append("   ").append(stackTrace[0]).append('\n');
+		
+		for(int i = 2 ; i < stackTrace.length; i++) {
+			message.append(" \t").append(stackTrace[i]).append('\n');
+		}
+		
+		if(cause != null) {
+			StackTraceElement[] causeTrace = cause.getStackTrace();
+			message.append(" \t\t").append("Caused by ") .append(cause.getClass().getName()).append('\n');
+			message.append(" \t\t").append("Because: ").append(cause.getMessage()).append('\n');
+			message.append(" \t\t   ").append(causeTrace[0]).append('\n');
+			message.append(" \t\t \t").append(causeTrace[2]).append('\n');
+			message.append(" \t\t \t").append(causeTrace[3]);
+		}
+
+		writeToDS(message.toString());
 	}
 
 	// Retrieve Object at Field.
@@ -67,9 +103,9 @@ public final class RoboUtils {
 	 * @param conversionClass
 	 * @return
 	 */
-	public static <T> T getInstanceField(Object instance, String fieldName, Class<T> conversionClass) {
+	public static <T> T getInstanceField(Class<?> instClass, Object instance, String fieldName, Class<T> conversionClass) {
 		try {
-			final Field field = instance.getClass().getDeclaredField(fieldName);
+			final Field field = instClass.getDeclaredField(fieldName);
 			return conversionClass.cast(retrieveField(field, instance));
 		} catch (final Exception e) {
 			throw new RobotExecutionException("Failure to reflectively obtain Instance Field '" + fieldName + "' from Object '" + instance + "'!", e);
@@ -145,9 +181,9 @@ public final class RoboUtils {
 	 * @param conversionClass
 	 * @return
 	 */
-	public static <T> T setInstanceField(Object instance, String fieldName, T newValue, Class<T> conversionClass) {
+	public static <T> T setInstanceField(Class<?> instClass, Object instance, String fieldName, T newValue, Class<T> conversionClass) {
 		try {
-			return conversionClass.cast(setField(instance.getClass().getDeclaredField(fieldName), newValue, instance));
+			return conversionClass.cast(setField(instClass.getDeclaredField(fieldName), newValue, instance));
 		} catch (final Exception e) {
 			throw new RobotExecutionException("Failure to Reflectively Set Instance Field '" + fieldName + "' in " + instance + " to " + newValue + "!", e);
 		}

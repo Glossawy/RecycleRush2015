@@ -280,7 +280,7 @@ public class Console {
 		error(separator);
 		error(tabs + "Stack Trace: ");
 		error(tabs + "   " + elements[0]);
-		for (int i = 1; i < elements.length; i++) {
+		for (int i = 2; i < elements.length; i++) {
 			error(" " + tabs + "\t" + elements[i]);
 		}
 

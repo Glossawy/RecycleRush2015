@@ -9,13 +9,16 @@ import java.util.Map;
 
 import org.usfirst.frc.team1554.lib.collect.IntMap;
 import org.usfirst.frc.team1554.lib.collect.Maps;
+import org.usfirst.frc.team1554.lib.collect.IntMap.Values;
 import org.usfirst.frc.team1554.lib.util.IBuilder;
 
 import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.SensorBase;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 
+// TODO is this a case of trying to do too much in one interface?
 /**
  * A Code representation of what is basically a Motor Schematic. This class is mostly
  * used for managing Drive Motors though there is the optional functionality of
@@ -39,7 +42,7 @@ import edu.wpi.first.wpilibj.Talon;
  * @see Builder
  * @see SynchronizedMotor
  */
-public interface MotorScheme {
+public interface MotorScheme extends Disposable{
 
 	/**
 	 * Simple Enumeration to define RobotDrive type and possibly switching between
@@ -64,8 +67,8 @@ public interface MotorScheme {
 		 */
 		MECANUM_CARTESIAN {
 			@Override
-			void updateDrive(RobotDrive drive, JoystickControl c) {
-				drive.mecanumDrive_Cartesian(c.getX(), c.getY(), c.getTwist(), 0.0);
+			void updateDrive(RobotDrive drive, JoystickControl c, BasicSense sense) {
+				drive.mecanumDrive_Cartesian(c.getX(), c.getY(), c.getTwist(), sense.getAngle());
 			}
 		},
 		/**
@@ -75,7 +78,7 @@ public interface MotorScheme {
 		 */
 		MECANUM_POLAR {
 			@Override
-			void updateDrive(RobotDrive drive, JoystickControl c) {
+			void updateDrive(RobotDrive drive, JoystickControl c, BasicSense sense) {
 				drive.mecanumDrive_Polar(c.getMagnitude(), c.getDirectionDegrees(), c.getTwist());
 			}
 		},
@@ -86,8 +89,8 @@ public interface MotorScheme {
 		 */
 		ARCADE {
 			@Override
-			void updateDrive(RobotDrive drive, JoystickControl c) {
-				drive.arcadeDrive(c.rightJoystick(), true);
+			void updateDrive(RobotDrive drive, JoystickControl c, BasicSense s) {
+				drive.arcadeDrive(c.rightJoystick(), c.dampenOutputs());
 			}
 		},
 		/**
@@ -96,8 +99,8 @@ public interface MotorScheme {
 		 */
 		TANK {
 			@Override
-			void updateDrive(RobotDrive drive, JoystickControl c) {
-				drive.tankDrive(c.leftJoystick(), c.rightJoystick(), true);
+			void updateDrive(RobotDrive drive, JoystickControl c, BasicSense sense) {
+				drive.tankDrive(c.leftJoystick(), c.rightJoystick(), c.dampenOutputs());
 			}
 		};
 
@@ -108,7 +111,7 @@ public interface MotorScheme {
 		 * @param drive
 		 * @param c
 		 */
-		abstract void updateDrive(RobotDrive drive, JoystickControl c);
+		abstract void updateDrive(RobotDrive drive, JoystickControl c, BasicSense sense);
 	}
 
 	/**
@@ -141,7 +144,7 @@ public interface MotorScheme {
 	 */
 	Map<String, SpeedController> nameMap();
 
-	void updateDrive(RobotDrive drive, JoystickControl control);
+	void updateDrive(RobotDrive drive, JoystickControl control, BasicSense sense);
 
 	void setDriveManagement(DriveManager manager);
 
@@ -257,6 +260,18 @@ public interface MotorScheme {
 		if (motor == null) throw new NullPointerException("No PWM Found at name of " + name);
 		return motor.get();
 	}
+	
+	@Override
+	default void dispose() {
+		final Values<SpeedController> vals = pidMap().values();
+
+		for (SpeedController sc = vals.next(); vals.hasNext; sc = vals.next())
+			if (sc instanceof PWM) {
+				((PWM) sc).free();
+			} else if (sc instanceof SensorBase) {
+				((SensorBase) sc).free();
+			}
+	}
 
 	/**
 	 * Use to build instances of MotorScheme. Allows for easy creation of Two Motor
@@ -266,7 +281,7 @@ public interface MotorScheme {
 	 * 
 	 * @author Matthew
 	 */
-	public static class Builder implements IBuilder<MotorScheme> {
+	public static class Builder implements IBuilder<MotorScheme> { 
 
 		private static RobotDriveFactory<RobotDrive> driveFactory = RobotDriveFactory.DEFAULT;
 
@@ -467,7 +482,7 @@ public interface MotorScheme {
 			drive.setInvertedMotor(kFrontRight, inverted[2]);
 			drive.setInvertedMotor(kRearRight, inverted[3]);
 
-			return new MotorScheme() {
+			return new MotorScheme() { 
 
 				@Override
 				public IntMap<SpeedController> pidMap() {
@@ -490,8 +505,8 @@ public interface MotorScheme {
 				}
 
 				@Override
-				public void updateDrive(RobotDrive drive, JoystickControl control) {
-					dManager.updateDrive(drive, control);
+				public void updateDrive(RobotDrive drive, JoystickControl control, BasicSense sense) {
+					dManager.updateDrive(drive, control, sense);
 				}
 
 				@Override

@@ -3,9 +3,9 @@ package org.usfirst.frc.team1554.lib.collect;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.usfirst.frc.team1554.lib.math.MathUtils;
 import org.usfirst.frc.team1554.lib.meta.Author;
 import org.usfirst.frc.team1554.lib.meta.Noteworthy;
-import org.usfirst.frc.team1554.math.MathUtils;
 
 // TODO Documentation
 /**

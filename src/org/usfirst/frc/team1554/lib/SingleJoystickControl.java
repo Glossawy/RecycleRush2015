@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 import org.usfirst.frc.team1554.lib.collect.IntMap;
 import org.usfirst.frc.team1554.lib.collect.IntMap.Entry;
-import org.usfirst.frc.team1554.math.MathUtils;
+import org.usfirst.frc.team1554.lib.math.MathUtils;
 
 import edu.wpi.first.wpilibj.Joystick;
 
@@ -13,7 +13,9 @@ public class SingleJoystickControl implements JoystickControl {
 	private final Joystick stick;
 	private final IntMap<Runnable> actions = new IntMap<Runnable>(8);
 
+	private boolean cutoff = false;
 	private boolean disableTwist = false;
+	private boolean dampen = false;
 	private double twistLim = 0.0, magLim = 0.0;
 
 	public SingleJoystickControl(Joystick stick) {
@@ -38,7 +40,8 @@ public class SingleJoystickControl implements JoystickControl {
 	public double getTwist() {
 		if (this.disableTwist) return 0;
 		final double twist = this.stick.getTwist();
-		return Math.abs(twist) <= this.twistLim ? 0.0 : twist - (this.twistLim * (twist < 0 ? -1 : 1));
+		return Math.abs(twist) <= this.twistLim ? 0.0 : cutoff ? twist : twist - (this.twistLim * (twist < 0 ? -1 : 1));
+//		return Math.abs(twist) <= this.twistLim ? 0.0 : twist;
 	}
 
 	@Override
@@ -48,7 +51,8 @@ public class SingleJoystickControl implements JoystickControl {
 
 		final double mag = Math.sqrt((x * x) + (y * y));
 
-		return mag <= this.magLim ? 0.0 : mag - this.magLim;
+		return mag <= this.magLim ? 0.0 : cutoff ? mag : mag - this.magLim;
+//		return mag <= this.magLim ? 0.0 : mag;
 	}
 
 	@Override
@@ -65,6 +69,11 @@ public class SingleJoystickControl implements JoystickControl {
 	public boolean getDisableTwistAxis(Hand side) {
 		return this.disableTwist;
 	}
+	
+	@Override
+	public boolean dampenOutputs() {
+		return dampen;
+	}
 
 	@Override
 	public Joystick leftJoystick() {
@@ -79,6 +88,11 @@ public class SingleJoystickControl implements JoystickControl {
 	@Override
 	public void swapJoysticks() {
 	}
+	
+	@Override
+	public void setDampenOutputs(boolean dampen) {
+		this.dampen = dampen;
+	}
 
 	@Override
 	public void setTwistThreshold(double val) {
@@ -88,6 +102,16 @@ public class SingleJoystickControl implements JoystickControl {
 	@Override
 	public void setMagnitudeThreshold(double val) {
 		this.magLim = MathUtils.clamp(val, 0.0, 1.0);
+	}
+	
+	@Override
+	public void setDisableTwistAxis(Hand side, boolean disable) {
+		this.disableTwist = disable;
+	}
+	
+	@Override
+	public void setJoystickCutoff(Hand side, boolean cutoff) {
+		this.cutoff = cutoff;
 	}
 
 	@Override
@@ -116,10 +140,8 @@ public class SingleJoystickControl implements JoystickControl {
 			}
 		}
 	}
-
+	
 	@Override
-	public void setDisableTwistAxis(Hand side, boolean disable) {
-		this.disableTwist = disable;
-	}
+	public void dispose(){}
 
 }
