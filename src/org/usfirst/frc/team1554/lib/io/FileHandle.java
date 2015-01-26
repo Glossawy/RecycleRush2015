@@ -96,11 +96,11 @@ public class FileHandle {
 	public boolean isDirectory() {
 		return this.file.isDirectory();
 	}
-	
+
 	public boolean create() {
 		try {
 			return this.file.createNewFile();
-		} catch(IOException e) {
+		} catch (final IOException e) {
 			return false;
 		}
 	}

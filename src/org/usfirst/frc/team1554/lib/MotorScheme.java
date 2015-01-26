@@ -8,8 +8,8 @@ import static edu.wpi.first.wpilibj.RobotDrive.MotorType.kRearRight;
 import java.util.Map;
 
 import org.usfirst.frc.team1554.lib.collect.IntMap;
-import org.usfirst.frc.team1554.lib.collect.Maps;
 import org.usfirst.frc.team1554.lib.collect.IntMap.Values;
+import org.usfirst.frc.team1554.lib.collect.Maps;
 import org.usfirst.frc.team1554.lib.util.IBuilder;
 
 import edu.wpi.first.wpilibj.PWM;
@@ -42,7 +42,7 @@ import edu.wpi.first.wpilibj.Talon;
  * @see Builder
  * @see SynchronizedMotor
  */
-public interface MotorScheme extends Disposable{
+public interface MotorScheme extends Disposable {
 
 	/**
 	 * Simple Enumeration to define RobotDrive type and possibly switching between
@@ -260,7 +260,7 @@ public interface MotorScheme extends Disposable{
 		if (motor == null) throw new NullPointerException("No PWM Found at name of " + name);
 		return motor.get();
 	}
-	
+
 	@Override
 	default void dispose() {
 		final Values<SpeedController> vals = pidMap().values();
@@ -281,7 +281,7 @@ public interface MotorScheme extends Disposable{
 	 * 
 	 * @author Matthew
 	 */
-	public static class Builder implements IBuilder<MotorScheme> { 
+	public static class Builder implements IBuilder<MotorScheme> {
 
 		private static RobotDriveFactory<RobotDrive> driveFactory = RobotDriveFactory.DEFAULT;
 
@@ -482,7 +482,7 @@ public interface MotorScheme extends Disposable{
 			drive.setInvertedMotor(kFrontRight, inverted[2]);
 			drive.setInvertedMotor(kRearRight, inverted[3]);
 
-			return new MotorScheme() { 
+			return new MotorScheme() {
 
 				@Override
 				public IntMap<SpeedController> pidMap() {

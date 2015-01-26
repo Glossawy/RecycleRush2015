@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1554.lib.util;
- 
-import java.lang.reflect.Array; 
+
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 
 import org.usfirst.frc.team1554.lib.MotorScheme;
@@ -25,32 +25,32 @@ public final class RoboUtils {
 	public static final RobotDrive makeRobotDrive(MotorScheme scheme) {
 		return scheme.getRobotDrive();
 	}
-	
+
 	public static final void writeToDS(String message) {
-		HALControlWord controlWord = FRCNetworkCommunicationsLibrary.HALGetControlWord();
-		if(controlWord.getDSAttached()) {
+		final HALControlWord controlWord = FRCNetworkCommunicationsLibrary.HALGetControlWord();
+		if (controlWord.getDSAttached()) {
 			FRCNetworkCommunicationsLibrary.HALSetErrorData(message);
 		}
 	}
-	
+
 	public static final void exceptionToDS(Throwable t) {
-		StackTraceElement[] stackTrace = t.getStackTrace();
-		StringBuilder message = new StringBuilder();
+		final StackTraceElement[] stackTrace = t.getStackTrace();
+		final StringBuilder message = new StringBuilder();
 		final String separator = "===\n";
 		final Throwable cause = t.getCause();
-		
+
 		message.append("Exception of type ").append(t.getClass().getName()).append('\n');
 		message.append("Message: ").append(t.getMessage()).append('\n');
 		message.append(separator);
 		message.append("   ").append(stackTrace[0]).append('\n');
-		
-		for(int i = 2 ; i < stackTrace.length; i++) {
+
+		for (int i = 2; i < stackTrace.length; i++) {
 			message.append(" \t").append(stackTrace[i]).append('\n');
 		}
-		
-		if(cause != null) {
-			StackTraceElement[] causeTrace = cause.getStackTrace();
-			message.append(" \t\t").append("Caused by ") .append(cause.getClass().getName()).append('\n');
+
+		if (cause != null) {
+			final StackTraceElement[] causeTrace = cause.getStackTrace();
+			message.append(" \t\t").append("Caused by ").append(cause.getClass().getName()).append('\n');
 			message.append(" \t\t").append("Because: ").append(cause.getMessage()).append('\n');
 			message.append(" \t\t   ").append(causeTrace[0]).append('\n');
 			message.append(" \t\t \t").append(causeTrace[2]).append('\n');

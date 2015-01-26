@@ -11,14 +11,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Retrieve {
 
 	@SuppressWarnings("rawtypes")
-	public static void retrieveSmartDashboardKeys(){
-		NetworkTable table = RoboUtils.getStaticField(SmartDashboard.class, "table", NetworkTable.class);
-		StringCache tableCache = RoboUtils.getInstanceField(NetworkTable.class, table, "absoluteKeyCache", StringCache.class);
-		Hashtable cache = RoboUtils.getInstanceField(StringCache.class, tableCache, "cache", Hashtable.class);
-		
-		for(Object o : cache.keySet()) {
+	public static void retrieveSmartDashboardKeys() {
+		final NetworkTable table = RoboUtils.getStaticField(SmartDashboard.class, "table", NetworkTable.class);
+		final StringCache tableCache = RoboUtils.getInstanceField(NetworkTable.class, table, "absoluteKeyCache", StringCache.class);
+		final Hashtable cache = RoboUtils.getInstanceField(StringCache.class, tableCache, "cache", Hashtable.class);
+
+		for (final Object o : cache.keySet()) {
 			System.out.println(String.valueOf(o));
 		}
 	}
-	
+
 }

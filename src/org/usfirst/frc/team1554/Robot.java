@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1554;
 
-import static org.usfirst.frc.team1554.Ref.Buttons.ID_DISABLE_TWIST;  
+import static org.usfirst.frc.team1554.Ref.Buttons.ID_DISABLE_TWIST;
 import static org.usfirst.frc.team1554.Ref.Buttons.ID_SWAP_JOYSTICKS;
 import static org.usfirst.frc.team1554.Ref.Buttons.ID_TURBO_DRIVE;
 import static org.usfirst.frc.team1554.Ref.Channels.FL_DMOTOR;
@@ -9,10 +9,10 @@ import static org.usfirst.frc.team1554.Ref.Channels.RL_DMOTOR;
 import static org.usfirst.frc.team1554.Ref.Channels.RR_DMOTOR;
 import static org.usfirst.frc.team1554.Ref.Ports.JOYSTICK_LEFT;
 import static org.usfirst.frc.team1554.Ref.Ports.JOYSTICK_RIGHT;
+import static org.usfirst.frc.team1554.Ref.Values.CONCURRENCY;
 import static org.usfirst.frc.team1554.Ref.Values.DRIVE_SCALE_FACTOR;
 import static org.usfirst.frc.team1554.Ref.Values.MAG_STICK_DEADBAND;
 import static org.usfirst.frc.team1554.Ref.Values.TWIST_STICK_DEADBAND;
-import static org.usfirst.frc.team1554.Ref.Values.CONCURRENCY;
 
 import java.util.concurrent.Callable;
 
@@ -43,12 +43,12 @@ import edu.wpi.first.wpilibj.interfaces.Accelerometer.Range;
 public class Robot extends EnhancedIterativeRobot {
 
 	private static final AsyncExecutor asyncHub = new AsyncExecutor(CONCURRENCY);
-	
+
 	private final DualJoystickControl control;
 	private final MotorScheme motors;
 	private final BasicSense senses;
 	private final USBCamera camera;
-	
+
 	public Robot() {
 		super();
 
@@ -65,10 +65,10 @@ public class Robot extends EnhancedIterativeRobot {
 		this.control.putButtonAction(ID_SWAP_JOYSTICKS, () -> this.control.swapJoysticks(), Hand.RIGHT);
 		this.control.putButtonAction(ID_DISABLE_TWIST, () -> this.control.setDisableTwistAxis(Hand.LEFT, !this.control.getDisableTwistAxis(Hand.LEFT)), Hand.LEFT);
 		this.control.putButtonAction(ID_DISABLE_TWIST, () -> this.control.setDisableTwistAxis(Hand.RIGHT, !this.control.getDisableTwistAxis(Hand.RIGHT)), Hand.RIGHT);
-		
+
 		this.camera = new USBCamera();
-		CameraStream.INSTANCE.startAutomaticCapture(camera);
-		
+		CameraStream.INSTANCE.startAutomaticCapture(this.camera);
+
 		Console.info("Creating /home/lvuser/Sweet.txt: " + new FileHandle("Sweet.txt").create());
 		Retrieve.retrieveSmartDashboardKeys();
 	}
@@ -137,23 +137,24 @@ public class Robot extends EnhancedIterativeRobot {
 	public RobotDrive getDrive() {
 		return this.motors.getRobotDrive();
 	}
-	
+
 	@Override
 	public BasicSense getBasicSenses() {
-		return senses;
+		return this.senses;
 	}
 
 	@Override
 	public void dispose() {
 		Console.debug("Disposing Resources...");
-		if(!asyncHub.isShutdown())
+		if (!asyncHub.isShutdown()) {
 			asyncHub.dispose();
+		}
 	}
-	
+
 	public static final <T> AsyncResult<T> addAsyncTask(AsyncTask<T> task) {
 		return asyncHub.submit(task);
 	}
-	
+
 	public static final <T> AsyncResult<T> addAsyncTask(Callable<T> task) {
 		return asyncHub.submit(new AsyncTask<T>() {
 			@Override
@@ -162,7 +163,7 @@ public class Robot extends EnhancedIterativeRobot {
 			}
 		});
 	}
-	
+
 	public static final AsyncResult<Void> addAsyncTask(Runnable task) {
 		return asyncHub.submit(new AsyncTask<Void>() {
 

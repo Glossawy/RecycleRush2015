@@ -363,7 +363,7 @@ public abstract class EnhancedIterativeRobot extends RobotBase implements Dispos
 	abstract public RobotDrive getDrive();
 
 	abstract public BasicSense getBasicSenses();
-	
+
 	/**
 	 * Fprce LiveWindow to be available in ALL modes.
 	 * 
@@ -394,7 +394,7 @@ public abstract class EnhancedIterativeRobot extends RobotBase implements Dispos
 		getMotorScheme().dispose();
 		getJoysticks().dispose();
 		getBasicSenses().dispose();
-		
+
 		dispose();
 	}
 
