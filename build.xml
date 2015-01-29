@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="test" name="Create Runnable Jar for Project Recycle Rush 2015 with libraries in sub-folder">
+
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+    <!--ANT 1.7 is required                                        -->
+    <target name="test">
+        <delete dir="./tmp"/>
+	    <delete dir="./compile"/>
+	    <mkdir dir="./tmp" />
+	    <mkdir dir="./compile" />
+	    
+	    <javac srcdir="./src" destdir="./compile" source="1.8" target="1.8" classpath="./lib/NetworkTables.jar;./lib/WPILib.jar" />
+        
+        <jar destfile="./tmp/recyclerush2015.jar">
+            <manifest>
+                <attribute name="Main-Class" value="edu.wpi.first.wpilibj.RobotBase"/>
+                <attribute name="Class-Path" value="./recyclerush2015_lib/NetworkTables.jar;./recyclerush2015_lib/WPILib.jar"/>
+            </manifest>
+            <fileset dir="./compile"/>
+        </jar>
+        <delete dir="./tmp/recyclerush2015_lib"/>
+        <mkdir dir="./tmp/recyclerush2015_lib"/>
+        <copy file="./lib/NetworkTables.jar" todir="./tmp/recyclerush2015_lib"/>
+        <copy file="./lib/WPILib.jar" todir="./tmp/recyclerush2015_lib"/>
+        <echo>finished</echo>
+        <delete dir = "./tmp"/>
+        <delete dir = "./compile"/>
+    </target>
+</project>
