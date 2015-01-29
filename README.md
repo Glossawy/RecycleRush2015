@@ -1,1 +1,1 @@
-# RecycleRush2015
+# RecycleRush2015 [![Build Status](https://magnum.travis-ci.com/Matt529/RecycleRush2015.svg?token=ERcsuzMkyC7ugxKy2pm2&branch=master)](https://magnum.travis-ci.com/Matt529/RecycleRush2015)
