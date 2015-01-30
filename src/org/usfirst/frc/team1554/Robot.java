@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1554;
 
-import static org.usfirst.frc.team1554.Ref.Buttons.ID_DISABLE_TWIST;
+import static org.usfirst.frc.team1554.Ref.Buttons.ID_DISABLE_TWIST; 
 import static org.usfirst.frc.team1554.Ref.Buttons.ID_SWAP_JOYSTICKS;
 import static org.usfirst.frc.team1554.Ref.Buttons.ID_TURBO_DRIVE;
 import static org.usfirst.frc.team1554.Ref.Channels.FL_DMOTOR;
@@ -28,6 +28,7 @@ import org.usfirst.frc.team1554.lib.concurrent.AsyncResult;
 import org.usfirst.frc.team1554.lib.concurrent.AsyncTask;
 import org.usfirst.frc.team1554.lib.io.Console;
 import org.usfirst.frc.team1554.lib.io.FileHandle;
+import org.usfirst.frc.team1554.lib.vision.CameraSize;
 import org.usfirst.frc.team1554.lib.vision.CameraStream;
 import org.usfirst.frc.team1554.lib.vision.USBCamera;
 
@@ -67,15 +68,16 @@ public class Robot extends EnhancedIterativeRobot {
 		this.control.putButtonAction(ID_DISABLE_TWIST, () -> this.control.setDisableTwistAxis(Hand.RIGHT, !this.control.getDisableTwistAxis(Hand.RIGHT)), Hand.RIGHT);
 
 		this.camera = new USBCamera();
+		this.camera.setSize(CameraSize.LARGE);
 		CameraStream.INSTANCE.startAutomaticCapture(this.camera);
 
-		Console.info("Creating /home/lvuser/Sweet.txt: " + new FileHandle("Sweet.txt").create());
-		Retrieve.retrieveSmartDashboardKeys();
 	}
 
 	@Override
 	public void onInitialization() {
 		Console.debug("Initialization Complete!");
+		Console.info("Creating /home/lvuser/Sweet.txt: " + new FileHandle("Sweet.txt").create());
+		Retrieve.retrieveSmartDashboardKeys();
 	}
 
 	@Override

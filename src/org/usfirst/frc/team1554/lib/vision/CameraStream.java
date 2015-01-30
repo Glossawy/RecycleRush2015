@@ -110,8 +110,11 @@ public enum CameraStream {
 
 		int index = 0;
 		if (hwClient) {
-			for (; (index < (buffer.limit() - 1)) && !(((buffer.get(index) & 0xff) == 0xff) && ((buffer.get(index + 1) & 0xff) == 0xd8)); index++) {
-				;
+			while(index < buffer.limit() - 1) {
+				if((buffer.get(index) & 0xff) == 0xff && (buffer.get(index+1) & 0xff) == 0xd8)
+					break;
+				
+				index++;
 			}
 		}
 
@@ -234,7 +237,7 @@ public enum CameraStream {
 			synchronized (this) {
 				hwClient = this.hwClient;
 				if (hwClient) {
-					dataBuffer = this.dataPool.removeLast();
+					dataBuffer = this.dataPool.pollLast();
 				}
 			}
 

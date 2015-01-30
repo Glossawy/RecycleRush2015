@@ -44,7 +44,7 @@ public final class RoboUtils {
 		message.append(separator);
 		message.append("   ").append(stackTrace[0]).append('\n');
 
-		for (int i = 2; i < stackTrace.length; i++) {
+		for (int i = 1; i < stackTrace.length; i++) {
 			message.append(" \t").append(stackTrace[i]).append('\n');
 		}
 

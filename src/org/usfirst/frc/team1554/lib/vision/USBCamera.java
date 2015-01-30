@@ -203,7 +203,7 @@ public class USBCamera implements Camera {
 
 		// Exposure Set
 		if (this.exposure.name().equalsIgnoreCase("auto")) {
-			NIVision.IMAQdxSetAttributeString(this.vid, ATTR_EX_MODE, AUTO);
+			NIVision.IMAQdxSetAttributeString(this.vid, ATTR_EX_MODE, "AutoAperaturePriority");
 		} else {
 			NIVision.IMAQdxSetAttributeString(this.vid, ATTR_EX_MODE, MANUAL);
 
@@ -284,7 +284,7 @@ public class USBCamera implements Camera {
 	public synchronized void getImageData(ByteBuffer buffer) {
 		if (this.update || !this.jpeg) {
 			this.update = false;
-			this.jpeg = false;
+			this.jpeg = true;
 			updateSettings();
 		}
 

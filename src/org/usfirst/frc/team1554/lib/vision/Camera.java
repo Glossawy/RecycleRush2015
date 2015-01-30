@@ -85,7 +85,7 @@ public interface Camera {
 	 * @return
 	 */
 	public static int getJpegSize(ByteBuffer data) {
-		if ((data.get(0) != (byte) 0xff) || (data.get(1) != (byte) 0xd8)) throw new VisionException("Invalid Image");
+		if (data.get(0) != (byte) 0xff || data.get(1) != (byte) 0xd8) throw new VisionException("Invalid Image");
 		int pos = 2;
 		while (true) {
 			try {

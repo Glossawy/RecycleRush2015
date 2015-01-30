@@ -1,13 +1,13 @@
 package org.usfirst.frc.team1554.lib;
 
-import java.util.Iterator;
-import java.util.prefs.Preferences;
+import java.util.Iterator; 
 
 import org.usfirst.frc.team1554.lib.collect.IntMap;
 import org.usfirst.frc.team1554.lib.collect.IntMap.Entry;
 import org.usfirst.frc.team1554.lib.math.MathUtils;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Preferences;
 
 public class DualJoystickControl implements JoystickControl {
 
@@ -17,7 +17,7 @@ public class DualJoystickControl implements JoystickControl {
 	public static final String RIGHT_STICK_DO_CUTOFF = "joystick.right.cutoff";
 
 	private Joystick leftStick, rightStick;
-	private final Preferences prefs = Preferences.userNodeForPackage(DualJoystickControl.class);
+	private final Preferences prefs = Preferences.getInstance();
 	private IntMap<Runnable> leftActions = new IntMap<Runnable>(8);
 	private IntMap<Runnable> rightActions = new IntMap<Runnable>(8);
 

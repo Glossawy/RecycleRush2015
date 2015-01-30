@@ -20,6 +20,7 @@ import java.nio.file.Paths;
 import java.util.NoSuchElementException;
 
 import org.usfirst.frc.team1554.lib.util.IOUtils;
+import org.usfirst.frc.team1554.lib.util.RoboUtils;
 
 public class FileHandle {
 
@@ -100,7 +101,8 @@ public class FileHandle {
 	public boolean create() {
 		try {
 			return this.file.createNewFile();
-		} catch (final IOException e) {
+		} catch (final Exception e) {
+			RoboUtils.exceptionToDS(e);
 			return false;
 		}
 	}

@@ -16,6 +16,7 @@ public class Retrieve {
 		final StringCache tableCache = RoboUtils.getInstanceField(NetworkTable.class, table, "absoluteKeyCache", StringCache.class);
 		final Hashtable cache = RoboUtils.getInstanceField(StringCache.class, tableCache, "cache", Hashtable.class);
 
+		System.out.println("Attempting cache reader...");
 		for (final Object o : cache.keySet()) {
 			System.out.println(String.valueOf(o));
 		}

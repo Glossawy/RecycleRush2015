@@ -295,7 +295,7 @@ public class EthernetCamera implements Camera {
 	public synchronized void getImageData(ByteBuffer buffer) {
 		if (this.update || !this.jpeg) {
 			this.update = false;
-			this.jpeg = false;
+			this.jpeg = true;
 			updateSettings();
 		}
 
