@@ -50,6 +50,7 @@ public enum CameraStream {
 	}
 
 	public static final int PORT = 1180;
+
 	public static final byte[] MAGIC_NUMBERS = { 0x01, 0x00, 0x00, 0x00 };
 	public static final int hwCompression = -1;
 	public static final int MAX_SIZE = 200_000;
