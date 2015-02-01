@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1554;
 
-import static org.usfirst.frc.team1554.Ref.Buttons.ID_DISABLE_TWIST; 
+import static org.usfirst.frc.team1554.Ref.Buttons.ID_DISABLE_TWIST;
 import static org.usfirst.frc.team1554.Ref.Buttons.ID_SWAP_JOYSTICKS;
 import static org.usfirst.frc.team1554.Ref.Buttons.ID_TURBO_DRIVE;
 import static org.usfirst.frc.team1554.Ref.Channels.FL_DMOTOR;
@@ -75,9 +75,10 @@ public class Robot extends EnhancedIterativeRobot {
 
 	@Override
 	public void onInitialization() {
-		Console.debug("Initialization Complete!");
-		Console.info("Creating /home/lvuser/Sweet.txt: " + new FileHandle("Sweet.txt").create());
+		final FileHandle testFile = new FileHandle("Sweet.txt");
+		Console.info(testFile.path() + ": " + testFile.create());
 		Retrieve.retrieveSmartDashboardKeys();
+		Console.debug("Initialization Complete!");
 	}
 
 	@Override

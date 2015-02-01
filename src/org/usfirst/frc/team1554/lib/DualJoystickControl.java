@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1554.lib;
 
-import java.util.Iterator; 
+import java.util.Iterator;
 
 import org.usfirst.frc.team1554.lib.collect.IntMap;
 import org.usfirst.frc.team1554.lib.collect.IntMap.Entry;

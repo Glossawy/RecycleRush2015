@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.SensorBase;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 
-// TODO is this a case of trying to do too much in one interface?
+// FIXME is this a case of trying to do too much in one interface?
 /**
  * A Code representation of what is basically a Motor Schematic. This class is mostly
  * used for managing Drive Motors though there is the optional functionality of
@@ -56,8 +56,6 @@ public interface MotorScheme extends Disposable {
 	 * @author Matthew
 	 */
 	public enum DriveManager {
-
-		// TODO Sensors/Analog
 		/**
 		 * Drive the Robot by Mecanum Cartesian controls. Using X, Y, Theta and Gyro
 		 * Theta. <br />
@@ -82,7 +80,6 @@ public interface MotorScheme extends Disposable {
 				drive.mecanumDrive_Polar(c.getMagnitude(), c.getDirectionDegrees(), c.getTwist());
 			}
 		},
-		// TODO JoystickControl Hints
 		/**
 		 * Drive the Robot with One Stick only. Uses Up Down for movement and Left
 		 * Right for rotation.

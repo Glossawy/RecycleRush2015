@@ -25,7 +25,7 @@ import org.usfirst.frc.team1554.lib.util.RoboUtils;
 public class FileHandle {
 
 	private final File file;
-	public static final String base = "/home/lvuser";
+	public static final String base = "/home/lvuser/robolib";
 
 	public FileHandle(File file) {
 		this.file = file;
@@ -72,7 +72,7 @@ public class FileHandle {
 	}
 
 	public FileHandle parent() {
-		if (path().length() == 0) throw new RuntimeException("Cannot get parent of root!");
+		if (path().length() <= 1) throw new RuntimeException("Cannot get parent of root!");
 
 		final File parent = this.file.getParentFile();
 		return new FileHandle(parent == null ? new File("/") : parent);
@@ -100,6 +100,7 @@ public class FileHandle {
 
 	public boolean create() {
 		try {
+			parent().mkdirs();
 			return this.file.createNewFile();
 		} catch (final Exception e) {
 			RoboUtils.exceptionToDS(e);
