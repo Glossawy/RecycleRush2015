@@ -22,9 +22,9 @@ import org.usfirst.frc.team1554.lib.meta.Noteworthy;
 @Noteworthy("Hashing, Space Over Time and Math below. Refrain from Editing!")
 public class IntMap<V> {
 
-	private static final int PRIME2 = 0xb4b82e39;
-	private static final int PRIME3 = 0xced1c241;
-	private static final int EMPTY = 0;
+	private static final int PRIME1 = 0xB4B82E39;
+	private static final int PRIME2 = 0xCED1C241;
+	private static final int EMPTY = 0x00000000;
 
 	public int size;
 
@@ -103,7 +103,7 @@ public class IntMap<V> {
 			return oldValue;
 		}
 
-		final int i2 = hash2(key);
+		final int i2 = hash(key);
 		final int k2 = keyTable[i2];
 		if (k2 == key) {
 			final V oldValue = this.valueTable[i2];
@@ -111,7 +111,7 @@ public class IntMap<V> {
 			return oldValue;
 		}
 
-		final int i3 = hash3(key);
+		final int i3 = hash2(key);
 		final int k3 = keyTable[i3];
 		if (k3 == key) {
 			final V oldValue = this.valueTable[i3];
@@ -174,9 +174,9 @@ public class IntMap<V> {
 
 		int i = key & this.mask;
 		if (this.keyTable[i] != key) {
-			i = hash2(key);
+			i = hash(key);
 			if (this.keyTable[i] != key) {
-				i = hash3(key);
+				i = hash2(key);
 				if (this.keyTable[i] != key) return getStash(key, defaultVal);
 			}
 		}
@@ -204,7 +204,7 @@ public class IntMap<V> {
 			return oldValue;
 		}
 
-		i = hash2(key);
+		i = hash(key);
 		if (this.keyTable[i] == key) {
 			this.keyTable[i] = EMPTY;
 			final V oldValue = this.valueTable[i];
@@ -213,7 +213,7 @@ public class IntMap<V> {
 			return oldValue;
 		}
 
-		i = hash3(key);
+		i = hash2(key);
 		if (this.keyTable[i] == key) {
 			this.keyTable[i] = EMPTY;
 			final V oldValue = this.valueTable[i];
@@ -300,9 +300,9 @@ public class IntMap<V> {
 		int i = key & this.mask;
 
 		if (kt[i] != key) {
-			i = hash2(key);
+			i = hash(key);
 			if (kt[i] != key) {
-				i = hash3(key);
+				i = hash2(key);
 				if (kt[i] != key) return containsKeyStash(key);
 			}
 		}
@@ -420,7 +420,7 @@ public class IntMap<V> {
 			return;
 		}
 
-		final int index2 = hash2(key);
+		final int index2 = hash(key);
 		final int key2 = this.keyTable[index2];
 		if (key2 == EMPTY) {
 			this.keyTable[index2] = key;
@@ -431,7 +431,7 @@ public class IntMap<V> {
 			return;
 		}
 
-		final int index3 = hash3(key);
+		final int index3 = hash2(key);
 		final int key3 = this.keyTable[index3];
 		if (key3 == EMPTY) {
 			this.keyTable[index3] = key;
@@ -487,7 +487,7 @@ public class IntMap<V> {
 				return;
 			}
 
-			i2 = hash2(evictKey);
+			i2 = hash(evictKey);
 			k2 = this.keyTable[i2];
 			if (k2 == EMPTY) {
 				this.keyTable[i2] = evictKey;
@@ -498,7 +498,7 @@ public class IntMap<V> {
 				return;
 			}
 
-			i3 = hash3(evictKey);
+			i3 = hash2(evictKey);
 			k3 = this.keyTable[i3];
 			if (k3 == EMPTY) {
 				this.keyTable[i3] = evictKey;
@@ -611,13 +611,13 @@ public class IntMap<V> {
 		}
 	}
 
-	private int hash2(int h) {
-		h *= PRIME2;
+	private int hash(int h) {
+		h *= PRIME1;
 		return (h ^ (h >>> this.hashShift)) & this.mask;
 	}
 
-	private int hash3(int h) {
-		h *= PRIME3;
+	private int hash2(int h) {
+		h *= PRIME2;
 		return (h ^ (h >>> this.hashShift)) & this.mask;
 	}
 

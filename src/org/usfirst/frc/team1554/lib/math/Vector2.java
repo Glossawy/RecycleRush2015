@@ -6,7 +6,7 @@ package org.usfirst.frc.team1554.lib.math;
  * @author Matthew Crocco
  *
  */
-public class Vector2 {
+public class Vector2 implements Vector<Vector2> {
 
 	public static final Vector2 UNIT_VECTOR = new Vector2(1, 1);
 	/** A Vector Podoubleing in the Positive X Direction (Right) */
@@ -33,40 +33,74 @@ public class Vector2 {
 		this.y = vect.y;
 	}
 
+	@Override
 	public Vector2 cpy() {
 		return new Vector2(this.x, this.y);
 	}
 
+	@Override
 	public double len() {
 		return Math.sqrt((this.x * this.x) + (this.y * this.y));
 	}
 
+	@Override
 	public double len2() {
 		return (this.x * this.x) + (this.y * this.y);
 	}
 
-	public double dist(Vector2 v) {
-		final double dx = this.x - v.x;
-		final double dy = this.y - v.y;
+	public double dst(double x, double y) {
+		final double dy = y - this.y;
+		final double dx = x - this.x;
+
 		return Math.sqrt((dx * dx) + (dy * dy));
 	}
 
-	public double dist2(Vector2 v) {
-		final double dx = this.x - v.x;
-		final double dy = this.y - v.y;
+	public double dst2(double x, double y) {
+		final double dy = y - this.y;
+		final double dx = x - this.x;
 
 		return (dx * dx) + (dy * dy);
 	}
 
+	@Override
+	public double dst(Vector2 v) {
+		return dst(v.x, v.y);
+	}
+
+	@Override
+	public double dst2(Vector2 v) {
+		return dst2(v.x, v.y);
+	}
+
+	@Override
 	public Vector2 limit(double lim) {
-		if (len2() > (lim * lim)) {
-			nor();
-			scale(lim);
+		return limit2(lim * lim);
+	}
+
+	@Override
+	public Vector2 limit2(double limit2) {
+		final double l2 = len2();
+
+		if (l2 > limit2) {
+			scale(Math.sqrt(limit2 / l2));
 		}
 
 		return this;
 	}
 
+	@Override
+	public Vector2 setLength(double len) {
+		return setLength2(len * len);
+	}
+
+	@Override
+	public Vector2 setLength2(double len2) {
+		final double l2 = len2();
+
+		return ((l2 == 0) || (l2 == len2)) ? this : scale(Math.sqrt(len2 / l2));
+	}
+
+	@Override
 	public Vector2 clamp(double min, double max) {
 		final double len = len2();
 
@@ -80,6 +114,7 @@ public class Vector2 {
 			return this;
 	}
 
+	@Override
 	public Vector2 set(Vector2 v) {
 		this.x = v.x;
 		this.y = v.x;
@@ -99,12 +134,14 @@ public class Vector2 {
 		return this;
 	}
 
+	@Override
 	public Vector2 add(Vector2 v) {
 		this.x += v.x;
 		this.y += v.y;
 		return this;
 	}
 
+	@Override
 	public Vector2 sub(Vector2 v) {
 		this.x -= v.x;
 		this.y -= v.y;
@@ -122,6 +159,7 @@ public class Vector2 {
 		return (this.x * x) + (this.y * y);
 	}
 
+	@Override
 	public double dot(Vector2 v) {
 		return (this.x * v.x) + (this.y * v.y);
 	}
@@ -132,7 +170,7 @@ public class Vector2 {
 	 * @param v
 	 * @return
 	 */
-	public double cross(Vector2 v) {
+	public double crs(Vector2 v) {
 		return (this.x * v.y) - (this.y * v.x);
 	}
 
@@ -144,8 +182,24 @@ public class Vector2 {
 	 * @param y
 	 * @return
 	 */
-	public double cross(double x, double y) {
+	public double crs(double x, double y) {
 		return (this.x * y) - (this.y * x);
+	}
+
+	@Override
+	public Vector2 mulAdd(Vector2 v, double scalar) {
+		this.x += v.x * scalar;
+		this.y += v.y * scalar;
+
+		return this;
+	}
+
+	@Override
+	public Vector2 mulAdd(Vector2 v, Vector2 scl) {
+		this.x += v.x * scl.x;
+		this.y += v.y * scl.y;
+
+		return this;
 	}
 
 	/**
@@ -257,6 +311,7 @@ public class Vector2 {
 		return this;
 	}
 
+	@Override
 	public Vector2 nor() {
 		final double len = len();
 		if (len != 0) {
@@ -267,6 +322,7 @@ public class Vector2 {
 		return this;
 	}
 
+	@Override
 	public Vector2 scale(double s) {
 		this.x = this.x * s;
 		this.y = this.x * s;
@@ -288,11 +344,13 @@ public class Vector2 {
 		return this;
 	}
 
+	@Override
 	public Vector2 scale(Vector2 v) {
 		return scale(v.x, v.y);
 	}
 
-	public Vector2 lerp(Vector2 v, float alpha) {
+	@Override
+	public Vector2 lerp(Vector2 v, double alpha) {
 		final double inverse = 1.0f - alpha;
 
 		this.x = ((this.x * inverse) + (v.x * inverse));
@@ -300,26 +358,31 @@ public class Vector2 {
 		return this;
 	}
 
+	@Override
 	public Vector2 zero() {
 		this.x = 0;
 		this.y = 0;
 		return this;
 	}
 
+	@Override
 	public boolean isZero() {
 		return (this.x == 0) && (this.y == 0);
 	}
 
+	@Override
 	public boolean isZero(double error) {
 		return len2() < (error * error);
 	}
 
-	public boolean isUnitVector() {
-		return this.isUnitVector(0.000000001f);
+	@Override
+	public boolean isUnit() {
+		return this.isUnit(0.000000001);
 	}
 
-	public boolean isUnitVector(double epsilon) {
-		return FloatingPoint.isZero(Math.abs(len() - 1f), epsilon);
+	@Override
+	public boolean isUnit(double epsilon) {
+		return FloatingPoint.isZero(Math.abs(len() - 1), epsilon);
 	}
 
 	@Override
@@ -342,51 +405,62 @@ public class Vector2 {
 		return (this.x == other.x) && (this.y == other.y);
 	}
 
-	public boolean fuzzyEquals(Vector2 v, double epsilon) {
+	@Override
+	public boolean equals(Vector2 v, double epsilon) {
 		return (v != null) && (Math.abs(this.x - v.x) < epsilon) && (Math.abs(this.y - v.y) < epsilon);
 	}
 
-	public boolean fuzzyEquals(double tx, double ty, double epsilon) {
+	public boolean equals(double tx, double ty, double epsilon) {
 		return (Math.abs(this.x - tx) < epsilon) && (Math.abs(this.y - ty) < epsilon);
 	}
 
-	public boolean isInlineWith(Vector2 v) {
+	@Override
+	public boolean isInline(Vector2 v) {
 		return FloatingPoint.isZero((this.x * v.y) - (this.y * v.x));
 	}
 
-	public boolean isInlineWith(Vector2 v, double epsilon) {
+	@Override
+	public boolean isInline(Vector2 v, double epsilon) {
 		return FloatingPoint.isZero((this.x * v.y) - (this.y * v.x), epsilon);
 	}
 
-	public boolean isCollinearWith(Vector2 v) {
-		return this.isInlineWith(v) && (this.dot(v) > 0);
+	@Override
+	public boolean isColinear(Vector2 v) {
+		return this.isInline(v) && (this.dot(v) > 0);
 	}
 
-	public boolean isCollinearWith(Vector2 v, double epsilon) {
-		return this.isInlineWith(v, epsilon) && (this.dot(v) > 0);
+	@Override
+	public boolean isColinear(Vector2 v, double epsilon) {
+		return this.isInline(v, epsilon) && (this.dot(v) > 0);
 	}
 
-	public boolean isOppositeCollinearWith(Vector2 v) {
-		return this.isInlineWith(v) && (this.dot(v) < 0);
+	@Override
+	public boolean isColinearOpposite(Vector2 v) {
+		return this.isInline(v) && (this.dot(v) < 0);
 	}
 
-	public boolean isOppositeCollinearWith(Vector2 v, double epsilon) {
-		return this.isInlineWith(v, epsilon) && (this.dot(v) < 0);
+	@Override
+	public boolean isColinearOpposite(Vector2 v, double epsilon) {
+		return this.isInline(v, epsilon) && (this.dot(v) < 0);
 	}
 
-	public boolean isPerpendicularTo(Vector2 v) {
+	@Override
+	public boolean isPerpendicular(Vector2 v) {
 		return FloatingPoint.isZero(dot(v));
 	}
 
-	public boolean isPerpendicularTo(Vector2 v, double epsilon) {
+	@Override
+	public boolean isPerpendicular(Vector2 v, double epsilon) {
 		return FloatingPoint.isZero(dot(v), epsilon);
 	}
 
-	public boolean hasSameDirectionAs(Vector2 v) {
+	@Override
+	public boolean inSameDirection(Vector2 v) {
 		return dot(v) > 0;
 	}
 
-	public boolean hasOppositeDirectionOf(Vector2 v) {
+	@Override
+	public boolean inOppositeDirection(Vector2 v) {
 		return dot(v) < 0;
 	}
 
@@ -394,5 +468,4 @@ public class Vector2 {
 	public String toString() {
 		return String.format("(%s, %s)", this.x, this.y);
 	}
-
 }

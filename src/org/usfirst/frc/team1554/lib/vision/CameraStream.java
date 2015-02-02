@@ -25,13 +25,17 @@ import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.image.ImageBase;
 
-// FIXME Rewrite a More Efficient Camera Stream impl. This is currently slightly
-// optimized port of CameraServer but is loosely coupled to the Camera API
+//@off
+// FIXME Rewrite a More Efficient Camera Stream impl. This is currently slightly optimized port of CameraServer but is loosely coupled to the Camera API
+// FIXME Convert to Socket API Sockets
+//@on
 /**
- * An Alternative to {@link CameraServer} that makes use of the Camera API.
+ * An Alternative to {@link CameraServer} that makes use of the Camera API. <br />
+ * <br />
+ * This is currently a port of CameraServer with several optimizations.
  * 
  * @author Matthew
- *
+ * @since v1.0
  */
 public enum CameraStream {
 
@@ -249,7 +253,8 @@ public enum CameraStream {
 						// notifyAll()
 						Data imgData = null;
 						synchronized (this) {
-							// FIXME It May be necessary to put wait() here. Please Test!
+							// FIXME It May be necessary to put wait() here. Please
+							// Test!
 							imgData = this.cameraData;
 							this.cameraData = null;
 						}

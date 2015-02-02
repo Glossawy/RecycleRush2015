@@ -1,11 +1,9 @@
 package org.usfirst.frc.team1554.lib.math;
 
-public class Vector3 {
+public class Vector3 implements Vector<Vector3> {
 
 	public double x;
-
 	public double y;
-
 	public double z;
 
 	public final static Vector3 X = new Vector3(1, 0, 0);
@@ -41,6 +39,7 @@ public class Vector3 {
 		return this;
 	}
 
+	@Override
 	public Vector3 set(final Vector3 vector) {
 		return this.set(vector.x, vector.y, vector.z);
 	}
@@ -53,10 +52,12 @@ public class Vector3 {
 		return this.set(vector.x, vector.y, z);
 	}
 
+	@Override
 	public Vector3 cpy() {
 		return new Vector3(this);
 	}
 
+	@Override
 	public Vector3 add(final Vector3 vector) {
 		return this.add(vector.x, vector.y, vector.z);
 	}
@@ -69,6 +70,7 @@ public class Vector3 {
 		return this.set(this.x + values, this.y + values, this.z + values);
 	}
 
+	@Override
 	public Vector3 sub(final Vector3 a_vec) {
 		return this.sub(a_vec.x, a_vec.y, a_vec.z);
 	}
@@ -81,18 +83,21 @@ public class Vector3 {
 		return this.set(this.x - value, this.y - value, this.z - value);
 	}
 
-	public Vector3 scl(double scalar) {
+	@Override
+	public Vector3 scale(double scalar) {
 		return this.set(this.x * scalar, this.y * scalar, this.z * scalar);
 	}
 
-	public Vector3 scl(final Vector3 other) {
+	@Override
+	public Vector3 scale(final Vector3 other) {
 		return this.set(this.x * other.x, this.y * other.y, this.z * other.z);
 	}
 
-	public Vector3 scl(double vx, double vy, double vz) {
+	public Vector3 scale(double vx, double vy, double vz) {
 		return this.set(this.x * vx, this.y * vy, this.z * vz);
 	}
 
+	@Override
 	public Vector3 mulAdd(Vector3 vec, double scalar) {
 		this.x += vec.x * scalar;
 		this.y += vec.y * scalar;
@@ -100,6 +105,7 @@ public class Vector3 {
 		return this;
 	}
 
+	@Override
 	public Vector3 mulAdd(Vector3 vec, Vector3 mulVec) {
 		this.x += vec.x * mulVec.x;
 		this.y += vec.y * mulVec.y;
@@ -111,6 +117,7 @@ public class Vector3 {
 		return Math.sqrt((x * x) + (y * y) + (z * z));
 	}
 
+	@Override
 	public double len() {
 		return Math.sqrt((this.x * this.x) + (this.y * this.y) + (this.z * this.z));
 	}
@@ -119,6 +126,7 @@ public class Vector3 {
 		return (x * x) + (y * y) + (z * z);
 	}
 
+	@Override
 	public double len2() {
 		return (this.x * this.x) + (this.y * this.y) + (this.z * this.z);
 	}
@@ -134,6 +142,7 @@ public class Vector3 {
 		return Math.sqrt((a * a) + (b * b) + (c * c));
 	}
 
+	@Override
 	public double dst(final Vector3 vector) {
 		final double a = vector.x - this.x;
 		final double b = vector.y - this.y;
@@ -155,6 +164,7 @@ public class Vector3 {
 		return (a * a) + (b * b) + (c * c);
 	}
 
+	@Override
 	public double dst2(Vector3 point) {
 		final double a = point.x - this.x;
 		final double b = point.y - this.y;
@@ -169,16 +179,18 @@ public class Vector3 {
 		return (a * a) + (b * b) + (c * c);
 	}
 
+	@Override
 	public Vector3 nor() {
 		final double len2 = this.len2();
 		if ((len2 == 0f) || (len2 == 1f)) return this;
-		return this.scl(1f / Math.sqrt(len2));
+		return this.scale(1f / Math.sqrt(len2));
 	}
 
 	public static double dot(double x1, double y1, double z1, double x2, double y2, double z2) {
 		return (x1 * x2) + (y1 * y2) + (z1 * z2);
 	}
 
+	@Override
 	public double dot(final Vector3 vector) {
 		return (this.x * vector.x) + (this.y * vector.y) + (this.z * vector.z);
 	}
@@ -266,64 +278,79 @@ public class Vector3 {
 		return this.mul(tmpMat);
 	}
 
+	@Override
 	public boolean isUnit() {
-		return isUnit(0.000000001f);
+		return isUnit(0.000000001);
 	}
 
+	@Override
 	public boolean isUnit(final double margin) {
-		return Math.abs(len2() - 1f) < margin;
+		return Math.abs(len2() - 1) < margin;
 	}
 
+	@Override
 	public boolean isZero() {
 		return (this.x == 0) && (this.y == 0) && (this.z == 0);
 	}
 
+	@Override
 	public boolean isZero(final double margin) {
 		return len2() < margin;
 	}
 
-	public boolean isOnLine(Vector3 other, double epsilon) {
+	@Override
+	public boolean isInline(Vector3 other, double epsilon) {
 		return len2((this.y * other.z) - (this.z * other.y), (this.z * other.x) - (this.x * other.z), (this.x * other.y) - (this.y * other.x)) <= epsilon;
 	}
 
-	public boolean isOnLine(Vector3 other) {
+	@Override
+	public boolean isInline(Vector3 other) {
 		return len2((this.y * other.z) - (this.z * other.y), (this.z * other.x) - (this.x * other.z), (this.x * other.y) - (this.y * other.x)) <= FloatingPoint.ROUNDING_ERROR_64_BITS;
 	}
 
-	public boolean isCollinear(Vector3 other, double epsilon) {
-		return isOnLine(other, epsilon) && hasSameDirection(other);
+	@Override
+	public boolean isColinear(Vector3 other, double epsilon) {
+		return isInline(other, epsilon) && inSameDirection(other);
 	}
 
-	public boolean isCollinear(Vector3 other) {
-		return isOnLine(other) && hasSameDirection(other);
+	@Override
+	public boolean isColinear(Vector3 other) {
+		return isInline(other) && inSameDirection(other);
 	}
 
-	public boolean isCollinearOpposite(Vector3 other, double epsilon) {
-		return isOnLine(other, epsilon) && hasOppositeDirection(other);
+	@Override
+	public boolean isColinearOpposite(Vector3 other, double epsilon) {
+		return isInline(other, epsilon) && inOppositeDirection(other);
 	}
 
-	public boolean isCollinearOpposite(Vector3 other) {
-		return isOnLine(other) && hasOppositeDirection(other);
+	@Override
+	public boolean isColinearOpposite(Vector3 other) {
+		return isInline(other) && inOppositeDirection(other);
 	}
 
+	@Override
 	public boolean isPerpendicular(Vector3 vector) {
 		return FloatingPoint.isZero(dot(vector));
 	}
 
+	@Override
 	public boolean isPerpendicular(Vector3 vector, double epsilon) {
 		return FloatingPoint.isZero(dot(vector), epsilon);
 	}
 
-	public boolean hasSameDirection(Vector3 vector) {
+	@Override
+	public boolean inSameDirection(Vector3 vector) {
 		return dot(vector) > 0;
 	}
 
-	public boolean hasOppositeDirection(Vector3 vector) {
+	@Override
+	public boolean inOppositeDirection(Vector3 vector) {
 		return dot(vector) < 0;
 	}
 
+	@Override
 	public Vector3 lerp(final Vector3 target, double alpha) {
-		scl(1.0f - alpha);
+		scale(1.0f - alpha);
 		add(target.x * alpha, target.y * alpha, target.z * alpha);
 		return this;
 	}
@@ -345,7 +372,7 @@ public class Vector3 {
 		final double l2 = (tx * tx) + (ty * ty) + (tz * tz);
 		final double dl = st * ((l2 < 0.0001f) ? 1f : 1f / Math.sqrt(l2));
 
-		return scl(Math.cos(theta)).add(tx * dl, ty * dl, tz * dl).nor();
+		return scale(Math.cos(theta)).add(tx * dl, ty * dl, tz * dl).nor();
 	}
 
 	@Override
@@ -353,34 +380,39 @@ public class Vector3 {
 		return "[" + this.x + ", " + this.y + ", " + this.z + "]";
 	}
 
+	@Override
 	public Vector3 limit(double limit) {
 		return limit2(limit * limit);
 	}
 
+	@Override
 	public Vector3 limit2(double limit2) {
 		final double len2 = len2();
 		if (len2 > limit2) {
-			scl(limit2 / len2);
+			scale(limit2 / len2);
 		}
 		return this;
 	}
 
+	@Override
 	public Vector3 setLength(double len) {
 		return setLength2(len * len);
 	}
 
+	@Override
 	public Vector3 setLength2(double len2) {
 		final double oldLen2 = len2();
-		return ((oldLen2 == 0) || (oldLen2 == len2)) ? this : scl(Math.sqrt(len2 / oldLen2));
+		return ((oldLen2 == 0) || (oldLen2 == len2)) ? this : scale(Math.sqrt(len2 / oldLen2));
 	}
 
+	@Override
 	public Vector3 clamp(double min, double max) {
 		final double len2 = len2();
 		if (len2 == 0f) return this;
 		final double max2 = max * max;
-		if (len2 > max2) return scl(Math.sqrt(max2 / len2));
+		if (len2 > max2) return scale(Math.sqrt(max2 / len2));
 		final double min2 = min * min;
-		if (len2 < min2) return scl(Math.sqrt(min2 / len2));
+		if (len2 < min2) return scale(Math.sqrt(min2 / len2));
 		return this;
 	}
 
@@ -406,7 +438,8 @@ public class Vector3 {
 		return true;
 	}
 
-	public boolean epsilonEquals(final Vector3 other, double epsilon) {
+	@Override
+	public boolean equals(final Vector3 other, double epsilon) {
 		if (other == null) return false;
 		if (Math.abs(other.x - this.x) > epsilon) return false;
 		if (Math.abs(other.y - this.y) > epsilon) return false;
@@ -414,14 +447,15 @@ public class Vector3 {
 		return true;
 	}
 
-	public boolean epsilonEquals(double x, double y, double z, double epsilon) {
+	public boolean equals(double x, double y, double z, double epsilon) {
 		if (Math.abs(x - this.x) > epsilon) return false;
 		if (Math.abs(y - this.y) > epsilon) return false;
 		if (Math.abs(z - this.z) > epsilon) return false;
 		return true;
 	}
 
-	public Vector3 setZero() {
+	@Override
+	public Vector3 zero() {
 		this.x = 0;
 		this.y = 0;
 		this.z = 0;

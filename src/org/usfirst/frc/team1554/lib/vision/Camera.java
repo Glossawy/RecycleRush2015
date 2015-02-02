@@ -71,7 +71,10 @@ public interface Camera {
 	/** Get Current Camera Image */
 	ColorImage getImage() throws NIVisionException;
 
-	/** Get Current Camera Image Data */
+	/**
+	 * Get Current Camera Image Data Used internally by CameraStream to get NIVision
+	 * Image Data.
+	 */
 	boolean _frameGrab(Image image);
 
 	/** Get Current Camera Image Data */
@@ -116,7 +119,7 @@ public interface Camera {
 			try {
 				// Every JPEG Marker starts with 0xFF
 				int b = data.get(pos) & 0xFF; // Gets the Unsigned Value of a Signed
-												// Byte
+				// Byte
 				if (b != 0xFF) throw new VisionException("invalid image at pos " + pos + " (" + data.get(pos) + ")");
 
 				b = data.get(pos + 1) & 0xFF;

@@ -454,7 +454,7 @@ public class Matrix4 {
 		right.set(tmpForward).crs(up).nor();
 		tmpUp.set(right).crs(tmpForward).nor();
 
-		this.set(right, tmpUp, tmpForward.scl(-1), position);
+		this.set(right, tmpUp, tmpForward.scale(-1), position);
 		return this;
 	}
 
