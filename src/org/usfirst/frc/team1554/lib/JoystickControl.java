@@ -1,9 +1,11 @@
 package org.usfirst.frc.team1554.lib;
 
 import org.usfirst.frc.team1554.lib.MotorScheme.DriveManager;
+import org.usfirst.frc.team1554.lib.meta.OutOfDateException;
 
 import edu.wpi.first.wpilibj.Joystick;
 
+// TODO Multiple Actions on Button Press (Multimap)
 /**
  * Abstraction of basic Joystick Controls. This allows for easier interaction between
  * different Joystick Configurations and RobotDrive. This interaction can be even
@@ -22,7 +24,20 @@ public interface JoystickControl extends Disposable {
 	public enum Hand {
 		// TODO Abstract ot Movement and Twist? Swapping Joysticks can make this
 		// confusing!
-		LEFT, RIGHT, BOTH;
+		LEFT(edu.wpi.first.wpilibj.GenericHID.Hand.kLeft.value), RIGHT(edu.wpi.first.wpilibj.GenericHID.Hand.kRight.value), BOTH(-1);
+
+		public final int WPILib_value;
+
+		private Hand(int val) {
+			this.WPILib_value = val;
+		}
+
+		public static Hand from(edu.wpi.first.wpilibj.GenericHID.Hand hand) {
+			for (final Hand h : values())
+				if (h.WPILib_value == hand.value) return h;
+
+			throw new OutOfDateException("GenericHID.Hand must have changed! Unsupported Hand Values...");
+		}
 	}
 
 	/** Get the X Value of the Movement Joystick */
@@ -38,10 +53,17 @@ public interface JoystickControl extends Disposable {
 	double getMagnitude();
 
 	/** Get the direction of the Magnitude vector of the Movement Joystick in Radians */
-	double getDirectionRadians();
+	default double getDirectionRadians() {
+		final double x = getX();
+		final double y = getY();
+
+		return Math.atan2(x, -y);
+	}
 
 	/** Get the direction of the magnitude vector of the Movement Joystick in Degrees */
-	double getDirectionDegrees();
+	default double getDirectionDegrees() {
+		return Math.toDegrees(getDirectionRadians());
+	}
 
 	/** Determine if the Twist Axis of the Left or Right Side Joystick is disabled */
 	boolean getDisableTwistAxis(Hand side);
@@ -119,4 +141,7 @@ public interface JoystickControl extends Disposable {
 	 * Check Registered Joystick Button Actions for
 	 */
 	void update();
+
+	@Override
+	void dispose();
 }
