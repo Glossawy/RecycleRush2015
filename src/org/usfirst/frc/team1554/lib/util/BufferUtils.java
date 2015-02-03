@@ -1,6 +1,5 @@
 package org.usfirst.frc.team1554.lib.util;
 
-import java.io.IOException;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -10,10 +9,8 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.nio.LongBuffer;
 import java.nio.ShortBuffer;
-import java.util.List;
 
-import org.usfirst.frc.team1554.lib.collect.Lists;
-import org.usfirst.frc.team1554.lib.natives.Native;
+import org.usfirst.frc.team1554.lib.collect.Array;
 
 /**
  * Small Handler Class for quickening up Buffer usage. All ByteOrder's are
@@ -24,17 +21,7 @@ import org.usfirst.frc.team1554.lib.natives.Native;
  */
 public final class BufferUtils {
 
-	public static void main(String[] args) throws IOException {
-		if (!Native.isLibraryLoaded("robolibJNI")) {
-			Native.loadLibrary("robolibJNI");
-		}
-
-		final ByteBuffer buffer = BufferUtils.newUnsafeByteBuffer(5000);
-		System.out.println(BufferUtils.getUnsafeBufferAddress(buffer));
-		BufferUtils.disposeUnsafeBuffer(buffer);
-	}
-
-	private static final List<ByteBuffer> unsafeBuffers = Lists.newArrayList();
+	private static final Array<ByteBuffer> unsafeBuffers = new Array<ByteBuffer>();
 	private static int unsafeAllocated = 0;
 
 	/**
@@ -448,7 +435,7 @@ public final class BufferUtils {
 		final int size = buffer.capacity();
 		boolean success = false;
 		synchronized(unsafeBuffers) {
-			for(int i = 0; i < unsafeBuffers.size(); i++){
+			for(int i = 0; i < unsafeBuffers.size; i++){
 				if(unsafeBuffers.get(i) == buffer){
 					success = true;
 					break;

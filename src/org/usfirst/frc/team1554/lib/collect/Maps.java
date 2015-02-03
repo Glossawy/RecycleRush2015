@@ -68,4 +68,20 @@ public class Maps {
 		return new IntMap<V>(map);
 	}
 
+	public static <K, V> ObjectMap<K, V> newObjectMap() {
+		return new ObjectMap<K, V>();
+	}
+
+	public static <K, V> ObjectMap<K, V> newObjectMap(int initialCapacity) {
+		return new ObjectMap<K, V>(initialCapacity);
+	}
+
+	public static <K, V> ObjectMap<K, V> newObjectMap(int capacity, float loadFactor) {
+		return new ObjectMap<K, V>(capacity, loadFactor);
+	}
+
+	public static <K, V> ObjectMap<K, V> newObjectMap(ObjectMap<? extends K, ? extends V> map) {
+		return new ObjectMap<K, V>(map);
+	}
+
 }

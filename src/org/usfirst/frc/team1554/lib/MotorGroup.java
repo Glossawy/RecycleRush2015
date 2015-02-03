@@ -1,8 +1,6 @@
 package org.usfirst.frc.team1554.lib;
 
-import java.util.Set;
-
-import org.usfirst.frc.team1554.lib.collect.Sets;
+import org.usfirst.frc.team1554.lib.collect.ObjectSet;
 
 import edu.wpi.first.wpilibj.MotorSafety;
 import edu.wpi.first.wpilibj.MotorSafetyHelper;
@@ -22,13 +20,13 @@ import edu.wpi.first.wpilibj.tables.ITableListener;
 public class MotorGroup<T extends PWM & SpeedController> extends SensorBase implements SpeedController, MotorSafety, LiveWindowSendable {
 
 	private final MotorSafetyHelper msHelper = new MotorSafetyHelper(this);
-	private final Set<T> motors;
+	private final ObjectSet<T> motors;
 
 	private ITableListener mTableListener;
 	private ITable mTable;
 
 	public MotorGroup(T[] synchronizedMotors) {
-		this.motors = Sets.newHashSet(synchronizedMotors);
+		this.motors = ObjectSet.with(synchronizedMotors);
 	}
 
 	public void addMotor(T motor) {
@@ -52,7 +50,7 @@ public class MotorGroup<T extends PWM & SpeedController> extends SensorBase impl
 
 	@Override
 	public double get() {
-		if (this.motors.size() <= 0) return 0;
+		if (this.motors.size <= 0) return 0;
 
 		double sum = 0;
 
@@ -60,7 +58,7 @@ public class MotorGroup<T extends PWM & SpeedController> extends SensorBase impl
 			sum += sc.get();
 		}
 
-		return sum / this.motors.size();
+		return sum / this.motors.size;
 	}
 
 	@Override
@@ -124,7 +122,7 @@ public class MotorGroup<T extends PWM & SpeedController> extends SensorBase impl
 			count++;
 			sb.append("PWM ").append(sc.getChannel());
 
-			if (count != this.motors.size()) {
+			if (count != this.motors.size) {
 				sb.append(", ");
 			}
 		}

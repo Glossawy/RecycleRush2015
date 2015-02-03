@@ -17,10 +17,9 @@
 package org.usfirst.frc.team1554.lib.util;
 
 import java.util.Map;
-import java.util.Set;
 
 import org.usfirst.frc.team1554.lib.collect.Maps;
-import org.usfirst.frc.team1554.lib.collect.Sets;
+import org.usfirst.frc.team1554.lib.collect.ObjectSet;
 
 /**
  * Small Utility to Determine OS and OS Architecture based on an enumeration of
@@ -482,7 +481,7 @@ public final class OS {
 	private static final Map<OS, String> nameLookup = Maps.newHashMap();
 
 	private static final Runtime rt = Runtime.getRuntime();
-	private static final Set<OS> values = Sets.newHashSet(WINDOWS, UNIX, UNSUPPORTED);
+	private static final ObjectSet<OS> values = ObjectSet.with(WINDOWS, UNIX, UNSUPPORTED);
 
 	public final String suffix;
 	public final String[] aliases;
@@ -590,7 +589,7 @@ public final class OS {
 		return used / total;
 	}
 
-	public static Set<OS> values() {
+	public static ObjectSet<OS> values() {
 		return values;
 	}
 

@@ -108,4 +108,15 @@ public final class Sets {
 		return newBitSet(Long.toString(bits, 2));
 	}
 
+	public static <V> ObjectSet<V> newObjectSet() {
+		return new ObjectSet<V>();
+	}
+
+	public static <V> ObjectSet<V> newObjectSet(int initialCapacity) {
+		return new ObjectSet<V>(initialCapacity);
+	}
+
+	public static <V> ObjectSet<V> newObjectSet(int initialCapacity, float loadFactor) {
+		return new ObjectSet<V>(initialCapacity, loadFactor);
+	}
 }

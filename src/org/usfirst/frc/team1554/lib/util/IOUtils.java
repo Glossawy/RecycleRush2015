@@ -16,13 +16,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Properties;
 
 import org.usfirst.frc.team1554.lib.collect.Lists;
 import org.usfirst.frc.team1554.lib.collect.Maps;
+import org.usfirst.frc.team1554.lib.collect.ObjectMap;
 import org.usfirst.frc.team1554.lib.io.LineProcessor;
 import org.usfirst.frc.team1554.lib.io.SingleStringProcessor;
 
@@ -52,7 +52,7 @@ public class IOUtils {
 	 */
 	public static final int DEFAULT_BUFFER_SIZE = 4096;
 
-	private static final Map<String, Charset> charsetMap = Maps.newHashMap();
+	private static final ObjectMap<String, Charset> charsetMap = Maps.newObjectMap();
 
 	static {
 		for (final Entry<String, Charset> cEntry : Charset.availableCharsets().entrySet()) {

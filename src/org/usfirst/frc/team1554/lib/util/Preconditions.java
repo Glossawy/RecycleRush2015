@@ -42,6 +42,38 @@ public final class Preconditions {
 	}
 
 	/**
+	 * Ensure an Expression is true or throw an IllegalStateException.
+	 * 
+	 * @param exp
+	 */
+	public static void checkState(boolean exp) {
+		if (!exp) throw new IllegalStateException();
+	}
+
+	/**
+	 * Ensure an Expression is true or throw an IllegalStateException with the given
+	 * errorMessage.
+	 * 
+	 * @param exp
+	 * @param errorMessage
+	 */
+	public static void checkState(boolean exp, String errorMessage) {
+		if (!exp) throw new IllegalStateException(errorMessage);
+	}
+
+	/**
+	 * Ensure an Expression is true or throw an IllegalStateException with the given,
+	 * formatted, message.
+	 * 
+	 * @param exp
+	 * @param format
+	 * @param messageItems
+	 */
+	public static void checkState(boolean exp, String format, Object... messageItems) {
+		if (!exp) throw new IllegalStateException(String.format(format, toStringArray(messageItems)));
+	}
+
+	/**
 	 * Ensure a given Reference is Not Null or throw a NPE.
 	 * 
 	 * @param ref

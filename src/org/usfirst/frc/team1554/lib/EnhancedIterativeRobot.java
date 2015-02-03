@@ -1,6 +1,9 @@
 package org.usfirst.frc.team1554.lib;
 
+import java.lang.annotation.Native;
+
 import org.usfirst.frc.team1554.lib.io.Console;
+import org.usfirst.frc.team1554.lib.meta.RobotExecutionException;
 import org.usfirst.frc.team1554.lib.util.RoboUtils;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -155,6 +158,7 @@ public abstract class EnhancedIterativeRobot extends RobotBase implements Dispos
 
 	@Override
 	protected final void prestart() {
+		ensureNativesLoaded();
 		// Don't immediately enable robot
 	}
 
@@ -400,5 +404,16 @@ public abstract class EnhancedIterativeRobot extends RobotBase implements Dispos
 
 	@Override
 	abstract public void dispose();
+
+	private final void ensureNativesLoaded() {
+		try {
+			// Force the Static Initializers to Run
+			Class.forName(Native.class.getName());
+		} catch (final Exception e) {
+			Console.exception(e);
+			RoboUtils.exceptionToDS(e);
+			throw new RobotExecutionException("Failed to Load Natives!", e);
+		}
+	}
 
 }

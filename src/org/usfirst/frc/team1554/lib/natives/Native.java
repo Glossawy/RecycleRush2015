@@ -113,24 +113,23 @@ public final class Native {
 		try {
 			return loadLibrary(libname, new File(Native.class.getResource(filename).toURI()));
 		} catch (final URISyntaxException e) {
-			if(bits == OS.Bit.BIT_64)
-				return loadLibrary_32(libname);
+			if (bits == OS.Bit.BIT_64) return loadLibrary_32(libname);
 			throw new IOException(e);
 		}
 	}
-	
+
 	// Attempts to find Library File as 32-bit Library if 64-bit library not found.
 	// This is likely to fail even on 64-bit systems. But we might as well try.
 	private static synchronized boolean loadLibrary_32(String libname) throws IOException {
 		final OS sys = OS.get();
 		String filename = libname;
 
-		if (sys == OS.WINDOWS)
+		if (sys == OS.WINDOWS) {
 			filename += ".dll";
-		else {
+		} else {
 			filename = "lib" + libname + ".so";
 		}
-		
+
 		try {
 			return loadLibrary(libname, new File(Native.class.getResource(filename).toURI()));
 		} catch (final URISyntaxException e) {

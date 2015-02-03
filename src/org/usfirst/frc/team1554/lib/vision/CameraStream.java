@@ -1,16 +1,23 @@
 package org.usfirst.frc.team1554.lib.vision;
 
+import static org.usfirst.frc.team1554.lib.net.ServerSocket.Protocol.TCP;
+import static org.usfirst.frc.team1554.lib.net.SocketParams.TRAFFIC_LOWDELAY;
+import static org.usfirst.frc.team1554.lib.net.SocketParams.TRAFFIC_RELIABLE;
+import static org.usfirst.frc.team1554.lib.net.SocketParams.TRAFFIC_THROUGHPUT;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
 import org.usfirst.frc.team1554.lib.io.Console;
+import org.usfirst.frc.team1554.lib.net.RoboServerSocket;
+import org.usfirst.frc.team1554.lib.net.ServerSocket;
+import org.usfirst.frc.team1554.lib.net.ServerSocketParams;
+import org.usfirst.frc.team1554.lib.net.Socket;
+import org.usfirst.frc.team1554.lib.net.SocketParams;
 import org.usfirst.frc.team1554.lib.util.RoboUtils;
 
 import com.ni.vision.NIVision;
@@ -206,15 +213,20 @@ public enum CameraStream {
 	}
 
 	private void serveStream() throws IOException, InterruptedException {
-		try (ServerSocket socket = new ServerSocket()) {
-			socket.setReuseAddress(true);
-			socket.bind(new InetSocketAddress(PORT));
+		final ServerSocketParams params = new ServerSocketParams();
+		params.acceptTimeout = 10_000;
+
+		final SocketParams clientParams = new SocketParams();
+		clientParams.connectionTimeout = 10_000;
+		clientParams.trafficClass = TRAFFIC_LOWDELAY | TRAFFIC_RELIABLE | TRAFFIC_THROUGHPUT;
+
+		try (ServerSocket socket = new RoboServerSocket(TCP, PORT, params)) {
 			while (true) {
 				try {
-					final Socket s = socket.accept();
+					final Socket s = socket.accept(clientParams);
 
-					final DataInputStream is = new DataInputStream(s.getInputStream());
-					final DataOutputStream os = new DataOutputStream(s.getOutputStream());
+					final DataInputStream is = new DataInputStream(s.input());
+					final DataOutputStream os = new DataOutputStream(s.output());
 
 					// We must take the data but we do not use Compression or Quality
 					final int fps = is.readInt();

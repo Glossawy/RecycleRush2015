@@ -46,7 +46,7 @@ public interface JoystickControl extends Disposable {
 	/** Determine if the Twist Axis of the Left or Right Side Joystick is disabled */
 	boolean getDisableTwistAxis(Hand side);
 
-	boolean dampenOutputs();
+	boolean isDampenOutputs();
 
 	/** Get Twist Joystick */
 	Joystick leftJoystick();

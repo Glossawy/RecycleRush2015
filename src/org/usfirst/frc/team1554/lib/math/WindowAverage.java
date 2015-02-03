@@ -2,40 +2,27 @@ package org.usfirst.frc.team1554.lib.math;
 
 public class WindowAverage {
 
-	public static void main(String[] args) {
-		final WindowAverage avg = new WindowAverage(500);
-
-		for (int i = 0; i < (Integer.MAX_VALUE / 10); i++) {
-			avg.addValue(MathUtils.random(-100, 100));
-		}
-
-		System.out.println("Reached Calculations! =D");
-		System.out.println(avg.min());
-		System.out.println(avg.max());
-		System.out.println(avg.mean());
-		System.out.println(avg.variance());
-		System.out.println(avg.standardDeviation());
-	}
-
 	private final double[] values;
-	private final double[] tmpBuffer;
 
 	private int valueCount = 0;
+	private int index = 0;
 	private double mean = 0, min = 0, max = 0;
 	private boolean calc = true;
 
 	public WindowAverage(int windowLength) {
 		this.values = new double[windowLength];
-		this.tmpBuffer = new double[windowLength - 1];
 	}
 
 	public void addValue(double value) {
-		if (this.valueCount == this.values.length) {
-			System.arraycopy(this.values, 1, this.tmpBuffer, 0, this.tmpBuffer.length);
-			this.values[this.values.length - 1] = value;
-			System.arraycopy(this.tmpBuffer, 0, this.values, 0, this.tmpBuffer.length);
-		} else {
-			this.values[this.valueCount++] = value;
+		// If we reach the end, we are wrapping around.
+		if (this.index == this.values.length) {
+			this.index = 0;
+		}
+
+		this.values[this.index++] = value;
+
+		if (this.valueCount != this.values.length) {
+			this.valueCount++;
 		}
 
 		this.calc = true;

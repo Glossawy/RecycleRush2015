@@ -71,7 +71,7 @@ public class SingleJoystickControl implements JoystickControl {
 	}
 
 	@Override
-	public boolean dampenOutputs() {
+	public boolean isDampenOutputs() {
 		return this.dampen;
 	}
 

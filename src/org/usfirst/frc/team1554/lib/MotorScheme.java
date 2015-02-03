@@ -5,11 +5,10 @@ import static edu.wpi.first.wpilibj.RobotDrive.MotorType.kFrontRight;
 import static edu.wpi.first.wpilibj.RobotDrive.MotorType.kRearLeft;
 import static edu.wpi.first.wpilibj.RobotDrive.MotorType.kRearRight;
 
-import java.util.Map;
-
 import org.usfirst.frc.team1554.lib.collect.IntMap;
 import org.usfirst.frc.team1554.lib.collect.IntMap.Values;
 import org.usfirst.frc.team1554.lib.collect.Maps;
+import org.usfirst.frc.team1554.lib.collect.ObjectMap;
 import org.usfirst.frc.team1554.lib.util.IBuilder;
 
 import edu.wpi.first.wpilibj.PWM;
@@ -87,7 +86,7 @@ public interface MotorScheme extends Disposable {
 		ARCADE {
 			@Override
 			void updateDrive(RobotDrive drive, JoystickControl c, BasicSense s) {
-				drive.arcadeDrive(c.rightJoystick(), c.dampenOutputs());
+				drive.arcadeDrive(c.rightJoystick(), c.isDampenOutputs());
 			}
 		},
 		/**
@@ -97,7 +96,7 @@ public interface MotorScheme extends Disposable {
 		TANK {
 			@Override
 			void updateDrive(RobotDrive drive, JoystickControl c, BasicSense sense) {
-				drive.tankDrive(c.leftJoystick(), c.rightJoystick(), c.dampenOutputs());
+				drive.tankDrive(c.leftJoystick(), c.rightJoystick(), c.isDampenOutputs());
 			}
 		};
 
@@ -139,7 +138,7 @@ public interface MotorScheme extends Disposable {
 	 * 
 	 * @return
 	 */
-	Map<String, SpeedController> nameMap();
+	ObjectMap<String, SpeedController> nameMap();
 
 	void updateDrive(RobotDrive drive, JoystickControl control, BasicSense sense);
 
@@ -287,7 +286,7 @@ public interface MotorScheme extends Disposable {
 		private final boolean[] inverted = { false, false, false, false };
 		private DriveManager dManager = DriveManager.TANK;
 		private final IntMap<SpeedController> additionalMotors = Maps.newIntMap(8);
-		private final Map<String, SpeedController> additionalMotorNames = Maps.newHashMap();
+		private final ObjectMap<String, SpeedController> additionalMotorNames = Maps.newObjectMap();
 
 		/**
 		 * Create a MotorScheme based on a Two Channel Drive System. This defaults to
@@ -487,7 +486,7 @@ public interface MotorScheme extends Disposable {
 				}
 
 				@Override
-				public Map<String, SpeedController> nameMap() {
+				public ObjectMap<String, SpeedController> nameMap() {
 					return additionalMotorNames;
 				}
 

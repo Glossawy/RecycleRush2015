@@ -1,8 +1,6 @@
 package org.usfirst.frc.team1554.lib.vision.proc;
 
-import java.util.List;
-
-import org.usfirst.frc.team1554.lib.collect.Lists;
+import org.usfirst.frc.team1554.lib.collect.Array;
 import org.usfirst.frc.team1554.lib.concurrent.AsyncResult;
 import org.usfirst.frc.team1554.lib.math.MathUtils;
 
@@ -11,14 +9,15 @@ import edu.wpi.first.wpilibj.image.ImageBase;
 class ImageContainer<T extends ImageBase> {
 
 	private final T image;
-	private final List<ImageProcessor<? super T>> processors;
-	private final List<AsyncResult<Boolean>> futures = Lists.newArrayList();
+	private final Array<ImageProcessor<? super T>> processors;
+	private final Array<AsyncResult<Boolean>> futures = new Array<>();
 
 	private boolean processing = false;
 
-	public ImageContainer(T img, ImageProcessor<? super T> processors) {
+	@SafeVarargs
+	public ImageContainer(T img, ImageProcessor<? super T>... processors) {
 		this.image = img;
-		this.processors = Lists.newArrayList(processors);
+		this.processors = new Array<>(true, processors, 0, processors.length);
 	}
 
 	public void process(ImageEngine engine) {
@@ -59,12 +58,12 @@ class ImageContainer<T extends ImageBase> {
 		if (this.processing) return false;
 
 		checkFutures();
-		return this.futures.isEmpty();
+		return this.futures.size == 0;
 	}
 
 	private void checkFutures() {
 		synchronized (this.futures) {
-			final List<AsyncResult<Boolean>> killed = Lists.newArrayList();
+			final Array<AsyncResult<Boolean>> killed = new Array<>();
 
 			for (final AsyncResult<Boolean> future : this.futures) {
 				if (future.isDone()) {
@@ -72,7 +71,7 @@ class ImageContainer<T extends ImageBase> {
 				}
 			}
 
-			this.futures.removeAll(killed);
+			this.futures.removeAll(killed, true);
 		}
 	}
 }
