@@ -68,7 +68,7 @@ public class Robot extends EnhancedIterativeRobot {
 		this.control.putButtonAction(ID_DISABLE_TWIST, () -> this.control.setDisableTwistAxis(Hand.RIGHT, !this.control.getDisableTwistAxis(Hand.RIGHT)), Hand.RIGHT);
 
 		this.camera = new USBCamera();
-		this.camera.setSize(CameraSize.LARGE);
+		this.camera.setSize(CameraSize.MEDIUM);
 		CameraStream.INSTANCE.startAutomaticCapture(this.camera);
 
 	}
@@ -77,7 +77,6 @@ public class Robot extends EnhancedIterativeRobot {
 	public void onInitialization() {
 		final FileHandle testFile = new FileHandle("Sweet.txt");
 		Console.info(testFile.path() + ": " + testFile.create());
-		Retrieve.retrieveSmartDashboardKeys();
 		Console.debug("Initialization Complete!");
 	}
 

@@ -214,10 +214,10 @@ public enum CameraStream {
 
 	private void serveStream() throws IOException, InterruptedException {
 		final ServerSocketParams params = new ServerSocketParams();
-		params.acceptTimeout = 10_000;
+		params.acceptTimeout = 0;
 
 		final SocketParams clientParams = new SocketParams();
-		clientParams.connectionTimeout = 10_000;
+		clientParams.connectionTimeout = 0;
 		clientParams.trafficClass = TRAFFIC_LOWDELAY | TRAFFIC_RELIABLE | TRAFFIC_THROUGHPUT;
 
 		try (ServerSocket socket = new RoboServerSocket(TCP, PORT, params)) {
