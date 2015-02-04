@@ -724,7 +724,7 @@ public class IntMap<V> {
 		}
 	}
 
-	private static class Entries<V> extends MapIterator<V> implements Iterable<Entry<V>>, Iterator<Entry<V>> {
+	public static class Entries<V> extends MapIterator<V> implements Iterable<Entry<V>>, Iterator<Entry<V>> {
 
 		private final Entry<V> entry = new Entry<V>();
 
