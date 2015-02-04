@@ -22,8 +22,6 @@ import org.usfirst.frc.team1554.lib.util.OS;
  *
  */
 public final class Native {
-
-	public static final int n = 0b1000 | 0b0101;
 	
 	private Native() {
 	}
