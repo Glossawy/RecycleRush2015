@@ -152,8 +152,10 @@ public abstract class EnhancedIterativeRobot extends RobotBase implements Dispos
 	private RobotState state = RobotState.DISABLED;
 	private boolean forceLive = false;
 
-	public EnhancedIterativeRobot() {
+	public EnhancedIterativeRobot(String teamName, int teamNumber) {
 		super();
+		
+		TeamInfo.set(teamName, teamNumber);
 	}
 
 	@Override

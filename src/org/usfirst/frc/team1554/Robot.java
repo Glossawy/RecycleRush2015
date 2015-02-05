@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1554;
 
-import static org.usfirst.frc.team1554.Ref.Buttons.ID_DISABLE_TWIST;
+import static org.usfirst.frc.team1554.Ref.Buttons.ID_DISABLE_TWIST; 
 import static org.usfirst.frc.team1554.Ref.Buttons.ID_SWAP_JOYSTICKS;
 import static org.usfirst.frc.team1554.Ref.Buttons.ID_TURBO_DRIVE;
 import static org.usfirst.frc.team1554.Ref.Channels.FL_DMOTOR;
@@ -33,7 +33,10 @@ import org.usfirst.frc.team1554.lib.vision.CameraStream;
 import org.usfirst.frc.team1554.lib.vision.USBCamera;
 
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer.Range;
+
+// TODO bind value methods and change listeners
 
 /**
  * The VM is configured to automatically run this class, and to call the functions
@@ -49,15 +52,22 @@ public class Robot extends EnhancedIterativeRobot {
 	private final MotorScheme motors;
 	private final BasicSense senses;
 	private final USBCamera camera;
+	
+	private SpeedController winchMotor;
 
 	public Robot() {
-		super();
+		super("Oceanside Sailors", 0x612);
 
 		Console.debug("Creating and Initializing Controls/Motor Scheme/Senses...");
 		this.control = new DualJoystickControl(JOYSTICK_LEFT, JOYSTICK_RIGHT);
 		this.control.setMagnitudeThreshold(MAG_STICK_DEADBAND);
 		this.control.setTwistThreshold(TWIST_STICK_DEADBAND);
-		this.motors = MotorScheme.Builder.newFourMotorDrive(FL_DMOTOR, RL_DMOTOR, FR_DMOTOR, RR_DMOTOR).setInverted(false, true).setDriveManager(DriveManager.MECANUM_POLAR).build();
+		this.motors = MotorScheme.Builder
+								 .newFourMotorDrive(FL_DMOTOR, RL_DMOTOR, FR_DMOTOR, RR_DMOTOR)
+								 .setInverted(false, true)
+								 .setDriveManager(DriveManager.MECANUM_POLAR)
+								 .addMotor(7, Names.WINCH_MOTOR)
+								 .build();
 		this.motors.getRobotDrive().setMaxOutput(DRIVE_SCALE_FACTOR);
 		this.senses = BasicSense.makeBuiltInSense(Range.k4G);
 
@@ -66,7 +76,7 @@ public class Robot extends EnhancedIterativeRobot {
 		this.control.putButtonAction(ID_SWAP_JOYSTICKS, () -> this.control.swapJoysticks(), Hand.RIGHT);
 		this.control.putButtonAction(ID_DISABLE_TWIST, () -> this.control.setDisableTwistAxis(Hand.LEFT, !this.control.getDisableTwistAxis(Hand.LEFT)), Hand.LEFT);
 		this.control.putButtonAction(ID_DISABLE_TWIST, () -> this.control.setDisableTwistAxis(Hand.RIGHT, !this.control.getDisableTwistAxis(Hand.RIGHT)), Hand.RIGHT);
-
+		
 		this.camera = new USBCamera();
 		this.camera.setSize(CameraSize.MEDIUM);
 		CameraStream.INSTANCE.startAutomaticCapture(this.camera);
@@ -77,17 +87,19 @@ public class Robot extends EnhancedIterativeRobot {
 	public void onInitialization() {
 		final FileHandle testFile = new FileHandle("Sweet.txt");
 		Console.info(testFile.path() + ": " + testFile.create());
+		
+		this.winchMotor = motors.getMotor(Names.WINCH_MOTOR);
+		
 		Console.debug("Initialization Complete!");
 	}
 
 	@Override
 	public void preDisabled() {
-
+		winchMotor.set(0.0);
 	}
 
 	@Override
 	public void onDisabled() {
-		// TODO Auto-generated method stub
 	}
 
 	@Override
@@ -112,6 +124,9 @@ public class Robot extends EnhancedIterativeRobot {
 	public void onTeleop() {
 		this.control.update();
 		updateDrive();
+		
+		int pov = control.getPOV(Hand.RIGHT);
+		winchMotor.set(pov == 0 ? 0.1 : pov == 180 ? -0.1 : 0);
 	}
 
 	@Override

@@ -19,6 +19,7 @@ import org.usfirst.frc.team1554.lib.collect.Maps;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 
+// FIXME Put documentation and Preconditions to try and prevent user error
 /**
  * Implementation for Supporting a USB Xbox Controller as a Joystick. Some helper
  * methods are provided for Xbox-Specific Features.
@@ -81,6 +82,11 @@ public class XboxControl implements JoystickControl {
 	@Override
 	public double getDirectionDegrees() {
 		return Math.toDegrees(getDirectionRadians());
+	}
+	
+	@Override
+	public int getPOV(Hand hand, int povIndex) {
+		return stick.getPOV(povIndex); 
 	}
 
 	@Override

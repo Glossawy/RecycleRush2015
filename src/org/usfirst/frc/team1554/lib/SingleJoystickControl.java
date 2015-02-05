@@ -64,6 +64,11 @@ public class SingleJoystickControl implements JoystickControl {
 	public double getDirectionDegrees() {
 		return Math.toDegrees(getDirectionRadians());
 	}
+	
+	@Override
+	public int getPOV(Hand hand, int povIndex) {
+		return stick.getPOV(povIndex);
+	}
 
 	@Override
 	public boolean getDisableTwistAxis(Hand side) {
