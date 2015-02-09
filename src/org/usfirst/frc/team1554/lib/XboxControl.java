@@ -83,10 +83,10 @@ public class XboxControl implements JoystickControl {
 	public double getDirectionDegrees() {
 		return Math.toDegrees(getDirectionRadians());
 	}
-	
+
 	@Override
 	public int getPOV(Hand hand, int povIndex) {
-		return stick.getPOV(povIndex); 
+		return this.stick.getPOV(povIndex);
 	}
 
 	@Override

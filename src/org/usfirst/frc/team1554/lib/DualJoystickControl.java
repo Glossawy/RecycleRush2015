@@ -73,14 +73,14 @@ public class DualJoystickControl implements JoystickControl {
 	public double getDirectionDegrees() {
 		return Math.toDegrees(getDirectionRadians());
 	}
-	
+
 	@Override
 	public int getPOV(Hand hand, int povIndex) {
-		switch(hand) {
+		switch (hand) {
 		case RIGHT:
-			return rightStick.getPOV(povIndex);
+			return this.rightStick.getPOV(povIndex);
 		case LEFT:
-			return leftStick.getPOV(povIndex);
+			return this.leftStick.getPOV(povIndex);
 		default:
 			throw new UnsupportedOperationException("Cannot get POV for both joysticks!");
 		}

@@ -64,12 +64,12 @@ public interface JoystickControl extends Disposable {
 	default double getDirectionDegrees() {
 		return Math.toDegrees(getDirectionRadians());
 	}
-	
+
 	default int getPOV(Hand hand) {
 		return getPOV(hand, 0);
 	}
-	
-	/** Get POV Setting (DPad on Controller or Directional Switch on Top of Joystick)*/
+
+	/** Get POV Setting (DPad on Controller or Directional Switch on Top of Joystick) */
 	int getPOV(Hand hand, int povIndex);
 
 	/** Determine if the Twist Axis of the Left or Right Side Joystick is disabled */

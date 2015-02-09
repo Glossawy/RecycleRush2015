@@ -22,7 +22,7 @@ import org.usfirst.frc.team1554.lib.util.OS;
  *
  */
 public final class Native {
-	
+
 	private Native() {
 	}
 

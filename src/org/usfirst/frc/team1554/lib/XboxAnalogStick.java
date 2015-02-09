@@ -40,7 +40,7 @@ class XboxAnalogStick implements JoystickControl {
 	public double getTwist() {
 		return 0;
 	}
-	
+
 	@Override
 	public int getPOV(Hand hand, int povIndex) {
 		return 0;

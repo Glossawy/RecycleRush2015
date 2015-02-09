@@ -79,15 +79,15 @@ public class RoboSocket implements Socket {
 	public String getRemoteAddress() {
 		return this.socket.getRemoteSocketAddress().toString();
 	}
-	
+
 	@Override
 	public String getInetAddress() {
-		return socket.getInetAddress().toString();
+		return this.socket.getInetAddress().toString();
 	}
-	
+
 	@Override
 	public int getPort() {
-		return socket.getPort();
+		return this.socket.getPort();
 	}
 
 	@Override

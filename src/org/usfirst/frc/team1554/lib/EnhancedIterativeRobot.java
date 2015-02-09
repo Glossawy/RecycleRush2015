@@ -1,13 +1,9 @@
 package org.usfirst.frc.team1554.lib;
 
-import java.lang.annotation.Native;
-
 import org.usfirst.frc.team1554.lib.io.Console;
-import org.usfirst.frc.team1554.lib.meta.RobotExecutionException;
 import org.usfirst.frc.team1554.lib.util.RoboUtils;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary;
 import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary.tInstances;
@@ -16,6 +12,8 @@ import edu.wpi.first.wpilibj.communication.UsageReporting;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 // TODO Listeners
+// TODO EnhancedSimopleRobot -- An Enhanced Simple Robot Implementation using RoboLib
+// Features
 /**
  * An Alternative (and hopefully enhanced) approach to {@link IterativeRobot}. For
  * one this class is Abstract and requires the user to implement certain methods that
@@ -36,132 +34,18 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  * 
  * @author Matthew
  */
-public abstract class EnhancedIterativeRobot extends RobotBase implements Disposable {
-
-	/**
-	 * Representation of Current Robot State. This is the alternative solution to the
-	 * boolean flag switches in {@link IterativeRobot} that encapsulates method calls
-	 * as well.
-	 * 
-	 * @author Matthew
-	 */
-	public enum RobotState {
-		/**
-		 * Disabled Mode Handler
-		 */
-		DISABLED {
-			@Override
-			public void doPreMethod(EnhancedIterativeRobot bot) {
-				bot.preDisabled();
-			}
-
-			@Override
-			public void doOnMethod(EnhancedIterativeRobot bot) {
-				FRCNetworkCommunicationsLibrary.FRCNetworkCommunicationObserveUserProgramDisabled();
-				bot.onDisabled();
-			}
-
-			@Override
-			public void doPostMethod(EnhancedIterativeRobot bot) {
-				bot.postDisabled();
-			}
-		},
-		/**
-		 * Teleoperated Handler
-		 */
-		TELEOP {
-			@Override
-			public void doPreMethod(EnhancedIterativeRobot bot) {
-				bot.preTeleop();
-			}
-
-			@Override
-			public void doOnMethod(EnhancedIterativeRobot bot) {
-				FRCNetworkCommunicationsLibrary.FRCNetworkCommunicationObserveUserProgramTeleop();
-				bot.onTeleop();
-			}
-
-			@Override
-			public void doPostMethod(EnhancedIterativeRobot bot) {
-				bot.postTeleop();
-			}
-		},
-		/**
-		 * Autonomous Handler
-		 */
-		AUTONOMOUS {
-			@Override
-			public void doPreMethod(EnhancedIterativeRobot bot) {
-				bot.preAutonomous();
-			}
-
-			@Override
-			public void doOnMethod(EnhancedIterativeRobot bot) {
-				FRCNetworkCommunicationsLibrary.FRCNetworkCommunicationObserveUserProgramAutonomous();
-				bot.onAutonomous();
-			}
-
-			@Override
-			public void doPostMethod(EnhancedIterativeRobot bot) {
-				bot.postAutonomous();
-			}
-		},
-		/**
-		 * Test Mode Handler
-		 */
-		TEST_MODE {
-			@Override
-			public void doPreMethod(EnhancedIterativeRobot bot) {
-				bot.preTest();
-			}
-
-			@Override
-			public void doOnMethod(EnhancedIterativeRobot bot) {
-				FRCNetworkCommunicationsLibrary.FRCNetworkCommunicationObserveUserProgramTest();
-				bot.onTest();
-			}
-
-			@Override
-			public void doPostMethod(EnhancedIterativeRobot bot) {
-				bot.postDisabled();
-			}
-		};
-
-		/**
-		 * Execute Appropriate preX() method. (State Entrance Method)
-		 * 
-		 * @param bot
-		 */
-		abstract public void doPreMethod(EnhancedIterativeRobot bot);
-
-		/**
-		 * Execute Appropriate onX() method. (State Execution Method)
-		 * 
-		 * @param bot
-		 */
-		abstract public void doOnMethod(EnhancedIterativeRobot bot);
-
-		/**
-		 * Execute Appropriate postX() method. (State Exit Method)
-		 * 
-		 * @param bot
-		 */
-		abstract public void doPostMethod(EnhancedIterativeRobot bot);
-	}
+public abstract class EnhancedIterativeRobot extends EnhancedRobotBase {
 
 	private RobotState state = RobotState.DISABLED;
 	private boolean forceLive = false;
 
 	public EnhancedIterativeRobot(String teamName, int teamNumber) {
-		super();
-		
-		TeamInfo.set(teamName, teamNumber);
+		super(teamName, teamNumber);
 	}
 
 	@Override
 	protected final void prestart() {
-		ensureNativesLoaded();
-		// Don't immediately enable robot
+		EnhancedRobotBase.ensureNativesLoaded();
 	}
 
 	/**
@@ -271,104 +155,8 @@ public abstract class EnhancedIterativeRobot extends RobotBase implements Dispos
 	 * null then an exception is thrown as they are required by
 	 * {@link EnhancedIterativeRobot}.
 	 */
+	@Override
 	abstract public void onInitialization();
-
-	/**
-	 * Code to execute before entering Disabled Mode.
-	 */
-	abstract public void preDisabled();
-
-	/**
-	 * Code to execute while Disabled. This is looped as quickly as possible.
-	 */
-	abstract public void onDisabled();
-
-	/**
-	 * Code to execute while leaving Disabled Mode. Free or Reset State-Dependent
-	 * Resources and Objects here.
-	 */
-	public void postDisabled() {
-		Console.info("DEFAULT POSTDISABLED()! Override me!");
-	}
-
-	/**
-	 * Code to execute before entering Autonomous.
-	 */
-	abstract public void preAutonomous();
-
-	/**
-	 * Code to execute while in Autonomous. This is looped as quickly as possible.
-	 */
-	abstract public void onAutonomous();
-
-	/**
-	 * Code to execute while leaving Autonomous. Free or Reset State-Dependent
-	 * Resources and Objects here.
-	 */
-	public void postAutonomous() {
-		Console.info("DEFAULT POSTAUTONOMOUS()! Override me!");
-	}
-
-	/**
-	 * Code to execute before entering TeleOp.
-	 */
-	abstract public void preTeleop();
-
-	/**
-	 * Code to execute while in Teleop. This is looped as quickly as possible.
-	 */
-	abstract public void onTeleop();
-
-	/**
-	 * Code to execute while leaving Teleop. Free or Reset State-Dependent Resources
-	 * and Objects here.
-	 */
-	public void postTeleop() {
-		Console.info("DEFAULT POSTTELEOP()! Override me!");
-	}
-
-	/**
-	 * Code to execute before entering Test Mode.
-	 */
-	public void preTest() {
-		Console.info("DEFAULT PRETEST()! Override me!");
-	}
-
-	/**
-	 * Code to execute while in Test. This is looped as quickly as possible.
-	 */
-	abstract public void onTest();
-
-	/**
-	 * Code to execute while leaving Test Mode. Free or Reset State-Dependent
-	 * Resources and Objects here.
-	 */
-	public void postTest() {
-		Console.info("DEFAULT POSTTEST()! Override me!");
-	}
-
-	/**
-	 * Get Joystick Controls
-	 * 
-	 * @return
-	 */
-	abstract public JoystickControl getJoysticks();
-
-	/**
-	 * Get Robot Motor Sheme
-	 * 
-	 * @return
-	 */
-	abstract public MotorScheme getMotorScheme();
-
-	/**
-	 * Get Robot Drive
-	 * 
-	 * @return
-	 */
-	abstract public RobotDrive getDrive();
-
-	abstract public BasicSense getBasicSenses();
 
 	/**
 	 * Fprce LiveWindow to be available in ALL modes.
@@ -404,18 +192,9 @@ public abstract class EnhancedIterativeRobot extends RobotBase implements Dispos
 		dispose();
 	}
 
+	abstract public RobotDrive getDrive();
+
 	@Override
 	abstract public void dispose();
-
-	private final void ensureNativesLoaded() {
-		try {
-			// Force the Static Initializers to Run
-			Class.forName(Native.class.getName());
-		} catch (final Exception e) {
-			Console.exception(e);
-			RoboUtils.exceptionToDS(e);
-			throw new RobotExecutionException("Failed to Load Natives!", e);
-		}
-	}
 
 }
