@@ -15,6 +15,10 @@ public interface Socket extends Disposable, Closeable {
 	boolean isConnected();
 
 	String getRemoteAddress();
+	
+	String getInetAddress();
+	
+	int getPort();
 
 	@Override
 	void dispose();

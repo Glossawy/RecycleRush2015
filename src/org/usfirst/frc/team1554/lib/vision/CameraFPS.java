@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1554.lib.vision;
 
 public enum CameraFPS {
-	MINIMAL(5), LOW(15), NORMAL(30), HIGH(60);
+	MINIMAL(10), LOW(20), NORMAL(30);
 
 	public final int kFPS;
 
