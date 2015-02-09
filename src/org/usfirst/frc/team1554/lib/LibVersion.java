@@ -44,9 +44,9 @@ public final class LibVersion {
 	public static boolean isLowerOrEqualTo(int major, int minor, int revision) {
 		if (MAJOR != major)
 			return major > MAJOR;
-		else if (MINOR != minor) return minor > MINOR;
+			else if (MINOR != minor) return minor > MINOR;
 
-			return REVISION <= revision;
+		return REVISION <= revision;
 	}
 
 }
