@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1554.lib.collect;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
 import org.usfirst.frc.team1554.lib.math.MathUtils;
@@ -364,6 +365,16 @@ public class Array<T> implements Iterable<T> {
 	public <V> V[] toArray(Class<V> type) {
 		final V[] result = RoboUtils.newArray(type, this.size);
 		System.arraycopy(this.items, 0, result, 0, this.size);
+		return result;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = 17;
+
+		result = (37 * result) + this.size;
+		result = (37 * result) + (this.items != null ? Arrays.hashCode(this.items) : 0);
+
 		return result;
 	}
 

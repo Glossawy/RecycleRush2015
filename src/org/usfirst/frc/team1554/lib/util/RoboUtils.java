@@ -2,6 +2,8 @@ package org.usfirst.frc.team1554.lib.util;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 import org.usfirst.frc.team1554.lib.MotorScheme;
 import org.usfirst.frc.team1554.lib.meta.RobotExecutionException;
@@ -9,6 +11,7 @@ import org.usfirst.frc.team1554.lib.meta.RobotExecutionException;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary;
 import edu.wpi.first.wpilibj.communication.HALControlWord;
+import edu.wpi.first.wpilibj.hal.HALUtil;
 
 public final class RoboUtils {
 
@@ -26,11 +29,30 @@ public final class RoboUtils {
 		return scheme.getRobotDrive();
 	}
 
+	public static final boolean isUserButtonPressed() {
+		final HALControlWord control = FRCNetworkCommunicationsLibrary.HALGetControlWord();
+
+		if (control.getDSAttached()) {
+			final ByteBuffer status = ByteBuffer.allocateDirect(4);
+			status.order(ByteOrder.LITTLE_ENDIAN);
+
+			final boolean val = HALUtil.getFPGAButton(status.asIntBuffer());
+			HALUtil.checkStatus(status.asIntBuffer());
+			return val;
+		}
+
+		return false;
+	}
+
 	public static final void writeToDS(String message) {
 		final HALControlWord controlWord = FRCNetworkCommunicationsLibrary.HALGetControlWord();
 		if (controlWord.getDSAttached()) {
 			FRCNetworkCommunicationsLibrary.HALSetErrorData(message);
 		}
+	}
+
+	public static final void clearDS() {
+		writeToDS("");
 	}
 
 	public static final void exceptionToDS(Throwable t) {

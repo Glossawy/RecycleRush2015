@@ -45,6 +45,7 @@ public abstract class EnhancedIterativeRobot extends EnhancedRobotBase {
 
 	@Override
 	protected final void prestart() {
+		// Don't call FRCUserProgramStarting yet. We have initialization to do!
 		EnhancedRobotBase.ensureNativesLoaded();
 	}
 
@@ -72,9 +73,8 @@ public abstract class EnhancedIterativeRobot extends EnhancedRobotBase {
 	 * Y version of this same loop which will then move to either State X or State Z. <br />
 	 * <br />
 	 * If the Robot reaches an exceptional state (throws an Exception) and it is not
-	 * caught by User Code, then the exception is logged (By {@link Console} and
-	 * {@link RoboComms} by proxy) and then thrown to WPILib to be handled as
-	 * appropriate.
+	 * caught by User Code, then the exception is logged (By {@link Console} and to
+	 * the DS. appropriate.
 	 * 
 	 * @author Matthew Crocco
 	 */
