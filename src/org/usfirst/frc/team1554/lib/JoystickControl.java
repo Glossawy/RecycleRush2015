@@ -22,8 +22,6 @@ public interface JoystickControl extends Disposable {
 	 * @author Matthew
 	 */
 	public enum Hand {
-		// TODO Abstract ot Movement and Twist? Swapping Joysticks can make this
-		// confusing!
 		LEFT(edu.wpi.first.wpilibj.GenericHID.Hand.kLeft.value), RIGHT(edu.wpi.first.wpilibj.GenericHID.Hand.kRight.value), BOTH(-1);
 
 		public final int WPILib_value;

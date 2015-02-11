@@ -54,6 +54,7 @@ public class Robot extends EnhancedIterativeRobot {
 	private final USBCamera camera;
 
 	private SpeedController winchMotor;
+	private Move autonomousMoves;
 
 	public Robot() {
 		super("Oceanside Sailors", 0x612);
@@ -79,11 +80,19 @@ public class Robot extends EnhancedIterativeRobot {
 	}
 
 	@Override
-	public void onInitialization() {
+	protected void onInitialization() {
 		final FileHandle testFile = new FileHandle("Sweet.txt");
 		Console.info(testFile.path() + ": " + testFile.create());
 
 		this.winchMotor = this.motors.getMotor(Names.WINCH_MOTOR);
+		
+		this.control.putButtonAction(5, () -> winchMotor.set(-1), Hand.RIGHT);
+		this.control.putButtonAction(3, () -> winchMotor.set(1), Hand.RIGHT);
+		
+		this.autonomousMoves = Move.startChain(this)
+								   .forward(0.2)
+								   .delay(1)
+								   .build();
 
 		Console.debug("Initialization Complete!");
 	}
@@ -97,16 +106,18 @@ public class Robot extends EnhancedIterativeRobot {
 	public void onDisabled() {
 	}
 
+	private boolean once =false;
 	@Override
 	public void preAutonomous() {
-		// TODO Auto-generated method stub
-
+		once = false;
 	}
 
 	@Override
 	public void onAutonomous() {
-		// TODO Auto-generated method stub
-
+		if(!once){
+			this.autonomousMoves.act();
+			once = true;
+		}
 	}
 
 	@Override
@@ -117,11 +128,9 @@ public class Robot extends EnhancedIterativeRobot {
 
 	@Override
 	public void onTeleop() {
+		this.winchMotor.set(0);
 		this.control.update();
-		updateDrive();
-
-		final int pov = this.control.getPOV(Hand.RIGHT);
-		this.winchMotor.set(pov == 0 ? 0.1 : pov == 180 ? -0.1 : 0);
+//		updateDrive();
 	}
 
 	@Override

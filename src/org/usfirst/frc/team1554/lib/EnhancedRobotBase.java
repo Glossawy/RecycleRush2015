@@ -1,10 +1,10 @@
 package org.usfirst.frc.team1554.lib;
 
-import org.usfirst.frc.team1554.lib.io.Console;
+import org.usfirst.frc.team1554.lib.io.Console; 
 import org.usfirst.frc.team1554.lib.meta.RobotExecutionException;
-import org.usfirst.frc.team1554.lib.natives.Native;
 import org.usfirst.frc.team1554.lib.util.RoboUtils;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary;
@@ -25,6 +25,7 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
 		DISABLED {
 			@Override
 			public void doPreMethod(EnhancedRobotBase bot) {
+				bot.ds().InDisabled(false);
 				bot.preDisabled();
 			}
 
@@ -37,6 +38,7 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
 			@Override
 			public void doPostMethod(EnhancedRobotBase bot) {
 				bot.postDisabled();
+				bot.ds().InDisabled(false);
 			}
 		},
 		/**
@@ -45,6 +47,7 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
 		TELEOP {
 			@Override
 			public void doPreMethod(EnhancedRobotBase bot) {
+				bot.ds().InOperatorControl(true);
 				bot.preTeleop();
 			}
 
@@ -57,6 +60,7 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
 			@Override
 			public void doPostMethod(EnhancedRobotBase bot) {
 				bot.postTeleop();
+				bot.ds().InOperatorControl(false);
 			}
 		},
 		/**
@@ -65,6 +69,7 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
 		AUTONOMOUS {
 			@Override
 			public void doPreMethod(EnhancedRobotBase bot) {
+				bot.ds().InAutonomous(true);
 				bot.preAutonomous();
 			}
 
@@ -77,6 +82,7 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
 			@Override
 			public void doPostMethod(EnhancedRobotBase bot) {
 				bot.postAutonomous();
+				bot.ds().InAutonomous(false);
 			}
 		},
 		/**
@@ -85,6 +91,7 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
 		TEST_MODE {
 			@Override
 			public void doPreMethod(EnhancedRobotBase bot) {
+				bot.ds().InTest(true);
 				bot.preTest();
 			}
 
@@ -97,6 +104,7 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
 			@Override
 			public void doPostMethod(EnhancedRobotBase bot) {
 				bot.postDisabled();
+				bot.ds().InTest(false);
 			}
 		};
 
@@ -120,6 +128,7 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
 		 * @param bot
 		 */
 		abstract public void doPostMethod(EnhancedRobotBase bot);
+		
 	}
 
 	public EnhancedRobotBase(String teamName, int teamNumber) {
@@ -127,12 +136,10 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
 	}
 
 	@Override
-	public void startCompetition() {
-		// TODO Auto-generated method stub
+	abstract public void startCompetition();
 
-	}
-
-	abstract public void onInitialization();
+	protected abstract void onInitialization();
+	public void onAny(){}
 
 	/**
 	 * Code to execute before entering Disabled Mode.
@@ -149,7 +156,7 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
 	 * Resources and Objects here.
 	 */
 	public void postDisabled() {
-		Console.info("DEFAULT POSTDISABLED()! Override me!");
+//		Console.info("DEFAULT POSTDISABLED()! Override me!");
 	}
 
 	/**
@@ -167,7 +174,7 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
 	 * Resources and Objects here.
 	 */
 	public void postAutonomous() {
-		Console.info("DEFAULT POSTAUTONOMOUS()! Override me!");
+//		Console.info("DEFAULT POSTAUTONOMOUS()! Override me!");
 	}
 
 	/**
@@ -185,14 +192,14 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
 	 * and Objects here.
 	 */
 	public void postTeleop() {
-		Console.info("DEFAULT POSTTELEOP()! Override me!");
+//		Console.info("DEFAULT POSTTELEOP()! Override me!");
 	}
 
 	/**
 	 * Code to execute before entering Test Mode.
 	 */
 	public void preTest() {
-		Console.info("DEFAULT PRETEST()! Override me!");
+//		Console.info("DEFAULT PRETEST()! Override me!");
 	}
 
 	/**
@@ -205,7 +212,7 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
 	 * Resources and Objects here.
 	 */
 	public void postTest() {
-		Console.info("DEFAULT POSTTEST()! Override me!");
+//		Console.info("DEFAULT POSTTEST()! Override me!");
 	}
 
 	/**
@@ -229,6 +236,10 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
 	 */
 	abstract public BasicSense getBasicSenses();
 
+	public final DriverStation ds() {
+		return m_ds;
+	}
+	
 	@Override
 	public void free() {
 		super.free();
@@ -242,7 +253,7 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
 	public static final void ensureNativesLoaded() {
 		try {
 			// Force the Static Initializers to Run
-			Class.forName(Native.class.getName());
+//			Class.forName(Native.class.getName());
 		} catch (final Exception e) {
 			Console.exception(e);
 			RoboUtils.exceptionToDS(e);

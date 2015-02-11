@@ -132,6 +132,7 @@ public abstract class EnhancedIterativeRobot extends EnhancedRobotBase {
 					}
 				}
 
+				onAny();
 				if (this.m_ds.isNewControlData()) {
 					this.state.doOnMethod(this);
 				}
@@ -156,7 +157,8 @@ public abstract class EnhancedIterativeRobot extends EnhancedRobotBase {
 	 * {@link EnhancedIterativeRobot}.
 	 */
 	@Override
-	abstract public void onInitialization();
+	protected
+	abstract void onInitialization();
 
 	/**
 	 * Fprce LiveWindow to be available in ALL modes.

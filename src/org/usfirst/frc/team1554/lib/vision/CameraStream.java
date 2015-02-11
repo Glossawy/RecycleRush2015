@@ -34,7 +34,6 @@ import edu.wpi.first.wpilibj.image.ImageBase;
 
 //@off
 // FIXME Rewrite a More Efficient Camera Stream impl. This is currently slightly optimized port of CameraServer but is loosely coupled to the Camera API
-// FIXME Convert to Socket API Sockets
 //@on
 /**
  * An Alternative to {@link CameraServer} that makes use of the Camera API. <br />

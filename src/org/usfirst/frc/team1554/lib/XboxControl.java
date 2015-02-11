@@ -227,7 +227,6 @@ public class XboxControl implements JoystickControl {
 
 	@Override
 	public void setDisableTwistAxis(Hand side, boolean disable) {
-		// TODO Side Dependent Disabled?
 		this.twistDisabled = disable;
 	}
 
@@ -287,7 +286,7 @@ public class XboxControl implements JoystickControl {
 
 		private final XboxControl control;
 
-		public XboxJoystickWrapper(XboxControl control, int port) {
+		private XboxJoystickWrapper(XboxControl control, int port) {
 			super(port);
 			this.control = control;
 		}

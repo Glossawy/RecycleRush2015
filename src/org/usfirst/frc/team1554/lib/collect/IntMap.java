@@ -7,7 +7,6 @@ import org.usfirst.frc.team1554.lib.math.MathUtils;
 import org.usfirst.frc.team1554.lib.meta.Author;
 import org.usfirst.frc.team1554.lib.meta.Noteworthy;
 
-// FIXME Documentation
 /**
  * Implementation of Cuckoo Hash Map with a Stash to store problematic hashes. This
  * is inspired by similar implementations. <br />
