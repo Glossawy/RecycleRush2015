@@ -13,6 +13,7 @@ import static org.usfirst.frc.team1554.lib.XboxConstants.BUTTON_STICK_RIGHT;
 import static org.usfirst.frc.team1554.lib.XboxConstants.DPAD_POV;
 
 import org.usfirst.frc.team1554.lib.collect.IntMap;
+import org.usfirst.frc.team1554.lib.collect.ObjectSet;
 import org.usfirst.frc.team1554.lib.collect.IntMap.Entry;
 import org.usfirst.frc.team1554.lib.collect.Maps;
 
@@ -29,7 +30,7 @@ import edu.wpi.first.wpilibj.Joystick;
  */
 public class XboxControl implements JoystickControl {
 
-	private final IntMap<Runnable> buttonMap = Maps.newIntMap(9);
+	private final IntMap<ObjectSet<Runnable>> buttonMap = Maps.newIntMap(9);
 	private final XboxJoystickWrapper wrappedStick;
 	final Joystick stick;
 
@@ -184,18 +185,21 @@ public class XboxControl implements JoystickControl {
 
 	@Override
 	public void putButtonAction(int bId, Runnable action, Hand side) {
-		this.buttonMap.put(bId, action);
+		ObjectSet<Runnable> list = buttonMap.get(bId, null);
+		if(list == null) {
+			buttonMap.put(bId, list = new ObjectSet<Runnable>());
+		}
 	}
 
 	@Override
-	public Runnable removeButtonAction(int bId, Hand side) {
-		return this.buttonMap.remove(bId);
+	public void removeButtonAction(int bId, Hand side) {
+		this.buttonMap.remove(bId);
 	}
 
 	@Override
 	public void swapJoysticks() {
 		final Axes tempAxes = this.movAxes;
-		final Runnable tempAct = this.buttonMap.get(BUTTON_STICK_LEFT, DO_NOTHING);
+		final ObjectSet<Runnable> tempAct = this.buttonMap.get(BUTTON_STICK_LEFT, DO_NOTHING_SET);
 		final boolean tempCutoff = this.doMovementCutoff;
 
 		this.movAxes = this.rotAxes;
@@ -205,7 +209,7 @@ public class XboxControl implements JoystickControl {
 		this.doRotationCutoff = tempCutoff;
 
 		if (this.doSwapJoystickButtonActions) {
-			this.buttonMap.put(BUTTON_STICK_LEFT, this.buttonMap.get(BUTTON_STICK_RIGHT, DO_NOTHING));
+			this.buttonMap.put(BUTTON_STICK_LEFT, this.buttonMap.get(BUTTON_STICK_RIGHT, DO_NOTHING_SET));
 			this.buttonMap.put(BUTTON_STICK_RIGHT, tempAct);
 		}
 	}
@@ -248,9 +252,10 @@ public class XboxControl implements JoystickControl {
 
 	@Override
 	public void update() {
-		for (final Entry<Runnable> entry : this.buttonMap.entries())
+		for (final Entry<ObjectSet<Runnable>> entry : this.buttonMap.entries())
 			if (this.stick.getRawButton(entry.key) && (entry.value != null)) {
-				entry.value.run();
+				for(Runnable action : entry.value)
+					action.run();
 			}
 	}
 
@@ -342,7 +347,7 @@ public class XboxControl implements JoystickControl {
 		}
 	}
 
-	private static Runnable DO_NOTHING = () -> {
-	};
+	private static Runnable DO_NOTHING = () -> {};
+	private static ObjectSet<Runnable> DO_NOTHING_SET = ObjectSet.with(DO_NOTHING);
 
 }

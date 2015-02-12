@@ -10,6 +10,8 @@ public abstract class Move {
 	private Move parent;
 	private Move child;
 	
+	private boolean active = true;
+	
 	private Move() {
 		this(null);
 	}
@@ -34,8 +36,14 @@ public abstract class Move {
 	protected void callUp() {
 		if(parent != null)
 			parent.callUp();
-		else
+		else if(active){
+			active = false;
 			execute();
+		}
+	}
+	
+	public void reset() {
+		active = true;
 	}
 	
 	public static Builder startChain(EnhancedRobotBase robot) {

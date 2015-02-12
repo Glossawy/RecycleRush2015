@@ -71,8 +71,8 @@ class XboxAnalogStick implements JoystickControl {
 	}
 
 	@Override
-	public Runnable removeButtonAction(int bId, Hand side) {
-		return null;
+	public void removeButtonAction(int bId, Hand side) {
+	
 	}
 
 	@Override

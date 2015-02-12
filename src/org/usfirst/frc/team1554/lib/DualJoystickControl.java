@@ -2,8 +2,10 @@ package org.usfirst.frc.team1554.lib;
 
 import java.util.Iterator;
 
+import org.usfirst.frc.team1554.lib.collect.Array;
 import org.usfirst.frc.team1554.lib.collect.IntMap;
 import org.usfirst.frc.team1554.lib.collect.IntMap.Entry;
+import org.usfirst.frc.team1554.lib.collect.ObjectSet;
 import org.usfirst.frc.team1554.lib.math.MathUtils;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -18,8 +20,8 @@ public class DualJoystickControl implements JoystickControl {
 
 	private Joystick leftStick, rightStick;
 	private final Preferences prefs = Preferences.getInstance();
-	private IntMap<Runnable> leftActions = new IntMap<Runnable>(8);
-	private IntMap<Runnable> rightActions = new IntMap<Runnable>(8);
+	private IntMap<ObjectSet<ButtonAction>> leftActions = new IntMap<>(8);
+	private IntMap<ObjectSet<ButtonAction>> rightActions = new IntMap<>(8);
 
 	private double twistLim = 0.0, magLim = 0.0;
 	private boolean dampen = false;
@@ -85,6 +87,18 @@ public class DualJoystickControl implements JoystickControl {
 			throw new UnsupportedOperationException("Cannot get POV for both joysticks!");
 		}
 	}
+	
+	@Override
+	public IntMap<Array<String>> getBindingInformation(Hand side) {
+		switch(side) {
+		case LEFT:
+			return JoystickControl.toBindings(leftActions);
+		case RIGHT:
+			return JoystickControl.toBindings(rightActions);
+		case BOTH:
+			
+		}
+	}
 
 	@Override
 	public boolean getDisableTwistAxis(Hand side) {
@@ -117,7 +131,7 @@ public class DualJoystickControl implements JoystickControl {
 
 	@Override
 	public void swapJoysticks() {
-		final IntMap<Runnable> tmpMap = this.leftActions;
+		final IntMap<ObjectSet<Runnable>> tmpMap = this.leftActions;
 		final Joystick temp = this.leftStick;
 		final boolean tbool = this.prefs.getBoolean(LEFT_STICK_TWIST_DISABLE, false);
 		final boolean cbool = this.prefs.getBoolean(LEFT_STICK_DO_CUTOFF, false);
@@ -185,7 +199,7 @@ public class DualJoystickControl implements JoystickControl {
 	}
 
 	@Override
-	public void putButtonAction(int bId, Runnable action, Hand side) {
+	public void putButtonAction(int bId, ButtonAction action, Hand side) {
 
 		if (side == Hand.BOTH) {
 			putButtonAction(bId, action, Hand.LEFT);
@@ -193,45 +207,53 @@ public class DualJoystickControl implements JoystickControl {
 			return;
 		}
 
-		final IntMap<Runnable> actions = side == Hand.LEFT ? this.leftActions : this.rightActions;
+		final IntMap<ObjectSet<Runnable>> actions = side == Hand.LEFT ? this.leftActions : this.rightActions;
 		final Joystick stick = side == Hand.RIGHT ? this.leftStick : this.rightStick;
 
 		if (bId > stick.getButtonCount()) throw new IllegalArgumentException("Button ID can't be greater than the joystick button count!: " + bId + " -> " + stick.getButtonCount() + " max");
 
-		actions.put(bId, action);
+		ObjectSet<Runnable> list = actions.get(bId, null);
+		if(list == null) {
+			actions.put(bId, list = new ObjectSet<Runnable>());
+		}
+			
+		
+		list.add(action);
 	}
 
 	@Override
-	public Runnable removeButtonAction(int bId, Hand side) {
+	public void removeButtonAction(int bId, Hand side) {
 
 		if (side == Hand.BOTH) {
 			removeButtonAction(bId, Hand.LEFT);
-			return removeButtonAction(bId, Hand.RIGHT);
+			removeButtonAction(bId, Hand.RIGHT);
 		}
 
-		final IntMap<Runnable> actions = side == Hand.LEFT ? this.leftActions : this.rightActions;
+		final IntMap<ObjectSet<Runnable>> actions = side == Hand.LEFT ? this.leftActions : this.rightActions;
 
-		return actions.remove(bId);
+		actions.remove(bId);
 	}
 
 	@Override
 	public void update() {
-		Iterator<Entry<Runnable>> ids = this.rightActions.iterator();
+		Iterator<Entry<ObjectSet<Runnable>>> ids = this.rightActions.iterator();
 
 		while (ids.hasNext()) {
-			final Entry<Runnable> entry = ids.next();
+			final Entry<ObjectSet<Runnable>> entry = ids.next();
 
 			if (this.rightStick.getRawButton(entry.key)) {
-				entry.value.run();
+				for(Runnable action: entry.value)
+					action.run();
 			}
 		}
 
 		ids = this.leftActions.iterator();
 		while (ids.hasNext()) {
-			final Entry<Runnable> entry = ids.next();
+			final Entry<ObjectSet<Runnable>> entry = ids.next();
 
 			if (this.leftStick.getRawButton(entry.key)) {
-				entry.value.run();
+				for(Runnable action: entry.value)
+					action.run();
 			}
 		}
 	}

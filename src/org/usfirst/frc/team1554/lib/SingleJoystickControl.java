@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import org.usfirst.frc.team1554.lib.collect.IntMap;
 import org.usfirst.frc.team1554.lib.collect.IntMap.Entry;
+import org.usfirst.frc.team1554.lib.collect.ObjectSet;
 import org.usfirst.frc.team1554.lib.math.MathUtils;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -11,7 +12,7 @@ import edu.wpi.first.wpilibj.Joystick;
 public class SingleJoystickControl implements JoystickControl {
 
 	private final Joystick stick;
-	private final IntMap<Runnable> actions = new IntMap<Runnable>(8);
+	private final IntMap<ObjectSet<Runnable>> actions = new IntMap<>(8);
 
 	private boolean cutoff = false;
 	private boolean disableTwist = false;
@@ -123,25 +124,32 @@ public class SingleJoystickControl implements JoystickControl {
 	public void putButtonAction(int bId, Runnable action, Hand side) {
 		if (bId > this.stick.getButtonCount()) throw new IllegalArgumentException("Button ID can't be greater than the joystick button count!: " + bId + " -> " + this.stick.getButtonCount() + " max");
 
-		this.actions.put(bId, action);
+		ObjectSet<Runnable> actions = this.actions.get(bId, null);
+		
+		if(action == null) {
+			this.actions.put(bId, actions = new ObjectSet<>());
+		}
+		
+		actions.add(action);
 	}
 
 	@Override
-	public Runnable removeButtonAction(int bId, Hand side) {
+	public void removeButtonAction(int bId, Hand side) {
 		if (bId > this.stick.getButtonCount()) throw new IllegalArgumentException("Button ID can't be greater than the joystick button count!: " + bId + " -> " + this.stick.getButtonCount() + " max");
 
-		return this.actions.remove(bId);
+		this.actions.remove(bId);
 	}
 
 	@Override
 	public void update() {
-		final Iterator<Entry<Runnable>> entries = this.actions.iterator();
+		final Iterator<Entry<ObjectSet<Runnable>>> entries = this.actions.iterator();
 
 		while (entries.hasNext()) {
-			final Entry<Runnable> entry = entries.next();
+			final Entry<ObjectSet<Runnable>> entry = entries.next();
 
 			if (this.stick.getRawButton(entry.key)) {
-				entry.value.run();
+				for(Runnable action : entry.value)
+					action.run();
 			}
 		}
 	}

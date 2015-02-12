@@ -71,9 +71,8 @@ class EmulatedJoystickControl implements JoystickControl {
 	}
 
 	@Override
-	public Runnable removeButtonAction(int bId, Hand side) {
+	public void removeButtonAction(int bId, Hand side) {
 		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

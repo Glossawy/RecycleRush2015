@@ -12,8 +12,6 @@ import edu.wpi.first.wpilibj.communication.UsageReporting;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 // TODO Listeners
-// TODO EnhancedSimopleRobot -- An Enhanced Simple Robot Implementation using RoboLib
-// Features
 /**
  * An Alternative (and hopefully enhanced) approach to {@link IterativeRobot}. For
  * one this class is Abstract and requires the user to implement certain methods that
@@ -132,8 +130,8 @@ public abstract class EnhancedIterativeRobot extends EnhancedRobotBase {
 					}
 				}
 
-				onAny();
 				if (this.m_ds.isNewControlData()) {
+					onAny();
 					this.state.doOnMethod(this);
 				}
 

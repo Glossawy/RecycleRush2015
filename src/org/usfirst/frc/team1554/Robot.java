@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1554;
 
-import static org.usfirst.frc.team1554.Ref.Buttons.ID_DISABLE_TWIST;
+import static org.usfirst.frc.team1554.Ref.Buttons.ID_DISABLE_TWIST; 
 import static org.usfirst.frc.team1554.Ref.Buttons.ID_SWAP_JOYSTICKS;
 import static org.usfirst.frc.team1554.Ref.Buttons.ID_TURBO_DRIVE;
 import static org.usfirst.frc.team1554.Ref.Channels.FL_DMOTOR;
@@ -13,6 +13,7 @@ import static org.usfirst.frc.team1554.Ref.Values.CONCURRENCY;
 import static org.usfirst.frc.team1554.Ref.Values.DRIVE_SCALE_FACTOR;
 import static org.usfirst.frc.team1554.Ref.Values.MAG_STICK_DEADBAND;
 import static org.usfirst.frc.team1554.Ref.Values.TWIST_STICK_DEADBAND;
+import static edu.wpi.first.wpilibj.smartdashboard.SmartDashboard.*;
 
 import java.util.concurrent.Callable;
 
@@ -55,6 +56,11 @@ public class Robot extends EnhancedIterativeRobot {
 
 	private SpeedController winchMotor;
 	private Move autonomousMoves;
+	
+	private double upWinchValue = 1.0;
+	private double downWinchValue = 0.3;
+	
+	private boolean allowMovement = false;
 
 	public Robot() {
 		super("Oceanside Sailors", 0x612);
@@ -73,10 +79,11 @@ public class Robot extends EnhancedIterativeRobot {
 		this.control.putButtonAction(ID_DISABLE_TWIST, () -> this.control.setDisableTwistAxis(Hand.LEFT, !this.control.getDisableTwistAxis(Hand.LEFT)), Hand.LEFT);
 		this.control.putButtonAction(ID_DISABLE_TWIST, () -> this.control.setDisableTwistAxis(Hand.RIGHT, !this.control.getDisableTwistAxis(Hand.RIGHT)), Hand.RIGHT);
 
+		Console.debug("Starting Camera Capture...");
 		this.camera = new USBCamera();
 		this.camera.setSize(CameraSize.MEDIUM);
 		CameraStream.INSTANCE.startAutomaticCapture(this.camera);
-
+		Console.debug(String.format("Resolution: %dx%d | Quality: %s | FPS: %s", camera.getSize().WIDTH, camera.getSize().HEIGHT, camera.getQuality().name(), camera.getFPS().kFPS));
 	}
 
 	@Override
@@ -86,15 +93,21 @@ public class Robot extends EnhancedIterativeRobot {
 
 		this.winchMotor = this.motors.getMotor(Names.WINCH_MOTOR);
 		
-		this.control.putButtonAction(5, () -> winchMotor.set(-1), Hand.RIGHT);
-		this.control.putButtonAction(3, () -> winchMotor.set(1), Hand.RIGHT);
+		this.control.putButtonAction(3, () -> winchMotor.set(-upWinchValue), Hand.RIGHT);
+		this.control.putButtonAction(5, () -> winchMotor.set(downWinchValue), Hand.RIGHT);
 		
 		this.autonomousMoves = Move.startChain(this)
 								   .forward(0.2)
 								   .delay(1)
 								   .build();
 
+		initDashboard();
 		Console.debug("Initialization Complete!");
+	}
+	
+	@Override
+	public final void onAny() {
+		updateDashboard();
 	}
 
 	@Override
@@ -105,19 +118,15 @@ public class Robot extends EnhancedIterativeRobot {
 	@Override
 	public void onDisabled() {
 	}
-
-	private boolean once =false;
+	
 	@Override
 	public void preAutonomous() {
-		once = false;
+		this.autonomousMoves.reset();
 	}
 
 	@Override
 	public void onAutonomous() {
-		if(!once){
-			this.autonomousMoves.act();
-			once = true;
-		}
+		this.autonomousMoves.act();
 	}
 
 	@Override
@@ -130,7 +139,9 @@ public class Robot extends EnhancedIterativeRobot {
 	public void onTeleop() {
 		this.winchMotor.set(0);
 		this.control.update();
-//		updateDrive();
+		
+		if(allowMovement)
+			updateDrive();
 	}
 
 	@Override
@@ -194,6 +205,18 @@ public class Robot extends EnhancedIterativeRobot {
 				return null;
 			}
 		});
+	}
+	
+	private void initDashboard() {
+		putBoolean(Names.ALLOW_MOVEMENT, allowMovement);
+		putNumber(Names.WINCH_UP_VALUE, upWinchValue);
+		putNumber(Names.WINCH_DOWN_VALUE, downWinchValue);
+	}
+	
+	private void updateDashboard() {
+		allowMovement = getBoolean(Names.ALLOW_MOVEMENT);
+		upWinchValue = getNumber(Names.WINCH_UP_VALUE);
+		downWinchValue = getNumber(Names.WINCH_DOWN_VALUE);
 	}
 
 }

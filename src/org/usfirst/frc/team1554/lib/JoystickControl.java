@@ -1,6 +1,10 @@
 package org.usfirst.frc.team1554.lib;
 
-import org.usfirst.frc.team1554.lib.MotorScheme.DriveManager;
+import org.usfirst.frc.team1554.lib.MotorScheme.DriveManager;  
+import org.usfirst.frc.team1554.lib.collect.Array;
+import org.usfirst.frc.team1554.lib.collect.IntMap;
+import org.usfirst.frc.team1554.lib.collect.IntMap.Entry;
+import org.usfirst.frc.team1554.lib.collect.ObjectSet;
 import org.usfirst.frc.team1554.lib.meta.OutOfDateException;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -81,12 +85,14 @@ public interface JoystickControl extends Disposable {
 	/** Get Movement Joystick */
 	Joystick rightJoystick();
 
-	/** Add a Button Action which is a Runnable tied to a Button ID */
-	void putButtonAction(int bId, Runnable action, Hand side);
+	/** Add a Button Action which is a ButtonAction tied to a Button ID */
+	void putButtonAction(int bId, ButtonAction action, Hand side);
 
 	/** Remove a Button Action */
-	Runnable removeButtonAction(int bId, Hand side);
+	void removeButtonAction(int bId, Hand side);
 
+	IntMap<Array<String>> getBindingInformation(Hand side);
+	
 	/**
 	 * Swap Joystick sides. This should also swap any actions and side-dependent
 	 * values. This was implemented for the sole purpose of supporting Left-handed
@@ -149,4 +155,19 @@ public interface JoystickControl extends Disposable {
 
 	@Override
 	void dispose();
+	
+	public static IntMap<Array<String>> toBindings(IntMap<ObjectSet<ButtonAction>> actions) {
+		IntMap<Array<String>> bindings = new IntMap<Array<String>>(actions.size);
+		
+		for(Entry<ObjectSet<ButtonAction>> entry : actions.entries()) {
+			int bId = entry.key;
+			Array<String> array = Array.of(String.class);
+			for(ButtonAction action : entry.value)
+				array.add(action.name());
+			
+			bindings.put(bId, array);
+		}
+		
+		return bindings;
+	}
 }

@@ -48,8 +48,6 @@ public class Console {
 
 		}));
 
-		// TODO Hijack System.out/System.err
-
 	}
 
 	/**
