@@ -40,26 +40,26 @@ public class Vector2 implements Vector<Vector2> {
 
 	@Override
 	public double len() {
-		return Math.sqrt((this.x * this.x) + (this.y * this.y));
+		return Math.sqrt(this.x * this.x + this.y * this.y);
 	}
 
 	@Override
 	public double len2() {
-		return (this.x * this.x) + (this.y * this.y);
+		return this.x * this.x + this.y * this.y;
 	}
 
 	public double dst(double x, double y) {
 		final double dy = y - this.y;
 		final double dx = x - this.x;
 
-		return Math.sqrt((dx * dx) + (dy * dy));
+		return Math.sqrt(dx * dx + dy * dy);
 	}
 
 	public double dst2(double x, double y) {
 		final double dy = y - this.y;
 		final double dx = x - this.x;
 
-		return (dx * dx) + (dy * dy);
+		return dx * dx + dy * dy;
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class Vector2 implements Vector<Vector2> {
 	public Vector2 setLength2(double len2) {
 		final double l2 = len2();
 
-		return ((l2 == 0) || (l2 == len2)) ? this : scale(Math.sqrt(len2 / l2));
+		return l2 == 0 || l2 == len2 ? this : scale(Math.sqrt(len2 / l2));
 	}
 
 	@Override
@@ -106,9 +106,9 @@ public class Vector2 implements Vector<Vector2> {
 
 		if (len == 0)
 			return this;
-		else if (len > (max * max))
+		else if (len > max * max)
 			return nor().scale(max);
-		else if (len < (min * min))
+		else if (len < min * min)
 			return nor().scale(min);
 		else
 			return this;
@@ -156,12 +156,12 @@ public class Vector2 implements Vector<Vector2> {
 	 * @return
 	 */
 	public double dot(double x, double y) {
-		return (this.x * x) + (this.y * y);
+		return this.x * x + this.y * y;
 	}
 
 	@Override
 	public double dot(Vector2 v) {
-		return (this.x * v.x) + (this.y * v.y);
+		return this.x * v.x + this.y * v.y;
 	}
 
 	/**
@@ -171,19 +171,18 @@ public class Vector2 implements Vector<Vector2> {
 	 * @return
 	 */
 	public double crs(Vector2 v) {
-		return (this.x * v.y) - (this.y * v.x);
+		return this.x * v.y - this.y * v.x;
 	}
 
 	/**
-	 * Returns the Cross Product of this Vector and another Vector of components (x,
-	 * y)
+	 * Returns the Cross Product of this Vector and another Vector of components (x, y)
 	 * 
 	 * @param x
 	 * @param y
 	 * @return
 	 */
 	public double crs(double x, double y) {
-		return (this.x * y) - (this.y * x);
+		return this.x * y - this.y * x;
 	}
 
 	@Override
@@ -205,9 +204,7 @@ public class Vector2 implements Vector<Vector2> {
 	/**
 	 * Returns the Angle of this Vector relative to the X-Axis In Degrees.
 	 * 
-	 * 0 degrees is to the right (realtive to origin) and angles move positively in a
-	 * counter-clockwise direction. This makes the left (relative to origin) 180
-	 * degrees
+	 * 0 degrees is to the right (realtive to origin) and angles move positively in a counter-clockwise direction. This makes the left (relative to origin) 180 degrees
 	 * 
 	 * @return Angle of This Vector Relative to X-Axis in Degrees
 	 */
@@ -220,9 +217,7 @@ public class Vector2 implements Vector<Vector2> {
 	/**
 	 * Returns the Angle of this Vector relative to the X-Axis In Radians.
 	 * 
-	 * 0 radians is to the right (realtive to origin) and angles move positively in a
-	 * counter-clockwise direction. This makes the left (relative to origin) pi
-	 * radians
+	 * 0 radians is to the right (realtive to origin) and angles move positively in a counter-clockwise direction. This makes the left (relative to origin) pi radians
 	 * 
 	 * @return Angle of This Vector Relative to X-Axis in Radians
 	 */
@@ -231,8 +226,7 @@ public class Vector2 implements Vector<Vector2> {
 	}
 
 	/**
-	 * Set The Angle of this Vector, in Degrees. The angle is absolute, not relative
-	 * to the current angle.
+	 * Set The Angle of this Vector, in Degrees. The angle is absolute, not relative to the current angle.
 	 * 
 	 * @param degrees
 	 * @return This Vector
@@ -242,8 +236,7 @@ public class Vector2 implements Vector<Vector2> {
 	}
 
 	/**
-	 * Set The Angle of this Vector, in Radians. The angle is absolute, not relative
-	 * to the current angle.
+	 * Set The Angle of this Vector, in Radians. The angle is absolute, not relative to the current angle.
 	 * 
 	 * @param radians
 	 * @return This Vector
@@ -275,8 +268,8 @@ public class Vector2 implements Vector<Vector2> {
 		final double cosine = Math.cos(radians);
 		final double sine = Math.sin(radians);
 
-		this.x = (this.x * cosine) - (this.y * sine);
-		this.y = (this.x * sine) + (this.y * cosine);
+		this.x = this.x * cosine - this.y * sine;
+		this.y = this.x * sine + this.y * cosine;
 
 		return this;
 	}
@@ -315,8 +308,8 @@ public class Vector2 implements Vector<Vector2> {
 	public Vector2 nor() {
 		final double len = len();
 		if (len != 0) {
-			this.x = (this.x / len);
-			this.y = (this.x / len);
+			this.x = this.x / len;
+			this.y = this.x / len;
 		}
 
 		return this;
@@ -353,8 +346,8 @@ public class Vector2 implements Vector<Vector2> {
 	public Vector2 lerp(Vector2 v, double alpha) {
 		final double inverse = 1.0f - alpha;
 
-		this.x = ((this.x * inverse) + (v.x * inverse));
-		this.y = ((this.y * inverse) + (v.y * inverse));
+		this.x = this.x * inverse + v.x * inverse;
+		this.y = this.y * inverse + v.y * inverse;
 		return this;
 	}
 
@@ -367,12 +360,12 @@ public class Vector2 implements Vector<Vector2> {
 
 	@Override
 	public boolean isZero() {
-		return (this.x == 0) && (this.y == 0);
+		return this.x == 0 && this.y == 0;
 	}
 
 	@Override
 	public boolean isZero(double error) {
-		return len2() < (error * error);
+		return len2() < error * error;
 	}
 
 	@Override
@@ -390,58 +383,60 @@ public class Vector2 implements Vector<Vector2> {
 		final int arbitrary = 523;
 		int result = 1;
 
-		result = (int) ((arbitrary * result) + FloatingPoint.toLongBits(this.x));
-		result = (int) ((arbitrary * result) + FloatingPoint.toLongBits(this.y));
+		result = (int) (arbitrary * result + FloatingPoint.toLongBits(this.x));
+		result = (int) (arbitrary * result + FloatingPoint.toLongBits(this.y));
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if ((obj == null) || (getClass() != obj.getClass())) return false;
+		if (this == obj)
+			return true;
+		if (obj == null || getClass() != obj.getClass())
+			return false;
 
 		final Vector2 other = (Vector2) obj;
 
-		return (this.x == other.x) && (this.y == other.y);
+		return this.x == other.x && this.y == other.y;
 	}
 
 	@Override
 	public boolean equals(Vector2 v, double epsilon) {
-		return (v != null) && (Math.abs(this.x - v.x) < epsilon) && (Math.abs(this.y - v.y) < epsilon);
+		return v != null && Math.abs(this.x - v.x) < epsilon && Math.abs(this.y - v.y) < epsilon;
 	}
 
 	public boolean equals(double tx, double ty, double epsilon) {
-		return (Math.abs(this.x - tx) < epsilon) && (Math.abs(this.y - ty) < epsilon);
+		return Math.abs(this.x - tx) < epsilon && Math.abs(this.y - ty) < epsilon;
 	}
 
 	@Override
 	public boolean isInline(Vector2 v) {
-		return FloatingPoint.isZero((this.x * v.y) - (this.y * v.x));
+		return FloatingPoint.isZero(this.x * v.y - this.y * v.x);
 	}
 
 	@Override
 	public boolean isInline(Vector2 v, double epsilon) {
-		return FloatingPoint.isZero((this.x * v.y) - (this.y * v.x), epsilon);
+		return FloatingPoint.isZero(this.x * v.y - this.y * v.x, epsilon);
 	}
 
 	@Override
 	public boolean isColinear(Vector2 v) {
-		return this.isInline(v) && (this.dot(v) > 0);
+		return this.isInline(v) && this.dot(v) > 0;
 	}
 
 	@Override
 	public boolean isColinear(Vector2 v, double epsilon) {
-		return this.isInline(v, epsilon) && (this.dot(v) > 0);
+		return this.isInline(v, epsilon) && this.dot(v) > 0;
 	}
 
 	@Override
 	public boolean isColinearOpposite(Vector2 v) {
-		return this.isInline(v) && (this.dot(v) < 0);
+		return this.isInline(v) && this.dot(v) < 0;
 	}
 
 	@Override
 	public boolean isColinearOpposite(Vector2 v, double epsilon) {
-		return this.isInline(v, epsilon) && (this.dot(v) < 0);
+		return this.isInline(v, epsilon) && this.dot(v) < 0;
 	}
 
 	@Override

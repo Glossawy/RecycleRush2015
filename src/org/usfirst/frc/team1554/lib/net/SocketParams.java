@@ -14,39 +14,30 @@ public class SocketParams {
 	public int connectionTimeout = 5000;
 
 	/**
-	 * Performance is determined by 3 integer variables. These indicate relative
-	 * importance of short connection time, low latency and high bandwidth
-	 * respectively. e.g. <br />
+	 * Performance is determined by 3 integer variables. These indicate relative importance of short connection time, low latency and high bandwidth respectively. e.g. <br />
 	 * <br/>
 	 * Quick Connection, Don't Care for Latency or Bandwidth: (1, 0, 0) <br />
-	 * Don't Care for Connection, Low Latency, but Bandwidth more important: (0, 1,
-	 * 2) <br />
+	 * Don't Care for Connection, Low Latency, but Bandwidth more important: (0, 1, 2) <br />
 	 * <br />
 	 * and so on.<br />
 	 * <tt>Default: 0</tt>
 	 */
 	public int performanceConnectionTime = 0;
 	/**
-	 * Performance is determined by 3 integer variables. These indicate relative
-	 * importance of short connection time, low latency and high bandwidth
-	 * respectively. e.g. <br />
+	 * Performance is determined by 3 integer variables. These indicate relative importance of short connection time, low latency and high bandwidth respectively. e.g. <br />
 	 * <br/>
 	 * Quick Connection, Don't Care for Latency or Bandwidth: (1, 0, 0) <br />
-	 * Don't Care for Connection, Low Latency, but Bandwidth more important: (0, 1,
-	 * 2) <br />
+	 * Don't Care for Connection, Low Latency, but Bandwidth more important: (0, 1, 2) <br />
 	 * <br />
 	 * and so on. <br />
 	 * <tt>Default: 1</tt>
 	 */
 	public int performanceLatency = 1;
 	/**
-	 * Performance is determined by 3 integer variables. These indicate relative
-	 * importance of short connection time, low latency and high bandwidth
-	 * respectively. e.g. <br />
+	 * Performance is determined by 3 integer variables. These indicate relative importance of short connection time, low latency and high bandwidth respectively. e.g. <br />
 	 * <br/>
 	 * Quick Connection, Don't Care for Latency or Bandwidth: (1, 0, 0) <br />
-	 * Don't Care for Connection, Low Latency, but Bandwidth more important: (0, 1,
-	 * 2) <br />
+	 * Don't Care for Connection, Low Latency, but Bandwidth more important: (0, 1, 2) <br />
 	 * <br />
 	 * and so on.<br />
 	 * <tt>Default: 0</tt>
@@ -102,8 +93,7 @@ public class SocketParams {
 	/** Socket Linger Time in <i><b><u>Seconds!</u></b></i> */
 	public int lingerDuration = 0;
 	/**
-	 * Enable/Disable SO_TIMEOUT with the given timeout time in millis. a read()
-	 * operation on a Socket's input stream will only block for this time.
+	 * Enable/Disable SO_TIMEOUT with the given timeout time in millis. a read() operation on a Socket's input stream will only block for this time.
 	 */
 	public int socketTimeout = 0;
 }

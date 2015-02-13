@@ -30,7 +30,7 @@ public class DoubleCounter {
 	private final WindowAverage avg;
 
 	public DoubleCounter(int windowSize) {
-		this.avg = (windowSize > 1) ? new WindowAverage(windowSize) : null;
+		this.avg = windowSize > 1 ? new WindowAverage(windowSize) : null;
 
 		this.count = new ObservableValue<Integer>(0);
 		this.total = new ObservableValue<Double>(0.0);
@@ -59,7 +59,7 @@ public class DoubleCounter {
 			this.value.set(this.latest);
 		}
 
-		if ((this.avg == null) || this.avg.hasEnoughData()) {
+		if (this.avg == null || this.avg.hasEnoughData()) {
 			this.min.set(Math.min(this.min.get(), this.value.get()));
 			this.max.set(Math.max(this.max.get(), this.value.get()));
 		}

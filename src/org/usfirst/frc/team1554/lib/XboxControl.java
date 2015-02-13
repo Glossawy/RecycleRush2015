@@ -10,27 +10,27 @@ import static org.usfirst.frc.team1554.lib.XboxConstants.BUMPER_LEFT;
 import static org.usfirst.frc.team1554.lib.XboxConstants.BUMPER_RIGHT;
 import static org.usfirst.frc.team1554.lib.XboxConstants.BUTTON_STICK_LEFT;
 import static org.usfirst.frc.team1554.lib.XboxConstants.BUTTON_STICK_RIGHT;
-import static org.usfirst.frc.team1554.lib.XboxConstants.DPAD_POV;
+import static org.usfirst.frc.team1554.lib.XboxConstants.DPAD_POV_INDEX;
 
+import org.usfirst.frc.team1554.lib.collect.Array;
 import org.usfirst.frc.team1554.lib.collect.IntMap;
-import org.usfirst.frc.team1554.lib.collect.ObjectSet;
 import org.usfirst.frc.team1554.lib.collect.IntMap.Entry;
 import org.usfirst.frc.team1554.lib.collect.Maps;
+import org.usfirst.frc.team1554.lib.collect.ObjectSet;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 
 // FIXME Put documentation and Preconditions to try and prevent user error
 /**
- * Implementation for Supporting a USB Xbox Controller as a Joystick. Some helper
- * methods are provided for Xbox-Specific Features.
+ * Implementation for Supporting a USB Xbox Controller as a Joystick. Some helper methods are provided for Xbox-Specific Features.
  * 
  * @author Matthew
  *
  */
 public class XboxControl implements JoystickControl {
 
-	private final IntMap<ObjectSet<Runnable>> buttonMap = Maps.newIntMap(9);
+	private final IntMap<ObjectSet<ButtonAction>> buttonMap = Maps.newIntMap(9);
 	private final XboxJoystickWrapper wrappedStick;
 	final Joystick stick;
 
@@ -133,7 +133,7 @@ public class XboxControl implements JoystickControl {
 	}
 
 	public double getDirectionDPad() {
-		return this.stick.getPOV(DPAD_POV);
+		return this.stick.getPOV(DPAD_POV_INDEX);
 	}
 
 	public double getTriggerValue(Hand hand) {
@@ -148,11 +148,7 @@ public class XboxControl implements JoystickControl {
 	}
 
 	/**
-	 * Returns a JoystickControl representing a single analog stick. Since it is
-	 * literally just 2 axes and a button, this Control is very limited. The button
-	 * cannot be configured using the returned JoystickControl to maintain
-	 * consistency between the "Analog Stick View" and the actual JoystickControl it
-	 * is attached to.
+	 * Returns a JoystickControl representing a single analog stick. Since it is literally just 2 axes and a button, this Control is very limited. The button cannot be configured using the returned JoystickControl to maintain consistency between the "Analog Stick View" and the actual JoystickControl it is attached to.
 	 * 
 	 * @param side
 	 * @return
@@ -184,10 +180,10 @@ public class XboxControl implements JoystickControl {
 	}
 
 	@Override
-	public void putButtonAction(int bId, Runnable action, Hand side) {
-		ObjectSet<Runnable> list = buttonMap.get(bId, null);
-		if(list == null) {
-			buttonMap.put(bId, list = new ObjectSet<Runnable>());
+	public void putButtonAction(int bId, ButtonAction action, Hand side) {
+		ObjectSet<ButtonAction> list = this.buttonMap.get(bId, null);
+		if (list == null) {
+			this.buttonMap.put(bId, list = new ObjectSet<ButtonAction>());
 		}
 	}
 
@@ -199,7 +195,7 @@ public class XboxControl implements JoystickControl {
 	@Override
 	public void swapJoysticks() {
 		final Axes tempAxes = this.movAxes;
-		final ObjectSet<Runnable> tempAct = this.buttonMap.get(BUTTON_STICK_LEFT, DO_NOTHING_SET);
+		final ObjectSet<ButtonAction> tempAct = this.buttonMap.get(BUTTON_STICK_LEFT, DO_NOTHING_SET);
 		final boolean tempCutoff = this.doMovementCutoff;
 
 		this.movAxes = this.rotAxes;
@@ -252,10 +248,11 @@ public class XboxControl implements JoystickControl {
 
 	@Override
 	public void update() {
-		for (final Entry<ObjectSet<Runnable>> entry : this.buttonMap.entries())
-			if (this.stick.getRawButton(entry.key) && (entry.value != null)) {
-				for(Runnable action : entry.value)
-					action.run();
+		for (final Entry<ObjectSet<ButtonAction>> entry : this.buttonMap.entries())
+			if (this.stick.getRawButton(entry.key) && entry.value != null) {
+				for (final ButtonAction action : entry.value) {
+					action.act();
+				}
 			}
 	}
 
@@ -283,7 +280,7 @@ public class XboxControl implements JoystickControl {
 			final double x = getX(hid);
 			final double y = getY(hid);
 
-			return Math.sqrt((x * x) + (y * y));
+			return Math.sqrt(x * x + y * y);
 		}
 	}
 
@@ -347,7 +344,16 @@ public class XboxControl implements JoystickControl {
 		}
 	}
 
-	private static Runnable DO_NOTHING = () -> {};
-	private static ObjectSet<Runnable> DO_NOTHING_SET = ObjectSet.with(DO_NOTHING);
+	private static ButtonAction DO_NOTHING = new ButtonAction("DO_NOTHING") {
+		@Override
+		public void act() {
+		}
+	};
+	private static ObjectSet<ButtonAction> DO_NOTHING_SET = ObjectSet.with(DO_NOTHING);
+
+	@Override
+	public IntMap<Array<String>> getBindingInformation(Hand side) {
+		return JoystickControl.toBindings(this.buttonMap);
+	}
 
 }

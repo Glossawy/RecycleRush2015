@@ -50,7 +50,8 @@ public class MotorGroup<T extends PWM & SpeedController> extends SensorBase impl
 
 	@Override
 	public double get() {
-		if (this.motors.size <= 0) return 0;
+		if (this.motors.size <= 0)
+			return 0;
 
 		double sum = 0;
 
@@ -158,12 +159,7 @@ public class MotorGroup<T extends PWM & SpeedController> extends SensorBase impl
 	@Override
 	public void startLiveWindowMode() {
 		set(0);
-		this.mTableListener = new ITableListener() {
-			@Override
-			public void valueChanged(ITable source, String key, Object value, boolean isNew) {
-				set(((Double) value).doubleValue());
-			}
-		};
+		this.mTableListener = (source, key, value, isNew) -> set(((Double) value).doubleValue());
 
 		this.mTable.addTableListener("Speed 0", this.mTableListener, true);
 	}

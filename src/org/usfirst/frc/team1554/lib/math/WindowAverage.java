@@ -29,7 +29,8 @@ public class WindowAverage {
 	}
 
 	public double mean() {
-		if (!hasEnoughData()) return 0;
+		if (!hasEnoughData())
+			return 0;
 
 		if (this.calc) {
 			calculate();
@@ -40,7 +41,8 @@ public class WindowAverage {
 	}
 
 	public double variance() {
-		if (!hasEnoughData()) return 0;
+		if (!hasEnoughData())
+			return 0;
 
 		final double mean = mean();
 		double sum = 0;
@@ -53,7 +55,8 @@ public class WindowAverage {
 	}
 
 	public double standardDeviation() {
-		if (!hasEnoughData()) return 0;
+		if (!hasEnoughData())
+			return 0;
 
 		return Math.sqrt(variance());
 	}

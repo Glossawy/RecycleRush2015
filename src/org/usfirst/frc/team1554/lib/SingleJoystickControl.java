@@ -2,6 +2,7 @@ package org.usfirst.frc.team1554.lib;
 
 import java.util.Iterator;
 
+import org.usfirst.frc.team1554.lib.collect.Array;
 import org.usfirst.frc.team1554.lib.collect.IntMap;
 import org.usfirst.frc.team1554.lib.collect.IntMap.Entry;
 import org.usfirst.frc.team1554.lib.collect.ObjectSet;
@@ -12,7 +13,7 @@ import edu.wpi.first.wpilibj.Joystick;
 public class SingleJoystickControl implements JoystickControl {
 
 	private final Joystick stick;
-	private final IntMap<ObjectSet<Runnable>> actions = new IntMap<>(8);
+	private final IntMap<ObjectSet<ButtonAction>> actions = new IntMap<>(8);
 
 	private boolean cutoff = false;
 	private boolean disableTwist = false;
@@ -39,9 +40,10 @@ public class SingleJoystickControl implements JoystickControl {
 
 	@Override
 	public double getTwist() {
-		if (this.disableTwist) return 0;
+		if (this.disableTwist)
+			return 0;
 		final double twist = this.stick.getTwist();
-		return Math.abs(twist) <= this.twistLim ? 0.0 : this.cutoff ? twist : twist - (this.twistLim * (twist < 0 ? -1 : 1));
+		return Math.abs(twist) <= this.twistLim ? 0.0 : this.cutoff ? twist : twist - this.twistLim * (twist < 0 ? -1 : 1);
 		// return Math.abs(twist) <= this.twistLim ? 0.0 : twist;
 	}
 
@@ -50,7 +52,7 @@ public class SingleJoystickControl implements JoystickControl {
 		final double x = getX();
 		final double y = getY();
 
-		final double mag = Math.sqrt((x * x) + (y * y));
+		final double mag = Math.sqrt(x * x + y * y);
 
 		return mag <= this.magLim ? 0.0 : this.cutoff ? mag : mag - this.magLim;
 		// return mag <= this.magLim ? 0.0 : mag;
@@ -121,41 +123,49 @@ public class SingleJoystickControl implements JoystickControl {
 	}
 
 	@Override
-	public void putButtonAction(int bId, Runnable action, Hand side) {
-		if (bId > this.stick.getButtonCount()) throw new IllegalArgumentException("Button ID can't be greater than the joystick button count!: " + bId + " -> " + this.stick.getButtonCount() + " max");
+	public void putButtonAction(int bId, ButtonAction action, Hand side) {
+		if (bId > this.stick.getButtonCount())
+			throw new IllegalArgumentException("Button ID can't be greater than the joystick button count!: " + bId + " -> " + this.stick.getButtonCount() + " max");
 
-		ObjectSet<Runnable> actions = this.actions.get(bId, null);
-		
-		if(action == null) {
+		ObjectSet<ButtonAction> actions = this.actions.get(bId, null);
+
+		if (action == null) {
 			this.actions.put(bId, actions = new ObjectSet<>());
 		}
-		
+
 		actions.add(action);
 	}
 
 	@Override
 	public void removeButtonAction(int bId, Hand side) {
-		if (bId > this.stick.getButtonCount()) throw new IllegalArgumentException("Button ID can't be greater than the joystick button count!: " + bId + " -> " + this.stick.getButtonCount() + " max");
+		if (bId > this.stick.getButtonCount())
+			throw new IllegalArgumentException("Button ID can't be greater than the joystick button count!: " + bId + " -> " + this.stick.getButtonCount() + " max");
 
 		this.actions.remove(bId);
 	}
 
 	@Override
 	public void update() {
-		final Iterator<Entry<ObjectSet<Runnable>>> entries = this.actions.iterator();
+		final Iterator<Entry<ObjectSet<ButtonAction>>> entries = this.actions.iterator();
 
 		while (entries.hasNext()) {
-			final Entry<ObjectSet<Runnable>> entry = entries.next();
+			final Entry<ObjectSet<ButtonAction>> entry = entries.next();
 
 			if (this.stick.getRawButton(entry.key)) {
-				for(Runnable action : entry.value)
-					action.run();
+				for (final ButtonAction action : entry.value) {
+					action.act();
+				}
 			}
 		}
 	}
 
 	@Override
 	public void dispose() {
+	}
+
+	@Override
+	public IntMap<Array<String>> getBindingInformation(Hand side) {
+		return JoystickControl.toBindings(this.actions);
 	}
 
 }

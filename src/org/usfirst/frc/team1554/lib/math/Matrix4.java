@@ -52,19 +52,19 @@ public class Matrix4 {
 		final double xx = quatX * xs, xy = quatX * ys, xz = quatX * zs;
 		final double yy = quatY * ys, yz = quatY * zs, zz = quatZ * zs;
 
-		this.val[M_00] = (1.0 - (yy + zz));
-		this.val[M_01] = (xy - wz);
-		this.val[M_02] = (xz + wy);
+		this.val[M_00] = 1.0 - (yy + zz);
+		this.val[M_01] = xy - wz;
+		this.val[M_02] = xz + wy;
 		this.val[M_03] = trnX;
 
-		this.val[M_10] = (xy + wz);
-		this.val[M_11] = (1.0 - (xx + zz));
-		this.val[M_12] = (yz - wx);
+		this.val[M_10] = xy + wz;
+		this.val[M_11] = 1.0 - (xx + zz);
+		this.val[M_12] = yz - wx;
 		this.val[M_13] = trnY;
 
-		this.val[M_20] = (xz - wy);
-		this.val[M_21] = (yz + wx);
-		this.val[M_22] = (1.0 - (xx + yy));
+		this.val[M_20] = xz - wy;
+		this.val[M_21] = yz + wx;
+		this.val[M_22] = 1.0 - (xx + yy);
 		this.val[M_23] = trnZ;
 
 		this.val[M_30] = 0.0;
@@ -191,25 +191,27 @@ public class Matrix4 {
 
 	public Matrix4 inv() {
 		final double[] tmp = new double[16];
-		final double l_det = ((((((((((((this.val[M_30] * this.val[M_21] * this.val[M_12] * this.val[M_03]) - (this.val[M_20] * this.val[M_31] * this.val[M_12] * this.val[M_03]) - (this.val[M_30] * this.val[M_11] * this.val[M_22] * this.val[M_03])) + (this.val[M_10] * this.val[M_31] * this.val[M_22] * this.val[M_03]) + (this.val[M_20] * this.val[M_11] * this.val[M_32] * this.val[M_03])) - (this.val[M_10] * this.val[M_21] * this.val[M_32] * this.val[M_03]) - (this.val[M_30] * this.val[M_21] * this.val[M_02] * this.val[M_13])) + (this.val[M_20] * this.val[M_31] * this.val[M_02] * this.val[M_13]) + (this.val[M_30] * this.val[M_01] * this.val[M_22] * this.val[M_13])) - (this.val[M_00] * this.val[M_31] * this.val[M_22] * this.val[M_13]) - (this.val[M_20] * this.val[M_01] * this.val[M_32] * this.val[M_13])) + (this.val[M_00] * this.val[M_21] * this.val[M_32] * this.val[M_13]) + (this.val[M_30] * this.val[M_11] * this.val[M_02] * this.val[M_23])) - (this.val[M_10] * this.val[M_31] * this.val[M_02] * this.val[M_23]) - (this.val[M_30] * this.val[M_01] * this.val[M_12] * this.val[M_23])) + (this.val[M_00] * this.val[M_31] * this.val[M_12] * this.val[M_23]) + (this.val[M_10] * this.val[M_01] * this.val[M_32] * this.val[M_23])) - (this.val[M_00] * this.val[M_11] * this.val[M_32] * this.val[M_23]) - (this.val[M_20] * this.val[M_11] * this.val[M_02] * this.val[M_33])) + (this.val[M_10] * this.val[M_21] * this.val[M_02] * this.val[M_33]) + (this.val[M_20] * this.val[M_01] * this.val[M_12] * this.val[M_33])) - (this.val[M_00] * this.val[M_21] * this.val[M_12] * this.val[M_33]) - (this.val[M_10] * this.val[M_01] * this.val[M_22] * this.val[M_33])) + (this.val[M_00] * this.val[M_11] * this.val[M_22] * this.val[M_33]);
-		if (l_det == 0f) throw new RuntimeException("non-invertible matrix");
+		final double l_det = this.val[M_30] * this.val[M_21] * this.val[M_12] * this.val[M_03] - this.val[M_20] * this.val[M_31] * this.val[M_12] * this.val[M_03] - this.val[M_30] * this.val[M_11] * this.val[M_22] * this.val[M_03] + this.val[M_10] * this.val[M_31] * this.val[M_22] * this.val[M_03] + this.val[M_20] * this.val[M_11] * this.val[M_32] * this.val[M_03] - this.val[M_10] * this.val[M_21] * this.val[M_32] * this.val[M_03] - this.val[M_30] * this.val[M_21] * this.val[M_02] * this.val[M_13] + this.val[M_20] * this.val[M_31] * this.val[M_02] * this.val[M_13] + this.val[M_30] * this.val[M_01] * this.val[M_22] * this.val[M_13] - this.val[M_00] * this.val[M_31] * this.val[M_22] * this.val[M_13] - this.val[M_20] * this.val[M_01] * this.val[M_32] * this.val[M_13] + this.val[M_00] * this.val[M_21] * this.val[M_32] * this.val[M_13] + this.val[M_30] * this.val[M_11] * this.val[M_02] * this.val[M_23] - this.val[M_10] * this.val[M_31] * this.val[M_02] * this.val[M_23] - this.val[M_30]
+				* this.val[M_01] * this.val[M_12] * this.val[M_23] + this.val[M_00] * this.val[M_31] * this.val[M_12] * this.val[M_23] + this.val[M_10] * this.val[M_01] * this.val[M_32] * this.val[M_23] - this.val[M_00] * this.val[M_11] * this.val[M_32] * this.val[M_23] - this.val[M_20] * this.val[M_11] * this.val[M_02] * this.val[M_33] + this.val[M_10] * this.val[M_21] * this.val[M_02] * this.val[M_33] + this.val[M_20] * this.val[M_01] * this.val[M_12] * this.val[M_33] - this.val[M_00] * this.val[M_21] * this.val[M_12] * this.val[M_33] - this.val[M_10] * this.val[M_01] * this.val[M_22] * this.val[M_33] + this.val[M_00] * this.val[M_11] * this.val[M_22] * this.val[M_33];
+		if (l_det == 0f)
+			throw new RuntimeException("non-invertible matrix");
 		final double inv_det = 1.0f / l_det;
-		tmp[M_00] = ((((this.val[M_12] * this.val[M_23] * this.val[M_31]) - (this.val[M_13] * this.val[M_22] * this.val[M_31])) + (this.val[M_13] * this.val[M_21] * this.val[M_32])) - (this.val[M_11] * this.val[M_23] * this.val[M_32]) - (this.val[M_12] * this.val[M_21] * this.val[M_33])) + (this.val[M_11] * this.val[M_22] * this.val[M_33]);
-		tmp[M_01] = (((this.val[M_03] * this.val[M_22] * this.val[M_31]) - (this.val[M_02] * this.val[M_23] * this.val[M_31]) - (this.val[M_03] * this.val[M_21] * this.val[M_32])) + (this.val[M_01] * this.val[M_23] * this.val[M_32]) + (this.val[M_02] * this.val[M_21] * this.val[M_33])) - (this.val[M_01] * this.val[M_22] * this.val[M_33]);
-		tmp[M_02] = ((((this.val[M_02] * this.val[M_13] * this.val[M_31]) - (this.val[M_03] * this.val[M_12] * this.val[M_31])) + (this.val[M_03] * this.val[M_11] * this.val[M_32])) - (this.val[M_01] * this.val[M_13] * this.val[M_32]) - (this.val[M_02] * this.val[M_11] * this.val[M_33])) + (this.val[M_01] * this.val[M_12] * this.val[M_33]);
-		tmp[M_03] = (((this.val[M_03] * this.val[M_12] * this.val[M_21]) - (this.val[M_02] * this.val[M_13] * this.val[M_21]) - (this.val[M_03] * this.val[M_11] * this.val[M_22])) + (this.val[M_01] * this.val[M_13] * this.val[M_22]) + (this.val[M_02] * this.val[M_11] * this.val[M_23])) - (this.val[M_01] * this.val[M_12] * this.val[M_23]);
-		tmp[M_10] = (((this.val[M_13] * this.val[M_22] * this.val[M_30]) - (this.val[M_12] * this.val[M_23] * this.val[M_30]) - (this.val[M_13] * this.val[M_20] * this.val[M_32])) + (this.val[M_10] * this.val[M_23] * this.val[M_32]) + (this.val[M_12] * this.val[M_20] * this.val[M_33])) - (this.val[M_10] * this.val[M_22] * this.val[M_33]);
-		tmp[M_11] = ((((this.val[M_02] * this.val[M_23] * this.val[M_30]) - (this.val[M_03] * this.val[M_22] * this.val[M_30])) + (this.val[M_03] * this.val[M_20] * this.val[M_32])) - (this.val[M_00] * this.val[M_23] * this.val[M_32]) - (this.val[M_02] * this.val[M_20] * this.val[M_33])) + (this.val[M_00] * this.val[M_22] * this.val[M_33]);
-		tmp[M_12] = (((this.val[M_03] * this.val[M_12] * this.val[M_30]) - (this.val[M_02] * this.val[M_13] * this.val[M_30]) - (this.val[M_03] * this.val[M_10] * this.val[M_32])) + (this.val[M_00] * this.val[M_13] * this.val[M_32]) + (this.val[M_02] * this.val[M_10] * this.val[M_33])) - (this.val[M_00] * this.val[M_12] * this.val[M_33]);
-		tmp[M_13] = ((((this.val[M_02] * this.val[M_13] * this.val[M_20]) - (this.val[M_03] * this.val[M_12] * this.val[M_20])) + (this.val[M_03] * this.val[M_10] * this.val[M_22])) - (this.val[M_00] * this.val[M_13] * this.val[M_22]) - (this.val[M_02] * this.val[M_10] * this.val[M_23])) + (this.val[M_00] * this.val[M_12] * this.val[M_23]);
-		tmp[M_20] = ((((this.val[M_11] * this.val[M_23] * this.val[M_30]) - (this.val[M_13] * this.val[M_21] * this.val[M_30])) + (this.val[M_13] * this.val[M_20] * this.val[M_31])) - (this.val[M_10] * this.val[M_23] * this.val[M_31]) - (this.val[M_11] * this.val[M_20] * this.val[M_33])) + (this.val[M_10] * this.val[M_21] * this.val[M_33]);
-		tmp[M_21] = (((this.val[M_03] * this.val[M_21] * this.val[M_30]) - (this.val[M_01] * this.val[M_23] * this.val[M_30]) - (this.val[M_03] * this.val[M_20] * this.val[M_31])) + (this.val[M_00] * this.val[M_23] * this.val[M_31]) + (this.val[M_01] * this.val[M_20] * this.val[M_33])) - (this.val[M_00] * this.val[M_21] * this.val[M_33]);
-		tmp[M_22] = ((((this.val[M_01] * this.val[M_13] * this.val[M_30]) - (this.val[M_03] * this.val[M_11] * this.val[M_30])) + (this.val[M_03] * this.val[M_10] * this.val[M_31])) - (this.val[M_00] * this.val[M_13] * this.val[M_31]) - (this.val[M_01] * this.val[M_10] * this.val[M_33])) + (this.val[M_00] * this.val[M_11] * this.val[M_33]);
-		tmp[M_23] = (((this.val[M_03] * this.val[M_11] * this.val[M_20]) - (this.val[M_01] * this.val[M_13] * this.val[M_20]) - (this.val[M_03] * this.val[M_10] * this.val[M_21])) + (this.val[M_00] * this.val[M_13] * this.val[M_21]) + (this.val[M_01] * this.val[M_10] * this.val[M_23])) - (this.val[M_00] * this.val[M_11] * this.val[M_23]);
-		tmp[M_30] = (((this.val[M_12] * this.val[M_21] * this.val[M_30]) - (this.val[M_11] * this.val[M_22] * this.val[M_30]) - (this.val[M_12] * this.val[M_20] * this.val[M_31])) + (this.val[M_10] * this.val[M_22] * this.val[M_31]) + (this.val[M_11] * this.val[M_20] * this.val[M_32])) - (this.val[M_10] * this.val[M_21] * this.val[M_32]);
-		tmp[M_31] = ((((this.val[M_01] * this.val[M_22] * this.val[M_30]) - (this.val[M_02] * this.val[M_21] * this.val[M_30])) + (this.val[M_02] * this.val[M_20] * this.val[M_31])) - (this.val[M_00] * this.val[M_22] * this.val[M_31]) - (this.val[M_01] * this.val[M_20] * this.val[M_32])) + (this.val[M_00] * this.val[M_21] * this.val[M_32]);
-		tmp[M_32] = (((this.val[M_02] * this.val[M_11] * this.val[M_30]) - (this.val[M_01] * this.val[M_12] * this.val[M_30]) - (this.val[M_02] * this.val[M_10] * this.val[M_31])) + (this.val[M_00] * this.val[M_12] * this.val[M_31]) + (this.val[M_01] * this.val[M_10] * this.val[M_32])) - (this.val[M_00] * this.val[M_11] * this.val[M_32]);
-		tmp[M_33] = ((((this.val[M_01] * this.val[M_12] * this.val[M_20]) - (this.val[M_02] * this.val[M_11] * this.val[M_20])) + (this.val[M_02] * this.val[M_10] * this.val[M_21])) - (this.val[M_00] * this.val[M_12] * this.val[M_21]) - (this.val[M_01] * this.val[M_10] * this.val[M_22])) + (this.val[M_00] * this.val[M_11] * this.val[M_22]);
+		tmp[M_00] = this.val[M_12] * this.val[M_23] * this.val[M_31] - this.val[M_13] * this.val[M_22] * this.val[M_31] + this.val[M_13] * this.val[M_21] * this.val[M_32] - this.val[M_11] * this.val[M_23] * this.val[M_32] - this.val[M_12] * this.val[M_21] * this.val[M_33] + this.val[M_11] * this.val[M_22] * this.val[M_33];
+		tmp[M_01] = this.val[M_03] * this.val[M_22] * this.val[M_31] - this.val[M_02] * this.val[M_23] * this.val[M_31] - this.val[M_03] * this.val[M_21] * this.val[M_32] + this.val[M_01] * this.val[M_23] * this.val[M_32] + this.val[M_02] * this.val[M_21] * this.val[M_33] - this.val[M_01] * this.val[M_22] * this.val[M_33];
+		tmp[M_02] = this.val[M_02] * this.val[M_13] * this.val[M_31] - this.val[M_03] * this.val[M_12] * this.val[M_31] + this.val[M_03] * this.val[M_11] * this.val[M_32] - this.val[M_01] * this.val[M_13] * this.val[M_32] - this.val[M_02] * this.val[M_11] * this.val[M_33] + this.val[M_01] * this.val[M_12] * this.val[M_33];
+		tmp[M_03] = this.val[M_03] * this.val[M_12] * this.val[M_21] - this.val[M_02] * this.val[M_13] * this.val[M_21] - this.val[M_03] * this.val[M_11] * this.val[M_22] + this.val[M_01] * this.val[M_13] * this.val[M_22] + this.val[M_02] * this.val[M_11] * this.val[M_23] - this.val[M_01] * this.val[M_12] * this.val[M_23];
+		tmp[M_10] = this.val[M_13] * this.val[M_22] * this.val[M_30] - this.val[M_12] * this.val[M_23] * this.val[M_30] - this.val[M_13] * this.val[M_20] * this.val[M_32] + this.val[M_10] * this.val[M_23] * this.val[M_32] + this.val[M_12] * this.val[M_20] * this.val[M_33] - this.val[M_10] * this.val[M_22] * this.val[M_33];
+		tmp[M_11] = this.val[M_02] * this.val[M_23] * this.val[M_30] - this.val[M_03] * this.val[M_22] * this.val[M_30] + this.val[M_03] * this.val[M_20] * this.val[M_32] - this.val[M_00] * this.val[M_23] * this.val[M_32] - this.val[M_02] * this.val[M_20] * this.val[M_33] + this.val[M_00] * this.val[M_22] * this.val[M_33];
+		tmp[M_12] = this.val[M_03] * this.val[M_12] * this.val[M_30] - this.val[M_02] * this.val[M_13] * this.val[M_30] - this.val[M_03] * this.val[M_10] * this.val[M_32] + this.val[M_00] * this.val[M_13] * this.val[M_32] + this.val[M_02] * this.val[M_10] * this.val[M_33] - this.val[M_00] * this.val[M_12] * this.val[M_33];
+		tmp[M_13] = this.val[M_02] * this.val[M_13] * this.val[M_20] - this.val[M_03] * this.val[M_12] * this.val[M_20] + this.val[M_03] * this.val[M_10] * this.val[M_22] - this.val[M_00] * this.val[M_13] * this.val[M_22] - this.val[M_02] * this.val[M_10] * this.val[M_23] + this.val[M_00] * this.val[M_12] * this.val[M_23];
+		tmp[M_20] = this.val[M_11] * this.val[M_23] * this.val[M_30] - this.val[M_13] * this.val[M_21] * this.val[M_30] + this.val[M_13] * this.val[M_20] * this.val[M_31] - this.val[M_10] * this.val[M_23] * this.val[M_31] - this.val[M_11] * this.val[M_20] * this.val[M_33] + this.val[M_10] * this.val[M_21] * this.val[M_33];
+		tmp[M_21] = this.val[M_03] * this.val[M_21] * this.val[M_30] - this.val[M_01] * this.val[M_23] * this.val[M_30] - this.val[M_03] * this.val[M_20] * this.val[M_31] + this.val[M_00] * this.val[M_23] * this.val[M_31] + this.val[M_01] * this.val[M_20] * this.val[M_33] - this.val[M_00] * this.val[M_21] * this.val[M_33];
+		tmp[M_22] = this.val[M_01] * this.val[M_13] * this.val[M_30] - this.val[M_03] * this.val[M_11] * this.val[M_30] + this.val[M_03] * this.val[M_10] * this.val[M_31] - this.val[M_00] * this.val[M_13] * this.val[M_31] - this.val[M_01] * this.val[M_10] * this.val[M_33] + this.val[M_00] * this.val[M_11] * this.val[M_33];
+		tmp[M_23] = this.val[M_03] * this.val[M_11] * this.val[M_20] - this.val[M_01] * this.val[M_13] * this.val[M_20] - this.val[M_03] * this.val[M_10] * this.val[M_21] + this.val[M_00] * this.val[M_13] * this.val[M_21] + this.val[M_01] * this.val[M_10] * this.val[M_23] - this.val[M_00] * this.val[M_11] * this.val[M_23];
+		tmp[M_30] = this.val[M_12] * this.val[M_21] * this.val[M_30] - this.val[M_11] * this.val[M_22] * this.val[M_30] - this.val[M_12] * this.val[M_20] * this.val[M_31] + this.val[M_10] * this.val[M_22] * this.val[M_31] + this.val[M_11] * this.val[M_20] * this.val[M_32] - this.val[M_10] * this.val[M_21] * this.val[M_32];
+		tmp[M_31] = this.val[M_01] * this.val[M_22] * this.val[M_30] - this.val[M_02] * this.val[M_21] * this.val[M_30] + this.val[M_02] * this.val[M_20] * this.val[M_31] - this.val[M_00] * this.val[M_22] * this.val[M_31] - this.val[M_01] * this.val[M_20] * this.val[M_32] + this.val[M_00] * this.val[M_21] * this.val[M_32];
+		tmp[M_32] = this.val[M_02] * this.val[M_11] * this.val[M_30] - this.val[M_01] * this.val[M_12] * this.val[M_30] - this.val[M_02] * this.val[M_10] * this.val[M_31] + this.val[M_00] * this.val[M_12] * this.val[M_31] + this.val[M_01] * this.val[M_10] * this.val[M_32] - this.val[M_00] * this.val[M_11] * this.val[M_32];
+		tmp[M_33] = this.val[M_01] * this.val[M_12] * this.val[M_20] - this.val[M_02] * this.val[M_11] * this.val[M_20] + this.val[M_02] * this.val[M_10] * this.val[M_21] - this.val[M_00] * this.val[M_12] * this.val[M_21] - this.val[M_01] * this.val[M_10] * this.val[M_22] + this.val[M_00] * this.val[M_11] * this.val[M_22];
 		this.val[M_00] = tmp[M_00] * inv_det;
 		this.val[M_01] = tmp[M_01] * inv_det;
 		this.val[M_02] = tmp[M_02] * inv_det;
@@ -230,18 +232,19 @@ public class Matrix4 {
 	}
 
 	public double det() {
-		return ((((((((((((this.val[M_30] * this.val[M_21] * this.val[M_12] * this.val[M_03]) - (this.val[M_20] * this.val[M_31] * this.val[M_12] * this.val[M_03]) - (this.val[M_30] * this.val[M_11] * this.val[M_22] * this.val[M_03])) + (this.val[M_10] * this.val[M_31] * this.val[M_22] * this.val[M_03]) + (this.val[M_20] * this.val[M_11] * this.val[M_32] * this.val[M_03])) - (this.val[M_10] * this.val[M_21] * this.val[M_32] * this.val[M_03]) - (this.val[M_30] * this.val[M_21] * this.val[M_02] * this.val[M_13])) + (this.val[M_20] * this.val[M_31] * this.val[M_02] * this.val[M_13]) + (this.val[M_30] * this.val[M_01] * this.val[M_22] * this.val[M_13])) - (this.val[M_00] * this.val[M_31] * this.val[M_22] * this.val[M_13]) - (this.val[M_20] * this.val[M_01] * this.val[M_32] * this.val[M_13])) + (this.val[M_00] * this.val[M_21] * this.val[M_32] * this.val[M_13]) + (this.val[M_30] * this.val[M_11] * this.val[M_02] * this.val[M_23])) - (this.val[M_10] * this.val[M_31] * this.val[M_02] * this.val[M_23]) - (this.val[M_30] * this.val[M_01] * this.val[M_12] * this.val[M_23])) + (this.val[M_00] * this.val[M_31] * this.val[M_12] * this.val[M_23]) + (this.val[M_10] * this.val[M_01] * this.val[M_32] * this.val[M_23])) - (this.val[M_00] * this.val[M_11] * this.val[M_32] * this.val[M_23]) - (this.val[M_20] * this.val[M_11] * this.val[M_02] * this.val[M_33])) + (this.val[M_10] * this.val[M_21] * this.val[M_02] * this.val[M_33]) + (this.val[M_20] * this.val[M_01] * this.val[M_12] * this.val[M_33])) - (this.val[M_00] * this.val[M_21] * this.val[M_12] * this.val[M_33]) - (this.val[M_10] * this.val[M_01] * this.val[M_22] * this.val[M_33])) + (this.val[M_00] * this.val[M_11] * this.val[M_22] * this.val[M_33]);
+		return this.val[M_30] * this.val[M_21] * this.val[M_12] * this.val[M_03] - this.val[M_20] * this.val[M_31] * this.val[M_12] * this.val[M_03] - this.val[M_30] * this.val[M_11] * this.val[M_22] * this.val[M_03] + this.val[M_10] * this.val[M_31] * this.val[M_22] * this.val[M_03] + this.val[M_20] * this.val[M_11] * this.val[M_32] * this.val[M_03] - this.val[M_10] * this.val[M_21] * this.val[M_32] * this.val[M_03] - this.val[M_30] * this.val[M_21] * this.val[M_02] * this.val[M_13] + this.val[M_20] * this.val[M_31] * this.val[M_02] * this.val[M_13] + this.val[M_30] * this.val[M_01] * this.val[M_22] * this.val[M_13] - this.val[M_00] * this.val[M_31] * this.val[M_22] * this.val[M_13] - this.val[M_20] * this.val[M_01] * this.val[M_32] * this.val[M_13] + this.val[M_00] * this.val[M_21] * this.val[M_32] * this.val[M_13] + this.val[M_30] * this.val[M_11] * this.val[M_02] * this.val[M_23] - this.val[M_10] * this.val[M_31] * this.val[M_02] * this.val[M_23] - this.val[M_30] * this.val[M_01]
+				* this.val[M_12] * this.val[M_23] + this.val[M_00] * this.val[M_31] * this.val[M_12] * this.val[M_23] + this.val[M_10] * this.val[M_01] * this.val[M_32] * this.val[M_23] - this.val[M_00] * this.val[M_11] * this.val[M_32] * this.val[M_23] - this.val[M_20] * this.val[M_11] * this.val[M_02] * this.val[M_33] + this.val[M_10] * this.val[M_21] * this.val[M_02] * this.val[M_33] + this.val[M_20] * this.val[M_01] * this.val[M_12] * this.val[M_33] - this.val[M_00] * this.val[M_21] * this.val[M_12] * this.val[M_33] - this.val[M_10] * this.val[M_01] * this.val[M_22] * this.val[M_33] + this.val[M_00] * this.val[M_11] * this.val[M_22] * this.val[M_33];
 	}
 
 	public double det3x3() {
-		return ((this.val[M_00] * this.val[M_11] * this.val[M_22]) + (this.val[M_01] * this.val[M_12] * this.val[M_20]) + (this.val[M_02] * this.val[M_10] * this.val[M_21])) - (this.val[M_00] * this.val[M_12] * this.val[M_21]) - (this.val[M_01] * this.val[M_10] * this.val[M_22]) - (this.val[M_02] * this.val[M_11] * this.val[M_20]);
+		return this.val[M_00] * this.val[M_11] * this.val[M_22] + this.val[M_01] * this.val[M_12] * this.val[M_20] + this.val[M_02] * this.val[M_10] * this.val[M_21] - this.val[M_00] * this.val[M_12] * this.val[M_21] - this.val[M_01] * this.val[M_10] * this.val[M_22] - this.val[M_02] * this.val[M_11] * this.val[M_20];
 	}
 
 	public Matrix4 setToProjection(double near, double far, double fovy, double aspectRatio) {
 		idt();
-		final double l_fd = 1.0 / Math.tan((fovy * (Math.PI / 180)) / 2.0);
+		final double l_fd = 1.0 / Math.tan(fovy * (Math.PI / 180) / 2.0);
 		final double l_a1 = (far + near) / (near - far);
-		final double l_a2 = (2 * far * near) / (near - far);
+		final double l_a2 = 2 * far * near / (near - far);
 		this.val[M_00] = l_fd / aspectRatio;
 		this.val[M_10] = 0;
 		this.val[M_20] = 0;
@@ -465,7 +468,7 @@ public class Matrix4 {
 
 	public Matrix4 lerp(Matrix4 matrix, double alpha) {
 		for (int i = 0; i < 16; i++) {
-			this.val[i] = (this.val[i] * (1 - alpha)) + (matrix.val[i] * alpha);
+			this.val[i] = this.val[i] * (1 - alpha) + matrix.val[i] * alpha;
 		}
 		return this;
 	}
@@ -537,27 +540,27 @@ public class Matrix4 {
 	}
 
 	public double getScaleXSquared() {
-		return (this.val[Matrix4.M_00] * this.val[Matrix4.M_00]) + (this.val[Matrix4.M_01] * this.val[Matrix4.M_01]) + (this.val[Matrix4.M_02] * this.val[Matrix4.M_02]);
+		return this.val[Matrix4.M_00] * this.val[Matrix4.M_00] + this.val[Matrix4.M_01] * this.val[Matrix4.M_01] + this.val[Matrix4.M_02] * this.val[Matrix4.M_02];
 	}
 
 	public double getScaleYSquared() {
-		return (this.val[Matrix4.M_10] * this.val[Matrix4.M_10]) + (this.val[Matrix4.M_11] * this.val[Matrix4.M_11]) + (this.val[Matrix4.M_12] * this.val[Matrix4.M_12]);
+		return this.val[Matrix4.M_10] * this.val[Matrix4.M_10] + this.val[Matrix4.M_11] * this.val[Matrix4.M_11] + this.val[Matrix4.M_12] * this.val[Matrix4.M_12];
 	}
 
 	public double getScaleZSquared() {
-		return (this.val[Matrix4.M_20] * this.val[Matrix4.M_20]) + (this.val[Matrix4.M_21] * this.val[Matrix4.M_21]) + (this.val[Matrix4.M_22] * this.val[Matrix4.M_22]);
+		return this.val[Matrix4.M_20] * this.val[Matrix4.M_20] + this.val[Matrix4.M_21] * this.val[Matrix4.M_21] + this.val[Matrix4.M_22] * this.val[Matrix4.M_22];
 	}
 
 	public double getScaleX() {
-		return (FloatingPoint.isZero(this.val[Matrix4.M_01]) && FloatingPoint.isZero(this.val[Matrix4.M_02])) ? Math.abs(this.val[Matrix4.M_00]) : (double) Math.sqrt(getScaleXSquared());
+		return FloatingPoint.isZero(this.val[Matrix4.M_01]) && FloatingPoint.isZero(this.val[Matrix4.M_02]) ? Math.abs(this.val[Matrix4.M_00]) : (double) Math.sqrt(getScaleXSquared());
 	}
 
 	public double getScaleY() {
-		return (FloatingPoint.isZero(this.val[Matrix4.M_10]) && FloatingPoint.isZero(this.val[Matrix4.M_12])) ? Math.abs(this.val[Matrix4.M_11]) : (double) Math.sqrt(getScaleYSquared());
+		return FloatingPoint.isZero(this.val[Matrix4.M_10]) && FloatingPoint.isZero(this.val[Matrix4.M_12]) ? Math.abs(this.val[Matrix4.M_11]) : (double) Math.sqrt(getScaleYSquared());
 	}
 
 	public double getScaleZ() {
-		return (FloatingPoint.isZero(this.val[Matrix4.M_20]) && FloatingPoint.isZero(this.val[Matrix4.M_21])) ? Math.abs(this.val[Matrix4.M_22]) : (double) Math.sqrt(getScaleZSquared());
+		return FloatingPoint.isZero(this.val[Matrix4.M_20]) && FloatingPoint.isZero(this.val[Matrix4.M_21]) ? Math.abs(this.val[Matrix4.M_22]) : (double) Math.sqrt(getScaleZSquared());
 	}
 
 	public Vector3 getScale(Vector3 scale) {

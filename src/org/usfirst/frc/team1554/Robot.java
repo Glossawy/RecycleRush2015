@@ -1,6 +1,11 @@
 package org.usfirst.frc.team1554;
 
-import static org.usfirst.frc.team1554.Ref.Buttons.ID_DISABLE_TWIST; 
+import static edu.wpi.first.wpilibj.smartdashboard.SmartDashboard.getBoolean;
+import static edu.wpi.first.wpilibj.smartdashboard.SmartDashboard.getNumber;
+import static edu.wpi.first.wpilibj.smartdashboard.SmartDashboard.putBoolean;
+import static edu.wpi.first.wpilibj.smartdashboard.SmartDashboard.putData;
+import static edu.wpi.first.wpilibj.smartdashboard.SmartDashboard.putNumber;
+import static org.usfirst.frc.team1554.Ref.Buttons.ID_DISABLE_TWIST;
 import static org.usfirst.frc.team1554.Ref.Buttons.ID_SWAP_JOYSTICKS;
 import static org.usfirst.frc.team1554.Ref.Buttons.ID_TURBO_DRIVE;
 import static org.usfirst.frc.team1554.Ref.Channels.FL_DMOTOR;
@@ -13,10 +18,10 @@ import static org.usfirst.frc.team1554.Ref.Values.CONCURRENCY;
 import static org.usfirst.frc.team1554.Ref.Values.DRIVE_SCALE_FACTOR;
 import static org.usfirst.frc.team1554.Ref.Values.MAG_STICK_DEADBAND;
 import static org.usfirst.frc.team1554.Ref.Values.TWIST_STICK_DEADBAND;
-import static edu.wpi.first.wpilibj.smartdashboard.SmartDashboard.*;
 
 import java.util.concurrent.Callable;
 
+import org.usfirst.frc.team1554.data.JoystickSendable;
 import org.usfirst.frc.team1554.lib.BasicSense;
 import org.usfirst.frc.team1554.lib.DualJoystickControl;
 import org.usfirst.frc.team1554.lib.EnhancedIterativeRobot;
@@ -40,10 +45,7 @@ import edu.wpi.first.wpilibj.interfaces.Accelerometer.Range;
 // TODO bind value methods and change listeners
 
 /**
- * The VM is configured to automatically run this class, and to call the functions
- * corresponding to each mode, as described in the IterativeRobot documentation. If
- * you change the name of this class or the package after creating this project, you
- * must also update the manifest file in the resource directory.
+ * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as described in the IterativeRobot documentation. If you change the name of this class or the package after creating this project, you must also update the manifest file in the resource directory.
  */
 public class Robot extends EnhancedIterativeRobot {
 
@@ -56,10 +58,10 @@ public class Robot extends EnhancedIterativeRobot {
 
 	private SpeedController winchMotor;
 	private Move autonomousMoves;
-	
+
 	private double upWinchValue = 1.0;
 	private double downWinchValue = 0.3;
-	
+
 	private boolean allowMovement = false;
 
 	public Robot() {
@@ -74,16 +76,16 @@ public class Robot extends EnhancedIterativeRobot {
 		this.senses = BasicSense.makeBuiltInSense(Range.k4G);
 
 		Console.debug("Initializing Button Actions...");
-		this.control.putButtonAction(ID_TURBO_DRIVE, () -> getDrive().setLeftRightMotorOutputs(1.0, -1.0), Hand.RIGHT);
-		this.control.putButtonAction(ID_SWAP_JOYSTICKS, () -> this.control.swapJoysticks(), Hand.RIGHT);
-		this.control.putButtonAction(ID_DISABLE_TWIST, () -> this.control.setDisableTwistAxis(Hand.LEFT, !this.control.getDisableTwistAxis(Hand.LEFT)), Hand.LEFT);
-		this.control.putButtonAction(ID_DISABLE_TWIST, () -> this.control.setDisableTwistAxis(Hand.RIGHT, !this.control.getDisableTwistAxis(Hand.RIGHT)), Hand.RIGHT);
+		this.control.putButtonAction(ID_TURBO_DRIVE, "Turbo Speed", () -> getDrive().setLeftRightMotorOutputs(1.0, -1.0), Hand.RIGHT);
+		this.control.putButtonAction(ID_SWAP_JOYSTICKS, "Swap Joysticks", () -> this.control.swapJoysticks(), Hand.RIGHT);
+		this.control.putButtonAction(ID_DISABLE_TWIST, "Toggle Left Twist", () -> this.control.setDisableTwistAxis(Hand.LEFT, !this.control.getDisableTwistAxis(Hand.LEFT)), Hand.LEFT);
+		this.control.putButtonAction(ID_DISABLE_TWIST, "Toggle Right Twist", () -> this.control.setDisableTwistAxis(Hand.RIGHT, !this.control.getDisableTwistAxis(Hand.RIGHT)), Hand.RIGHT);
 
 		Console.debug("Starting Camera Capture...");
 		this.camera = new USBCamera();
 		this.camera.setSize(CameraSize.MEDIUM);
 		CameraStream.INSTANCE.startAutomaticCapture(this.camera);
-		Console.debug(String.format("Resolution: %dx%d | Quality: %s | FPS: %s", camera.getSize().WIDTH, camera.getSize().HEIGHT, camera.getQuality().name(), camera.getFPS().kFPS));
+		Console.debug(String.format("Resolution: %dx%d | Quality: %s | FPS: %s", this.camera.getSize().WIDTH, this.camera.getSize().HEIGHT, this.camera.getQuality().name(), this.camera.getFPS().kFPS));
 	}
 
 	@Override
@@ -92,19 +94,16 @@ public class Robot extends EnhancedIterativeRobot {
 		Console.info(testFile.path() + ": " + testFile.create());
 
 		this.winchMotor = this.motors.getMotor(Names.WINCH_MOTOR);
-		
-		this.control.putButtonAction(3, () -> winchMotor.set(-upWinchValue), Hand.RIGHT);
-		this.control.putButtonAction(5, () -> winchMotor.set(downWinchValue), Hand.RIGHT);
-		
-		this.autonomousMoves = Move.startChain(this)
-								   .forward(0.2)
-								   .delay(1)
-								   .build();
+
+		this.control.putButtonAction(3, "Move Winch Up", () -> this.winchMotor.set(-this.upWinchValue), Hand.RIGHT);
+		this.control.putButtonAction(5, "Move Winch Down", () -> this.winchMotor.set(this.downWinchValue), Hand.RIGHT);
+
+		this.autonomousMoves = Move.startChain(this).forward(0.2).delay(1).build();
 
 		initDashboard();
 		Console.debug("Initialization Complete!");
 	}
-	
+
 	@Override
 	public final void onAny() {
 		updateDashboard();
@@ -118,7 +117,7 @@ public class Robot extends EnhancedIterativeRobot {
 	@Override
 	public void onDisabled() {
 	}
-	
+
 	@Override
 	public void preAutonomous() {
 		this.autonomousMoves.reset();
@@ -139,9 +138,10 @@ public class Robot extends EnhancedIterativeRobot {
 	public void onTeleop() {
 		this.winchMotor.set(0);
 		this.control.update();
-		
-		if(allowMovement)
+
+		if (this.allowMovement) {
 			updateDrive();
+		}
 	}
 
 	@Override
@@ -188,35 +188,28 @@ public class Robot extends EnhancedIterativeRobot {
 	}
 
 	public static final <T> AsyncResult<T> addAsyncTask(Callable<T> task) {
-		return asyncHub.submit(new AsyncTask<T>() {
-			@Override
-			public T call() throws Exception {
-				return task.call();
-			}
-		});
+		return asyncHub.submit(() -> task.call());
 	}
 
 	public static final AsyncResult<Void> addAsyncTask(Runnable task) {
-		return asyncHub.submit(new AsyncTask<Void>() {
-
-			@Override
-			public Void call() throws Exception {
-				task.run();
-				return null;
-			}
+		return asyncHub.submit(() -> {
+			task.run();
+			return null;
 		});
 	}
-	
+
 	private void initDashboard() {
-		putBoolean(Names.ALLOW_MOVEMENT, allowMovement);
-		putNumber(Names.WINCH_UP_VALUE, upWinchValue);
-		putNumber(Names.WINCH_DOWN_VALUE, downWinchValue);
+		putData(Names.JOYSTICK_LEFT, new JoystickSendable(this.control, Hand.LEFT));
+		putData(Names.JOYSTICK_RIGHT, new JoystickSendable(this.control, Hand.RIGHT));
+		putBoolean(Names.ALLOW_MOVEMENT, this.allowMovement);
+		putNumber(Names.WINCH_UP_VALUE, this.upWinchValue);
+		putNumber(Names.WINCH_DOWN_VALUE, this.downWinchValue);
 	}
-	
+
 	private void updateDashboard() {
-		allowMovement = getBoolean(Names.ALLOW_MOVEMENT);
-		upWinchValue = getNumber(Names.WINCH_UP_VALUE);
-		downWinchValue = getNumber(Names.WINCH_DOWN_VALUE);
+		this.allowMovement = getBoolean(Names.ALLOW_MOVEMENT);
+		this.upWinchValue = getNumber(Names.WINCH_UP_VALUE);
+		this.downWinchValue = getNumber(Names.WINCH_DOWN_VALUE);
 	}
 
 }

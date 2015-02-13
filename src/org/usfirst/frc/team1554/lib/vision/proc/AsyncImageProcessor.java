@@ -10,7 +10,8 @@ public abstract class AsyncImageProcessor<T extends ImageBase> implements ImageP
 
 	@Override
 	public final Boolean call() throws Exception {
-		if (this.img == null) return false;
+		if (this.img == null)
+			return false;
 
 		final boolean res = process(this.img);
 		this.img = null;

@@ -22,7 +22,7 @@ public final class LibVersion {
 	}
 
 	public static boolean isEqual(int major, int minor, int revision) {
-		return (MAJOR == major) && (MINOR == minor) && (REVISION == revision);
+		return MAJOR == major && MINOR == minor && REVISION == revision;
 	}
 
 	public static boolean isHigher(int major, int minor, int revision) {
@@ -32,7 +32,8 @@ public final class LibVersion {
 	public static boolean isHigherOrEqualTo(int major, int minor, int revision) {
 		if (MAJOR != major)
 			return major < MAJOR;
-		else if (MINOR != minor) return minor < MINOR;
+		else if (MINOR != minor)
+			return minor < MINOR;
 
 		return REVISION >= revision;
 	}
@@ -44,9 +45,10 @@ public final class LibVersion {
 	public static boolean isLowerOrEqualTo(int major, int minor, int revision) {
 		if (MAJOR != major)
 			return major > MAJOR;
-		else if (MINOR != minor) return minor > MINOR;
+			else if (MINOR != minor)
+			return minor > MINOR;
 
-			return REVISION <= revision;
+		return REVISION <= revision;
 	}
 
 }

@@ -46,7 +46,8 @@ public class FileHandle {
 	public String extension() {
 		final String name = this.file.getName();
 		final int i = name.lastIndexOf('.');
-		if (i == -1) return "";
+		if (i == -1)
+			return "";
 
 		return name.substring(i + 1);
 	}
@@ -54,7 +55,8 @@ public class FileHandle {
 	public String nameWithoutExtension() {
 		final String name = this.file.getName();
 		final int i = name.lastIndexOf('.');
-		if (i == -1) return name;
+		if (i == -1)
+			return name;
 
 		return name.substring(0, i);
 	}
@@ -62,7 +64,8 @@ public class FileHandle {
 	public String pathWithoutExtension() {
 		final String path = path();
 		final int i = path.lastIndexOf('.');
-		if (i == -1) return path;
+		if (i == -1)
+			return path;
 
 		return path.substring(0, i);
 	}
@@ -72,24 +75,27 @@ public class FileHandle {
 	}
 
 	public FileHandle parent() {
-		if (path().length() <= 1) throw new RuntimeException("Cannot get parent of root!");
+		if (path().length() <= 1)
+			throw new RuntimeException("Cannot get parent of root!");
 
 		final File parent = this.file.getParentFile();
 		return new FileHandle(parent == null ? new File("/") : parent);
 	}
 
 	public FileHandle sibling(String name) {
-		if (path().length() == 0) throw new RuntimeException("Cannot get sibling of root!");
+		if (path().length() == 0)
+			throw new RuntimeException("Cannot get sibling of root!");
 
 		return new FileHandle(new File(this.file.getParent(), name));
 	}
 
 	public FileHandle child(String name) {
-		if (!this.file.isDirectory()) if (this.file.exists())
-			throw new RuntimeException("Cannot get child of a file! Must be a directory...");
-		else {
-			mkdirs();
-		}
+		if (!this.file.isDirectory())
+			if (this.file.exists())
+				throw new RuntimeException("Cannot get child of a file! Must be a directory...");
+			else {
+				mkdirs();
+			}
 
 		return new FileHandle(new File(this.file.getPath(), name));
 	}
@@ -121,13 +127,15 @@ public class FileHandle {
 	}
 
 	public boolean deleteDirectory() {
-		if (!this.file.isDirectory()) throw new RuntimeException("File is not directory: " + this.file);
+		if (!this.file.isDirectory())
+			throw new RuntimeException("File is not directory: " + this.file);
 
 		return IOUtils.deleteDirectory(this.file);
 	}
 
 	public boolean emptyDirectory(boolean preserve) {
-		if (!this.file.isDirectory()) throw new RuntimeException("File is not directory: " + this.file);
+		if (!this.file.isDirectory())
+			throw new RuntimeException("File is not directory: " + this.file);
 
 		return IOUtils.emptyDirectory(this.file, preserve);
 	}
@@ -136,7 +144,8 @@ public class FileHandle {
 		try {
 			return new FileInputStream(this.file);
 		} catch (final Exception ex) {
-			if (this.file.isDirectory()) throw new RuntimeException("Cannot open InputStream to directory...");
+			if (this.file.isDirectory())
+				throw new RuntimeException("Cannot open InputStream to directory...");
 			throw new RuntimeException("Error reading file: " + this.file, ex);
 		}
 	}
@@ -200,11 +209,12 @@ public class FileHandle {
 		try {
 			int offset = 0;
 			int nByte = 0;
-			while ((offset < bytes.length) && ((nByte = is.read(bytes, offset, bytes.length - offset)) >= 0)) {
+			while (offset < bytes.length && (nByte = is.read(bytes, offset, bytes.length - offset)) >= 0) {
 				offset += nByte;
 			}
 
-			if (offset < bytes.length) throw new IOException("Failed to read bytes fully. " + offset + " out of " + bytes.length);
+			if (offset < bytes.length)
+				throw new IOException("Failed to read bytes fully. " + offset + " out of " + bytes.length);
 		} catch (final IOException e) {
 			throw new RuntimeException("Failed to read bytes fully: " + this.file, e);
 		} finally {
@@ -219,7 +229,8 @@ public class FileHandle {
 		try {
 			return new FileOutputStream(this.file, append);
 		} catch (final IOException ex) {
-			if (this.file.isDirectory()) throw new RuntimeException("Cannot open OutputStream to directory...");
+			if (this.file.isDirectory())
+				throw new RuntimeException("Cannot open OutputStream to directory...");
 			throw new RuntimeException("Error writing file: " + this.file, ex);
 		}
 	}
@@ -372,19 +383,24 @@ public class FileHandle {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = (prime * result) + ((this.file == null) ? 0 : this.file.hashCode());
+		result = prime * result + (this.file == null ? 0 : this.file.hashCode());
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (obj == null) return false;
-		if (getClass() != obj.getClass()) return false;
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
 		final FileHandle other = (FileHandle) obj;
 		if (this.file == null) {
-			if (other.file != null) return false;
-		} else if (!this.file.equals(other.file)) return false;
+			if (other.file != null)
+				return false;
+		} else if (!this.file.equals(other.file))
+			return false;
 		return true;
 	}
 

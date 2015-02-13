@@ -24,7 +24,7 @@ public class MathUtils {
 	 * @return
 	 */
 	public static final int random(int start, int end) {
-		return start + rand.nextInt((end - start) + 1);
+		return start + rand.nextInt(end - start + 1);
 	}
 
 	/**
@@ -94,7 +94,7 @@ public class MathUtils {
 	 * @return
 	 */
 	public static final double random(double start, double end) {
-		return start + (rand.nextDouble() * (end - start));
+		return start + rand.nextDouble() * (end - start);
 	}
 
 	/**
@@ -103,7 +103,7 @@ public class MathUtils {
 	 * @return
 	 */
 	public static final int randomSign() {
-		return 1 | (rand.nextInt() >> 31);
+		return 1 | rand.nextInt() >> 31;
 	}
 
 	/**
@@ -136,7 +136,7 @@ public class MathUtils {
 
 	/** Linearly Interpolate between 'from' and 'to' at 'progress' position. */
 	public static final double lerp(double from, double to, double progress) {
-		return from + ((to - from) * progress);
+		return from + (to - from) * progress;
 	}
 
 	public static final int nextPowerOfTwo(int n) {

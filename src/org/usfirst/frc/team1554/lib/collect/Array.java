@@ -81,7 +81,8 @@ public class Array<T> implements Iterable<T> {
 	}
 
 	public void addAll(Array<? extends T> array, int start, int count) {
-		if ((start + count) > array.size) throw new IllegalArgumentException("start + count MUST be <= array.size! Size: " + array.size);
+		if (start + count > array.size)
+			throw new IllegalArgumentException("start + count MUST be <= array.size! Size: " + array.size);
 
 		addAll(array.items, start, count);
 	}
@@ -140,36 +141,42 @@ public class Array<T> implements Iterable<T> {
 	}
 
 	public boolean contains(T val, boolean identityComparison) {
-		if (identityComparison || (val == null)) {
+		if (identityComparison || val == null) {
 			for (int i = 0; i < this.items.length; i++)
-				if (this.items[i] == val) return true;
+				if (this.items[i] == val)
+					return true;
 		} else {
 			for (int i = 0; i < this.items.length; i++)
-				if (this.items[i].equals(val)) return true;
+				if (this.items[i].equals(val))
+					return true;
 		}
 
 		return false;
 	}
 
 	public int indexOf(T value, boolean identityComparison) {
-		if (identityComparison || (value == null)) {
+		if (identityComparison || value == null) {
 			for (int i = 0; i < this.size; i++)
-				if (this.items[i] == value) return i;
+				if (this.items[i] == value)
+					return i;
 		} else {
 			for (int i = 0; i < this.size; i++)
-				if (this.items[i].equals(value)) return i;
+				if (this.items[i].equals(value))
+					return i;
 		}
 
 		return -1;
 	}
 
 	public int lastIndexOf(T value, boolean identityComparison) {
-		if (identityComparison || (value == null)) {
+		if (identityComparison || value == null) {
 			for (int i = this.size - 1; i >= 0; i--)
-				if (this.items[i] == value) return i;
+				if (this.items[i] == value)
+					return i;
 		} else {
 			for (int i = this.size - 1; i >= 0; i--)
-				if (this.items[i].equals(value)) return i;
+				if (this.items[i].equals(value))
+					return i;
 		}
 
 		return -1;
@@ -178,7 +185,8 @@ public class Array<T> implements Iterable<T> {
 	public boolean removeValue(T value, boolean identityComparison) {
 		final int index = indexOf(value, identityComparison);
 
-		if (index < 0) return false;
+		if (index < 0)
+			return false;
 
 		removeIndex(index);
 		return true;
@@ -203,7 +211,7 @@ public class Array<T> implements Iterable<T> {
 		Preconditions.checkElementIndex(end, this.size);
 		Preconditions.checkElementIndex(start, end + 1);
 
-		final int count = (end - start) + 1;
+		final int count = end - start + 1;
 		if (this.ordered) {
 			System.arraycopy(this.items, start + count, this.items, start, this.size - (start + count));
 		} else {
@@ -342,7 +350,8 @@ public class Array<T> implements Iterable<T> {
 	}
 
 	public void truncate(int newSize) {
-		if (this.size <= newSize) return;
+		if (this.size <= newSize)
+			return;
 
 		for (int i = newSize; i < this.size; i++) {
 			this.items[i] = null;
@@ -372,19 +381,22 @@ public class Array<T> implements Iterable<T> {
 	public int hashCode() {
 		int result = 17;
 
-		result = (37 * result) + this.size;
-		result = (37 * result) + (this.items != null ? Arrays.hashCode(this.items) : 0);
+		result = 37 * result + this.size;
+		result = 37 * result + (this.items != null ? Arrays.hashCode(this.items) : 0);
 
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object object) {
-		if (object == this) return true;
-		if (!(object instanceof Array)) return false;
+		if (object == this)
+			return true;
+		if (!(object instanceof Array))
+			return false;
 
 		final Array<?> arr = (Array<?>) object;
-		if (this.size != arr.size) return false;
+		if (this.size != arr.size)
+			return false;
 
 		final Object[] i1 = this.items;
 		final Object[] i2 = arr.items;
@@ -393,7 +405,8 @@ public class Array<T> implements Iterable<T> {
 			final Object o1 = i1[i];
 			final Object o2 = i2[i];
 
-			if (!(o1 == null ? o2 == null : o1.equals(o2))) return false;
+			if (!(o1 == null ? o2 == null : o1.equals(o2)))
+				return false;
 		}
 
 		return true;
@@ -401,7 +414,8 @@ public class Array<T> implements Iterable<T> {
 
 	@Override
 	public String toString() {
-		if (this.size == 0) return "[]";
+		if (this.size == 0)
+			return "[]";
 
 		final StringBuilder sb = new StringBuilder();
 		sb.append('[');

@@ -24,8 +24,7 @@ public class BasicSense implements Disposable, NamedSendable {
 	private ITable table;
 
 	/**
-	 * Returns a "Blind" Robot. No Gyro or Accelerometer is available and we are not
-	 * using the RoboRIO built in accelerometer.
+	 * Returns a "Blind" Robot. No Gyro or Accelerometer is available and we are not using the RoboRIO built in accelerometer.
 	 * 
 	 * @return
 	 */
@@ -34,8 +33,7 @@ public class BasicSense implements Disposable, NamedSendable {
 	}
 
 	/**
-	 * Return a robot that can only sense direction, we are not using the
-	 * {@link BuiltInAccelerometer}.
+	 * Return a robot that can only sense direction, we are not using the {@link BuiltInAccelerometer}.
 	 * 
 	 * @param gyro
 	 * @return
@@ -66,8 +64,7 @@ public class BasicSense implements Disposable, NamedSendable {
 	}
 
 	/**
-	 * Returns a Robot that can sense direction and uses the RoboRIO
-	 * {@link BuiltInAccelerometer}.
+	 * Returns a Robot that can sense direction and uses the RoboRIO {@link BuiltInAccelerometer}.
 	 * 
 	 * @param gyro
 	 * @param range
@@ -78,8 +75,7 @@ public class BasicSense implements Disposable, NamedSendable {
 	}
 
 	/**
-	 * Returns a Robot that can sense directions and uses the RoboRIO
-	 * {@link BuiltInAccelerometer}.
+	 * Returns a Robot that can sense directions and uses the RoboRIO {@link BuiltInAccelerometer}.
 	 * 
 	 * @param gyro
 	 * @return
@@ -89,8 +85,7 @@ public class BasicSense implements Disposable, NamedSendable {
 	}
 
 	/**
-	 * Returns a robot that uses the RoboRIO {@link BuiltInAccelerometer} but cannot
-	 * sense direction.
+	 * Returns a robot that uses the RoboRIO {@link BuiltInAccelerometer} but cannot sense direction.
 	 * 
 	 * @param range
 	 * @return
@@ -100,8 +95,7 @@ public class BasicSense implements Disposable, NamedSendable {
 	}
 
 	/**
-	 * Returns a robot that uses the RoboRIO {@link BuiltInAccelerometer} in an 8G
-	 * range but cannot sense direction.
+	 * Returns a robot that uses the RoboRIO {@link BuiltInAccelerometer} in an 8G range but cannot sense direction.
 	 * 
 	 * @return
 	 */
@@ -169,7 +163,7 @@ public class BasicSense implements Disposable, NamedSendable {
 		final double y = getY();
 		final double z = getZ();
 
-		return Math.sqrt((x * x) + (y * y) + (z * z));
+		return Math.sqrt(x * x + y * y + z * z);
 	}
 
 	/**
@@ -187,7 +181,8 @@ public class BasicSense implements Disposable, NamedSendable {
 	 * @return
 	 */
 	public double getAngle() {
-		if (!hasGyro()) return 0.0;
+		if (!hasGyro())
+			return 0.0;
 
 		return this.gyro.getAngle() % 360.0;
 	}
@@ -198,7 +193,8 @@ public class BasicSense implements Disposable, NamedSendable {
 	 * @return
 	 */
 	public double getAngleRadians() {
-		if (!hasGyro()) return 0.0;
+		if (!hasGyro())
+			return 0.0;
 
 		return Math.toRadians(this.gyro.getAngle() % 360.0);
 	}

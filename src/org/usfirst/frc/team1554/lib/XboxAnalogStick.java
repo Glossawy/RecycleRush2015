@@ -1,6 +1,8 @@
 package org.usfirst.frc.team1554.lib;
 
 import org.usfirst.frc.team1554.lib.XboxControl.Axes;
+import org.usfirst.frc.team1554.lib.collect.Array;
+import org.usfirst.frc.team1554.lib.collect.IntMap;
 
 import edu.wpi.first.wpilibj.Joystick;
 
@@ -33,7 +35,7 @@ class XboxAnalogStick implements JoystickControl {
 		final double x = getX();
 		final double y = getY();
 
-		return Math.sqrt((x * x) + (y * y));
+		return Math.sqrt(x * x + y * y);
 	}
 
 	@Override
@@ -67,12 +69,12 @@ class XboxAnalogStick implements JoystickControl {
 	}
 
 	@Override
-	public void putButtonAction(int bId, Runnable action, Hand side) {
+	public void putButtonAction(int bId, ButtonAction action, Hand side) {
 	}
 
 	@Override
 	public void removeButtonAction(int bId, Hand side) {
-	
+
 	}
 
 	@Override
@@ -105,6 +107,11 @@ class XboxAnalogStick implements JoystickControl {
 
 	@Override
 	public void dispose() {
+	}
+
+	@Override
+	public IntMap<Array<String>> getBindingInformation(Hand side) {
+		return null;
 	}
 
 }

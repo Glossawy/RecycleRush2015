@@ -5,6 +5,10 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class RandomXS128 extends Random {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1087515677630603741L;
 	private static final AtomicLong uniqueLong = new AtomicLong(8_682_522_807_148_012L);
 	private static final double DNORMALIZER = 1.0 / (1L << 53);
 	private static final double FNORMALIZER = 1.0 / (1L << 24);
@@ -35,7 +39,7 @@ public class RandomXS128 extends Random {
 
 		this.seed1 = s1;
 		s2 ^= s2 << 23;
-		return (this.seed2 = (s2 ^ s1 ^ (s2 >> 17) ^ (s1 >>> 26))) + s1;
+		return (this.seed2 = s2 ^ s1 ^ s2 >> 17 ^ s1 >>> 26) + s1;
 	}
 
 	/**
@@ -45,18 +49,20 @@ public class RandomXS128 extends Random {
 	 * @return
 	 */
 	public long nextLong(final long n) {
-		if (n <= 0) throw new IllegalArgumentException("N must be > 0");
+		if (n <= 0)
+			throw new IllegalArgumentException("N must be > 0");
 
 		while (true) {
 			final long bits = nextLong() >>> 1;
-	final long value = bits % n;
-	if (((bits - value) + (n - 1)) >= 0) return value;
+			final long value = bits % n;
+			if (bits - value + n - 1 >= 0)
+				return value;
 		}
 	}
 
 	@Override
 	protected int next(int bits) {
-		return (int) (nextLong() & ((1L << bits) - 1));
+		return (int) (nextLong() & (1L << bits) - 1);
 	}
 
 	/**

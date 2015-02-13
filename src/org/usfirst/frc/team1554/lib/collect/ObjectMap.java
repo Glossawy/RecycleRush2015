@@ -27,33 +27,32 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>> {
 	private Keys<K> keys1, keys2;
 
 	/**
-	 * Creates a new map with an initial capacity of 32 and a load factor of 0.8.
-	 * This map will hold 25 items before growing the backing table.
+	 * Creates a new map with an initial capacity of 32 and a load factor of 0.8. This map will hold 25 items before growing the backing table.
 	 */
 	public ObjectMap() {
 		this(32, 0.8f);
 	}
 
 	/**
-	 * Creates a new map with a load factor of 0.8. This map will hold
-	 * initialCapacity * 0.8 items before growing the backing table.
+	 * Creates a new map with a load factor of 0.8. This map will hold initialCapacity * 0.8 items before growing the backing table.
 	 */
 	public ObjectMap(int initialCapacity) {
 		this(initialCapacity, 0.8f);
 	}
 
 	/**
-	 * Creates a new map with the specified initial capacity and load factor. This
-	 * map will hold initialCapacity * loadFactor items before growing the backing
-	 * table.
+	 * Creates a new map with the specified initial capacity and load factor. This map will hold initialCapacity * loadFactor items before growing the backing table.
 	 */
 	@SuppressWarnings("unchecked")
 	public ObjectMap(int initialCapacity, float loadFactor) {
-		if (initialCapacity < 0) throw new IllegalArgumentException("initialCapacity must be >= 0: " + initialCapacity);
-		if (initialCapacity > (1 << 30)) throw new IllegalArgumentException("initialCapacity is too large: " + initialCapacity);
+		if (initialCapacity < 0)
+			throw new IllegalArgumentException("initialCapacity must be >= 0: " + initialCapacity);
+		if (initialCapacity > 1 << 30)
+			throw new IllegalArgumentException("initialCapacity is too large: " + initialCapacity);
 		this.capacity = MathUtils.nextPowerOfTwo(initialCapacity);
 
-		if (loadFactor <= 0) throw new IllegalArgumentException("loadFactor must be > 0: " + loadFactor);
+		if (loadFactor <= 0)
+			throw new IllegalArgumentException("loadFactor must be > 0: " + loadFactor);
 		this.loadFactor = loadFactor;
 
 		this.threshold = (int) (this.capacity * loadFactor);
@@ -77,7 +76,8 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>> {
 
 	/** Returns the old value associated with the specified key, or null. */
 	public V put(K key, V value) {
-		if (key == null) throw new IllegalArgumentException("key cannot be null.");
+		if (key == null)
+			throw new IllegalArgumentException("key cannot be null.");
 		return put_internal(key, value);
 	}
 
@@ -300,7 +300,8 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>> {
 			index = hash2(hashCode);
 			if (!key.equals(this.keyTable[index])) {
 				index = hash3(hashCode);
-				if (!key.equals(this.keyTable[index])) return getStash(key);
+				if (!key.equals(this.keyTable[index]))
+					return getStash(key);
 			}
 		}
 		return this.valueTable[index];
@@ -309,13 +310,13 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>> {
 	private V getStash(K key) {
 		final K[] keyTable = this.keyTable;
 		for (int i = this.capacity, n = i + this.stashSize; i < n; i++)
-			if (key.equals(keyTable[i])) return this.valueTable[i];
+			if (key.equals(keyTable[i]))
+				return this.valueTable[i];
 		return null;
 	}
 
 	/**
-	 * Returns the value for the specified key, or the default value if the key is
-	 * not in the map.
+	 * Returns the value for the specified key, or the default value if the key is not in the map.
 	 */
 	public V get(K key, V defaultValue) {
 		final int hashCode = key.hashCode();
@@ -324,7 +325,8 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>> {
 			index = hash2(hashCode);
 			if (!key.equals(this.keyTable[index])) {
 				index = hash3(hashCode);
-				if (!key.equals(this.keyTable[index])) return getStash(key, defaultValue);
+				if (!key.equals(this.keyTable[index]))
+					return getStash(key, defaultValue);
 			}
 		}
 		return this.valueTable[index];
@@ -333,7 +335,8 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>> {
 	private V getStash(K key, V defaultValue) {
 		final K[] keyTable = this.keyTable;
 		for (int i = this.capacity, n = i + this.stashSize; i < n; i++)
-			if (key.equals(keyTable[i])) return this.valueTable[i];
+			if (key.equals(keyTable[i]))
+				return this.valueTable[i];
 		return defaultValue;
 	}
 
@@ -397,24 +400,22 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>> {
 	}
 
 	/**
-	 * Reduces the size of the backing arrays to be the specified capacity or less.
-	 * If the capacity is already less, nothing is done. If the map contains more
-	 * items than the specified capacity, the next highest power of two capacity is
-	 * used instead.
+	 * Reduces the size of the backing arrays to be the specified capacity or less. If the capacity is already less, nothing is done. If the map contains more items than the specified capacity, the next highest power of two capacity is used instead.
 	 */
 	public void shrink(int maximumCapacity) {
-		if (maximumCapacity < 0) throw new IllegalArgumentException("maximumCapacity must be >= 0: " + maximumCapacity);
+		if (maximumCapacity < 0)
+			throw new IllegalArgumentException("maximumCapacity must be >= 0: " + maximumCapacity);
 		if (this.size > maximumCapacity) {
 			maximumCapacity = this.size;
 		}
-		if (this.capacity <= maximumCapacity) return;
+		if (this.capacity <= maximumCapacity)
+			return;
 		maximumCapacity = MathUtils.nextPowerOfTwo(maximumCapacity);
 		resize(maximumCapacity);
 	}
 
 	/**
-	 * Clears the map and reduces the size of the backing arrays to be the specified
-	 * capacity if they are larger.
+	 * Clears the map and reduces the size of the backing arrays to be the specified capacity if they are larger.
 	 */
 	public void clear(int maximumCapacity) {
 		if (this.capacity <= maximumCapacity) {
@@ -426,7 +427,8 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>> {
 	}
 
 	public void clear() {
-		if (this.size == 0) return;
+		if (this.size == 0)
+			return;
 		final K[] keyTable = this.keyTable;
 		final V[] valueTable = this.valueTable;
 		for (int i = this.capacity + this.stashSize; i-- > 0;) {
@@ -438,25 +440,26 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>> {
 	}
 
 	/**
-	 * Returns true if the specified value is in the map. Note this traverses the
-	 * entire map and compares every value, which may be an expensive operation.
+	 * Returns true if the specified value is in the map. Note this traverses the entire map and compares every value, which may be an expensive operation.
 	 * 
 	 * @param identity
-	 *            If true, uses == to compare the specified value with values in the
-	 *            map. If false, uses {@link #equals(Object)}.
+	 *            If true, uses == to compare the specified value with values in the map. If false, uses {@link #equals(Object)}.
 	 */
 	public boolean containsValue(Object value, boolean identity) {
 		final V[] valueTable = this.valueTable;
 		if (value == null) {
 			final K[] keyTable = this.keyTable;
 			for (int i = this.capacity + this.stashSize; i-- > 0;)
-				if ((keyTable[i] != null) && (valueTable[i] == null)) return true;
+				if (keyTable[i] != null && valueTable[i] == null)
+					return true;
 		} else if (identity) {
 			for (int i = this.capacity + this.stashSize; i-- > 0;)
-				if (valueTable[i] == value) return true;
+				if (valueTable[i] == value)
+					return true;
 		} else {
 			for (int i = this.capacity + this.stashSize; i-- > 0;)
-				if (value.equals(valueTable[i])) return true;
+				if (value.equals(valueTable[i]))
+					return true;
 		}
 		return false;
 	}
@@ -468,7 +471,8 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>> {
 			index = hash2(hashCode);
 			if (!key.equals(this.keyTable[index])) {
 				index = hash3(hashCode);
-				if (!key.equals(this.keyTable[index])) return containsKeyStash(key);
+				if (!key.equals(this.keyTable[index]))
+					return containsKeyStash(key);
 			}
 		}
 		return true;
@@ -477,39 +481,38 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>> {
 	private boolean containsKeyStash(K key) {
 		final K[] keyTable = this.keyTable;
 		for (int i = this.capacity, n = i + this.stashSize; i < n; i++)
-			if (key.equals(keyTable[i])) return true;
+			if (key.equals(keyTable[i]))
+				return true;
 		return false;
 	}
 
 	/**
-	 * Returns the key for the specified value, or null if it is not in the map. Note
-	 * this traverses the entire map and compares every value, which may be an
-	 * expensive operation.
+	 * Returns the key for the specified value, or null if it is not in the map. Note this traverses the entire map and compares every value, which may be an expensive operation.
 	 * 
 	 * @param identity
-	 *            If true, uses == to compare the specified value with values in the
-	 *            map. If false, uses {@link #equals(Object)}.
+	 *            If true, uses == to compare the specified value with values in the map. If false, uses {@link #equals(Object)}.
 	 */
 	public K findKey(Object value, boolean identity) {
 		final V[] valueTable = this.valueTable;
 		if (value == null) {
 			final K[] keyTable = this.keyTable;
 			for (int i = this.capacity + this.stashSize; i-- > 0;)
-				if ((keyTable[i] != null) && (valueTable[i] == null)) return keyTable[i];
+				if (keyTable[i] != null && valueTable[i] == null)
+					return keyTable[i];
 		} else if (identity) {
 			for (int i = this.capacity + this.stashSize; i-- > 0;)
-				if (valueTable[i] == value) return this.keyTable[i];
+				if (valueTable[i] == value)
+					return this.keyTable[i];
 		} else {
 			for (int i = this.capacity + this.stashSize; i-- > 0;)
-				if (value.equals(valueTable[i])) return this.keyTable[i];
+				if (value.equals(valueTable[i]))
+					return this.keyTable[i];
 		}
 		return null;
 	}
 
 	/**
-	 * Increases the size of the backing array to accommodate the specified number of
-	 * additional items. Useful before adding many items to avoid multiple backing
-	 * array resizes.
+	 * Increases the size of the backing array to accommodate the specified number of additional items. Useful before adding many items to avoid multiple backing array resizes.
 	 */
 	public void ensureCapacity(int additionalCapacity) {
 		final int sizeNeeded = this.size + additionalCapacity;
@@ -550,12 +553,12 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>> {
 
 	private int hash2(int h) {
 		h *= PRIME1;
-		return (h ^ (h >>> this.hashShift)) & this.mask;
+		return (h ^ h >>> this.hashShift) & this.mask;
 	}
 
 	private int hash3(int h) {
 		h *= PRIME2;
-		return (h ^ (h >>> this.hashShift)) & this.mask;
+		return (h ^ h >>> this.hashShift) & this.mask;
 	}
 
 	public String toString(String separator) {
@@ -568,7 +571,8 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>> {
 	}
 
 	private String toString(String separator, boolean braces) {
-		if (this.size == 0) return braces ? "{}" : "";
+		if (this.size == 0)
+			return braces ? "{}" : "";
 		final StringBuilder buffer = new StringBuilder(32);
 		if (braces) {
 			buffer.append('{');
@@ -608,9 +612,7 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>> {
 	}
 
 	/**
-	 * Returns an iterator for the entries in the map. Remove is supported. Note that
-	 * the same iterator instance is returned each time this method is called. Use
-	 * the {@link Entries} constructor for nested or multithreaded iteration.
+	 * Returns an iterator for the entries in the map. Remove is supported. Note that the same iterator instance is returned each time this method is called. Use the {@link Entries} constructor for nested or multithreaded iteration.
 	 */
 	public Entries<K, V> entries() {
 		if (this.entries1 == null) {
@@ -630,9 +632,7 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>> {
 	}
 
 	/**
-	 * Returns an iterator for the values in the map. Remove is supported. Note that
-	 * the same iterator instance is returned each time this method is called. Use
-	 * the {@link Values} constructor for nested or multithreaded iteration.
+	 * Returns an iterator for the values in the map. Remove is supported. Note that the same iterator instance is returned each time this method is called. Use the {@link Values} constructor for nested or multithreaded iteration.
 	 */
 	public Values<V> values() {
 		if (this.values1 == null) {
@@ -652,9 +652,7 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>> {
 	}
 
 	/**
-	 * Returns an iterator for the keys in the map. Remove is supported. Note that
-	 * the same iterator instance is returned each time this method is called. Use
-	 * the {@link Keys} constructor for nested or multithreaded iteration.
+	 * Returns an iterator for the keys in the map. Remove is supported. Note that the same iterator instance is returned each time this method is called. Use the {@link Keys} constructor for nested or multithreaded iteration.
 	 */
 	public Keys<K> keys() {
 		if (this.keys1 == null) {
@@ -714,7 +712,8 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>> {
 
 		@Override
 		public void remove() {
-			if (this.currentIndex < 0) throw new IllegalStateException("next must be called before remove.");
+			if (this.currentIndex < 0)
+				throw new IllegalStateException("next must be called before remove.");
 			if (this.currentIndex >= this.map.capacity) {
 				this.map.removeStashIndex(this.currentIndex);
 				this.nextIndex = this.currentIndex - 1;
@@ -738,7 +737,8 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>> {
 		/** Note the same entry instance is returned each time this method is called. */
 		@Override
 		public Entry<K, V> next() {
-			if (!this.hasNext) throw new NoSuchElementException();
+			if (!this.hasNext)
+				throw new NoSuchElementException();
 			Preconditions.checkState(this.valid, "#iterator() cannot be used nested.");
 
 			final K[] keyTable = this.map.keyTable;
@@ -775,7 +775,8 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>> {
 
 		@Override
 		public V next() {
-			if (!this.hasNext) throw new NoSuchElementException();
+			if (!this.hasNext)
+				throw new NoSuchElementException();
 			Preconditions.checkState(this.valid, "#iterator() cannot be used nested.");
 
 			final V value = this.map.valueTable[this.nextIndex];
@@ -817,7 +818,8 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>> {
 
 		@Override
 		public K next() {
-			if (!this.hasNext) throw new NoSuchElementException();
+			if (!this.hasNext)
+				throw new NoSuchElementException();
 			Preconditions.checkState(this.valid, "#iterator() cannot be used nested.");
 
 			final K key = this.map.keyTable[this.nextIndex];

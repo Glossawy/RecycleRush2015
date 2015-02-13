@@ -29,8 +29,10 @@ public interface Predicate<T> {
 
 		@Override
 		public boolean hasNext() {
-			if (end) return false;
-			if (next != null) return true;
+			if (end)
+				return false;
+			if (next != null)
+				return true;
 
 			peeked = true;
 			while (iterator.hasNext()) {
@@ -46,7 +48,8 @@ public interface Predicate<T> {
 
 		@Override
 		public T next() {
-			if ((next == null) && !hasNext()) return null;
+			if (next == null && !hasNext())
+				return null;
 
 			final T res = next;
 			next = null;
@@ -56,7 +59,8 @@ public interface Predicate<T> {
 
 		@Override
 		public void remove() {
-			if (peeked) throw new RuntimeException("Cannot Remove between hasNext() and next()!");
+			if (peeked)
+				throw new RuntimeException("Cannot Remove between hasNext() and next()!");
 
 			iterator.remove();
 		}

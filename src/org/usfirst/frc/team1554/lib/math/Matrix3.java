@@ -26,17 +26,17 @@ public class Matrix3 {
 	}
 
 	public Matrix3 mul(Matrix3 m) {
-		final double v00 = (this.val[M00] * m.val[M00]) + (this.val[M01] * m.val[M10]) + (this.val[M02] * m.val[M20]);
-		final double v01 = (this.val[M00] * m.val[M01]) + (this.val[M01] * m.val[M11]) + (this.val[M02] * m.val[M21]);
-		final double v02 = (this.val[M00] * m.val[M02]) + (this.val[M01] * m.val[M12]) + (this.val[M02] * m.val[M22]);
+		final double v00 = this.val[M00] * m.val[M00] + this.val[M01] * m.val[M10] + this.val[M02] * m.val[M20];
+		final double v01 = this.val[M00] * m.val[M01] + this.val[M01] * m.val[M11] + this.val[M02] * m.val[M21];
+		final double v02 = this.val[M00] * m.val[M02] + this.val[M01] * m.val[M12] + this.val[M02] * m.val[M22];
 
-		final double v10 = (this.val[M10] * m.val[M00]) + (this.val[M11] * m.val[M10]) + (this.val[M12] * m.val[M20]);
-		final double v11 = (this.val[M10] * m.val[M01]) + (this.val[M11] * m.val[M11]) + (this.val[M12] * m.val[M21]);
-		final double v12 = (this.val[M10] * m.val[M02]) + (this.val[M11] * m.val[M12]) + (this.val[M12] * m.val[M22]);
+		final double v10 = this.val[M10] * m.val[M00] + this.val[M11] * m.val[M10] + this.val[M12] * m.val[M20];
+		final double v11 = this.val[M10] * m.val[M01] + this.val[M11] * m.val[M11] + this.val[M12] * m.val[M21];
+		final double v12 = this.val[M10] * m.val[M02] + this.val[M11] * m.val[M12] + this.val[M12] * m.val[M22];
 
-		final double v20 = (this.val[M20] * m.val[M00]) + (this.val[M21] * m.val[M10]) + (this.val[M22] * m.val[M20]);
-		final double v21 = (this.val[M20] * m.val[M01]) + (this.val[M21] * m.val[M11]) + (this.val[M22] * m.val[M21]);
-		final double v22 = (this.val[M20] * m.val[M02]) + (this.val[M21] * m.val[M12]) + (this.val[M22] * m.val[M22]);
+		final double v20 = this.val[M20] * m.val[M00] + this.val[M21] * m.val[M10] + this.val[M22] * m.val[M20];
+		final double v21 = this.val[M20] * m.val[M01] + this.val[M21] * m.val[M11] + this.val[M22] * m.val[M21];
+		final double v22 = this.val[M20] * m.val[M02] + this.val[M21] * m.val[M12] + this.val[M22] * m.val[M22];
 
 		this.val[M00] = v00;
 		this.val[M10] = v10;
@@ -52,17 +52,17 @@ public class Matrix3 {
 	}
 
 	private static void mul(double[] mata, double[] matb) {
-		final double v00 = (mata[M00] * matb[M00]) + (mata[M01] * matb[M10]) + (mata[M02] * matb[M20]);
-		final double v01 = (mata[M00] * matb[M01]) + (mata[M01] * matb[M11]) + (mata[M02] * matb[M21]);
-		final double v02 = (mata[M00] * matb[M02]) + (mata[M01] * matb[M12]) + (mata[M02] * matb[M22]);
+		final double v00 = mata[M00] * matb[M00] + mata[M01] * matb[M10] + mata[M02] * matb[M20];
+		final double v01 = mata[M00] * matb[M01] + mata[M01] * matb[M11] + mata[M02] * matb[M21];
+		final double v02 = mata[M00] * matb[M02] + mata[M01] * matb[M12] + mata[M02] * matb[M22];
 
-		final double v10 = (mata[M10] * matb[M00]) + (mata[M11] * matb[M10]) + (mata[M12] * matb[M20]);
-		final double v11 = (mata[M10] * matb[M01]) + (mata[M11] * matb[M11]) + (mata[M12] * matb[M21]);
-		final double v12 = (mata[M10] * matb[M02]) + (mata[M11] * matb[M12]) + (mata[M12] * matb[M22]);
+		final double v10 = mata[M10] * matb[M00] + mata[M11] * matb[M10] + mata[M12] * matb[M20];
+		final double v11 = mata[M10] * matb[M01] + mata[M11] * matb[M11] + mata[M12] * matb[M21];
+		final double v12 = mata[M10] * matb[M02] + mata[M11] * matb[M12] + mata[M12] * matb[M22];
 
-		final double v20 = (mata[M20] * matb[M00]) + (mata[M21] * matb[M10]) + (mata[M22] * matb[M20]);
-		final double v21 = (mata[M20] * matb[M01]) + (mata[M21] * matb[M11]) + (mata[M22] * matb[M21]);
-		final double v22 = (mata[M20] * matb[M02]) + (mata[M21] * matb[M12]) + (mata[M22] * matb[M22]);
+		final double v20 = mata[M20] * matb[M00] + mata[M21] * matb[M10] + mata[M22] * matb[M20];
+		final double v21 = mata[M20] * matb[M01] + mata[M21] * matb[M11] + mata[M22] * matb[M21];
+		final double v22 = mata[M20] * matb[M02] + mata[M21] * matb[M12] + mata[M22] * matb[M22];
 
 		mata[M00] = v00;
 		mata[M10] = v10;
@@ -162,24 +162,25 @@ public class Matrix3 {
 	}
 
 	public double det() {
-		return ((this.val[M00] * this.val[M11] * this.val[M22]) + (this.val[M01] * this.val[M12] * this.val[M20]) + (this.val[M02] * this.val[M10] * this.val[M21])) - (this.val[M00] * this.val[M12] * this.val[M21]) - (this.val[M01] * this.val[M10] * this.val[M22]) - (this.val[M02] * this.val[M11] * this.val[M20]);
+		return this.val[M00] * this.val[M11] * this.val[M22] + this.val[M01] * this.val[M12] * this.val[M20] + this.val[M02] * this.val[M10] * this.val[M21] - this.val[M00] * this.val[M12] * this.val[M21] - this.val[M01] * this.val[M10] * this.val[M22] - this.val[M02] * this.val[M11] * this.val[M20];
 	}
 
 	public Matrix3 inv() {
 		final double det = det();
-		if (det == 0) throw new RuntimeException("Can't invert a singular matrix");
+		if (det == 0)
+			throw new RuntimeException("Can't invert a singular matrix");
 
 		final double inv_det = 1.0 / det;
 
-		this.temp[M00] = (this.val[M11] * this.val[M22]) - (this.val[M21] * this.val[M12]);
-		this.temp[M10] = (this.val[M20] * this.val[M12]) - (this.val[M10] * this.val[M22]);
-		this.temp[M20] = (this.val[M10] * this.val[M21]) - (this.val[M20] * this.val[M11]);
-		this.temp[M01] = (this.val[M21] * this.val[M02]) - (this.val[M01] * this.val[M22]);
-		this.temp[M11] = (this.val[M00] * this.val[M22]) - (this.val[M20] * this.val[M02]);
-		this.temp[M21] = (this.val[M20] * this.val[M01]) - (this.val[M00] * this.val[M21]);
-		this.temp[M02] = (this.val[M01] * this.val[M12]) - (this.val[M11] * this.val[M02]);
-		this.temp[M12] = (this.val[M10] * this.val[M02]) - (this.val[M00] * this.val[M12]);
-		this.temp[M22] = (this.val[M00] * this.val[M11]) - (this.val[M10] * this.val[M01]);
+		this.temp[M00] = this.val[M11] * this.val[M22] - this.val[M21] * this.val[M12];
+		this.temp[M10] = this.val[M20] * this.val[M12] - this.val[M10] * this.val[M22];
+		this.temp[M20] = this.val[M10] * this.val[M21] - this.val[M20] * this.val[M11];
+		this.temp[M01] = this.val[M21] * this.val[M02] - this.val[M01] * this.val[M22];
+		this.temp[M11] = this.val[M00] * this.val[M22] - this.val[M20] * this.val[M02];
+		this.temp[M21] = this.val[M20] * this.val[M01] - this.val[M00] * this.val[M21];
+		this.temp[M02] = this.val[M01] * this.val[M12] - this.val[M11] * this.val[M02];
+		this.temp[M12] = this.val[M10] * this.val[M02] - this.val[M00] * this.val[M12];
+		this.temp[M22] = this.val[M00] * this.val[M11] - this.val[M10] * this.val[M01];
 
 		this.val[M00] = inv_det * this.temp[M00];
 		this.val[M10] = inv_det * this.temp[M10];
@@ -270,7 +271,8 @@ public class Matrix3 {
 	}
 
 	public Matrix3 rotateRad(double radians) {
-		if (radians == 0) return this;
+		if (radians == 0)
+			return this;
 		final double cos = Math.cos(radians);
 		final double sin = Math.sin(radians);
 
@@ -300,8 +302,8 @@ public class Matrix3 {
 	}
 
 	public Vector2 getScale(Vector2 scale) {
-		scale.x = Math.sqrt((this.val[M00] * this.val[M00]) + (this.val[M01] * this.val[M01]));
-		scale.y = Math.sqrt((this.val[M10] * this.val[M10]) + (this.val[M11] * this.val[M11]));
+		scale.x = Math.sqrt(this.val[M00] * this.val[M00] + this.val[M01] * this.val[M01]);
+		scale.y = Math.sqrt(this.val[M10] * this.val[M10] + this.val[M11] * this.val[M11]);
 		return scale;
 	}
 

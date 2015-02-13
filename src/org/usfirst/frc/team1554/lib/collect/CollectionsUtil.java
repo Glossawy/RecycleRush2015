@@ -47,7 +47,7 @@ public class CollectionsUtil {
 		if (size < 3)
 			return size + 1;
 		else if (size < 1073741824)
-			return size + (size / 3);
+			return size + size / 3;
 		else
 			return Integer.MAX_VALUE;
 	}

@@ -28,7 +28,8 @@ public class StateThread extends Thread {
 					Console.exception(e);
 				}
 
-				if (this.exit) return;
+				if (this.exit)
+					return;
 
 				this.runnable.run();
 			}

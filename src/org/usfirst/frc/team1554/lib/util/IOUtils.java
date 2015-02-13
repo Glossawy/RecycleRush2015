@@ -29,8 +29,7 @@ import org.usfirst.frc.team1554.lib.io.SingleStringProcessor;
 import edu.wpi.first.wpilibj.Timer;
 
 /**
- * A Collection of Utilities dedicated to the try-catch mess that is java.io. Some
- * java.nio utilities are provided. <br />
+ * A Collection of Utilities dedicated to the try-catch mess that is java.io. Some java.nio utilities are provided. <br />
  * <br />
  * Most of these methods are general use.
  * 
@@ -329,7 +328,8 @@ public class IOUtils {
 			IOUtils.closeSilently(bos);
 		}
 
-		if (result == null) throw new IllegalStateException("Failed to Parse Lines of File!");
+		if (result == null)
+			throw new IllegalStateException("Failed to Parse Lines of File!");
 
 		return getLines(result);
 	}
@@ -345,11 +345,7 @@ public class IOUtils {
 	}
 
 	/**
-	 * Converts a File's contents to some object represented by T. This is done by
-	 * the appropriate {@link LineProcessor}. This method uses the given
-	 * {@link Charset} to read the File's InputStream. The lines are then separated
-	 * and passed to the LineProcessor one-by-one. At the end a result is returned by
-	 * the processor via {@link LineProcessor#result()}.
+	 * Converts a File's contents to some object represented by T. This is done by the appropriate {@link LineProcessor}. This method uses the given {@link Charset} to read the File's InputStream. The lines are then separated and passed to the LineProcessor one-by-one. At the end a result is returned by the processor via {@link LineProcessor#result()}.
 	 * 
 	 * @param file
 	 *            - File to read
@@ -359,8 +355,7 @@ public class IOUtils {
 	 *            - Processor to process lines one-by-one
 	 * @return
 	 * @throws IOException
-	 *             - Required by {@link LineProcessor#processLine(String)
-	 *             processLine}.
+	 *             - Required by {@link LineProcessor#processLine(String) processLine}.
 	 */
 	public static final <T> T readLines(File file, Charset cs, LineProcessor<T> processor) throws IOException {
 		final Iterator<String> lines = getLines(file, cs).iterator();
@@ -374,10 +369,7 @@ public class IOUtils {
 	}
 
 	/**
-	 * Converts a File's Contents to some object represented by T. This is done by
-	 * the appropriate {@link LineProcessor}. This method will use
-	 * {@link Charset#defaultCharset() the default charset} and delegate to
-	 * {@link #readLines(File, Charset, LineProcessor) readLines}.
+	 * Converts a File's Contents to some object represented by T. This is done by the appropriate {@link LineProcessor}. This method will use {@link Charset#defaultCharset() the default charset} and delegate to {@link #readLines(File, Charset, LineProcessor) readLines}.
 	 * 
 	 * @param file
 	 * @param processor
@@ -391,16 +383,15 @@ public class IOUtils {
 	/**
 	 * Recursively Empties then Deletes a Folder. <br />
 	 * <br />
-	 * The boolean this method returns depends on whether or not the Directory passed
-	 * is deleted. <br />
-	 * If the directory can not be deleted then it returns false, though some of its
-	 * contents may have been deleted anyway. <br />
+	 * The boolean this method returns depends on whether or not the Directory passed is deleted. <br />
+	 * If the directory can not be deleted then it returns false, though some of its contents may have been deleted anyway. <br />
 	 * 
 	 * @param directory
 	 * @return Whether or Not the Directory passed was Deleted
 	 */
 	public static final boolean deleteDirectory(File directory) {
-		if (!directory.isDirectory()) throw new IllegalArgumentException(directory.getAbsolutePath() + " is NOT a Directory!");
+		if (!directory.isDirectory())
+			throw new IllegalArgumentException(directory.getAbsolutePath() + " is NOT a Directory!");
 
 		final File[] entries = directory.listFiles();
 
@@ -416,7 +407,8 @@ public class IOUtils {
 	}
 
 	public static final boolean emptyDirectory(File directory, boolean preserve) {
-		if (!directory.isDirectory()) throw new IllegalArgumentException(directory.getAbsolutePath() + " is NOT a Directory!");
+		if (!directory.isDirectory())
+			throw new IllegalArgumentException(directory.getAbsolutePath() + " is NOT a Directory!");
 
 		final File[] entries = directory.listFiles();
 
@@ -447,11 +439,12 @@ public class IOUtils {
 		FileOutputStream fos = null;
 		boolean success = true;
 
-		if (!src.exists()) throw new IllegalStateException("Source File does Not Exist!");
+		if (!src.exists())
+			throw new IllegalStateException("Source File does Not Exist!");
 		if (!dest.exists()) {
 			try {
-				dest.getParentFile().mkdirs();	// Ensure Trunk of Path Exists
-				dest.createNewFile();			// Create File
+				dest.getParentFile().mkdirs(); // Ensure Trunk of Path Exists
+				dest.createNewFile(); // Create File
 			} catch (final IOException e) {
 				e.printStackTrace();
 			}
@@ -491,7 +484,8 @@ public class IOUtils {
 	 * @param stream
 	 */
 	public static final void closeSilently(Closeable stream) {
-		if (stream == null) return;
+		if (stream == null)
+			return;
 
 		try {
 			stream.close();
@@ -507,8 +501,7 @@ public class IOUtils {
 	}
 
 	/**
-	 * Small Utility to consume the InterruptedException associated with
-	 * Thread.sleep. <br />
+	 * Small Utility to consume the InterruptedException associated with Thread.sleep. <br />
 	 * <br />
 	 * Deprecated for FRC use. Please use {@link Timer#delay(double) Timer.delay}.
 	 * 
@@ -524,8 +517,7 @@ public class IOUtils {
 	}
 
 	/**
-	 * Given a StackTrace, print out similarly to {@link Exception#printStackTrace()}
-	 * .
+	 * Given a StackTrace, print out similarly to {@link Exception#printStackTrace()} .
 	 * 
 	 * @param stackTrace
 	 */
@@ -536,9 +528,7 @@ public class IOUtils {
 	}
 
 	/**
-	 * Converts a File's contrents into a singular String using the given
-	 * {@link Charset} via the use of {@link SingleStringProcessor} and delegates to
-	 * {@link #readLines(File, Charset, LineProcessor) readLines}.
+	 * Converts a File's contrents into a singular String using the given {@link Charset} via the use of {@link SingleStringProcessor} and delegates to {@link #readLines(File, Charset, LineProcessor) readLines}.
 	 * 
 	 * @param file
 	 * @param charset
@@ -550,10 +540,7 @@ public class IOUtils {
 	}
 
 	/**
-	 * Converts a File's contents into a singular String using
-	 * {@link Charset#defaultCharset() the default charset} by default. This
-	 * delegates to {@link IOUtils#readLines(File, Charset, LineProcessor) readLines}
-	 * .
+	 * Converts a File's contents into a singular String using {@link Charset#defaultCharset() the default charset} by default. This delegates to {@link IOUtils#readLines(File, Charset, LineProcessor) readLines} .
 	 * 
 	 * @param file
 	 * @return
@@ -564,9 +551,7 @@ public class IOUtils {
 	}
 
 	/**
-	 * Attempts to establish a connection to the given URL and listens for a success
-	 * code (HTTP Response Code 200). If a response of 200 is received, then it is a
-	 * success. Any other code is a failure.
+	 * Attempts to establish a connection to the given URL and listens for a success code (HTTP Response Code 200). If a response of 200 is received, then it is a success. Any other code is a failure.
 	 * 
 	 * @param url
 	 * @return true if Response Code == 200, else false
@@ -600,8 +585,7 @@ public class IOUtils {
 	}
 
 	/**
-	 * Determines a Charset from either it's Canonical Name or Display Name saved to
-	 * a lookup table in IOUtils. An exception is thrown if none is found.
+	 * Determines a Charset from either it's Canonical Name or Display Name saved to a lookup table in IOUtils. An exception is thrown if none is found.
 	 * 
 	 * @param name
 	 * @return

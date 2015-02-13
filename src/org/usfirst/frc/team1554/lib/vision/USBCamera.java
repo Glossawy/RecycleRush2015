@@ -20,8 +20,7 @@ import edu.wpi.first.wpilibj.image.HSLImage;
 import edu.wpi.first.wpilibj.image.NIVisionException;
 
 /**
- * Implementation of WPILib's USB Camera with the Camera API. Comes with some
- * optimizations and modifications (some to fit with the new Enum based values).
+ * Implementation of WPILib's USB Camera with the Camera API. Comes with some optimizations and modifications (some to fit with the new Enum based values).
  * 
  * @author Matthew
  *
@@ -66,13 +65,15 @@ public class USBCamera implements Camera {
 
 	@Override
 	public synchronized void open() {
-		if (this.vid != -1) return;
+		if (this.vid != -1)
+			return;
 
 		for (int i = 0; i < 3; i++) {
 			try {
 				this.vid = NIVision.IMAQdxOpenCamera(this.name, IMAQdxCameraControlMode.CameraControlModeController);
 			} catch (final VisionException e) {
-				if (i == 2) throw e;
+				if (i == 2)
+					throw e;
 				Timer.delay(2);
 				continue;
 			}
@@ -82,7 +83,8 @@ public class USBCamera implements Camera {
 
 	@Override
 	public synchronized void close() {
-		if (this.vid == -1) return;
+		if (this.vid == -1)
+			return;
 
 		NIVision.IMAQdxCloseCamera(this.vid);
 		this.vid = -1;
@@ -90,7 +92,8 @@ public class USBCamera implements Camera {
 
 	@Override
 	public synchronized void startCapture() {
-		if ((this.vid == -1) || this.active) return;
+		if (this.vid == -1 || this.active)
+			return;
 
 		NIVision.IMAQdxConfigureGrab(this.vid);
 		NIVision.IMAQdxStartAcquisition(this.vid);
@@ -99,7 +102,8 @@ public class USBCamera implements Camera {
 
 	@Override
 	public synchronized void stopCapture() {
-		if ((this.vid == -1) || !this.active) return;
+		if (this.vid == -1 || !this.active)
+			return;
 
 		NIVision.IMAQdxStopAcquisition(this.vid);
 		NIVision.IMAQdxUnconfigureAcquisition(this.vid);
@@ -131,7 +135,8 @@ public class USBCamera implements Camera {
 
 	@Override
 	public synchronized void setBrightness(int brightness) {
-		if (brightness == this.brightness) return;
+		if (brightness == this.brightness)
+			return;
 
 		this.brightness = Math.max(Math.min(brightness, 100), 0);
 	}
@@ -150,8 +155,8 @@ public class USBCamera implements Camera {
 
 		// Video Mode
 		final dxEnumerateVideoModesResult enumerated = NIVision.IMAQdxEnumerateVideoModes(this.vid);
-		IMAQdxEnumItem found = null;	// The Mode we Found
-		int foundFps = 1000;			// Impossible Initial FPS
+		IMAQdxEnumItem found = null; // The Mode we Found
+		int foundFps = 1000; // Impossible Initial FPS
 		for (final IMAQdxEnumItem mode : enumerated.videoModeArray) {
 			final Matcher matcher = this.reMode.matcher(mode.Name);
 
@@ -167,7 +172,7 @@ public class USBCamera implements Camera {
 
 			// Check if FPS is Valid for current params
 			final double frames = Double.parseDouble(matcher.group("fps"));
-			if ((frames < this.fps.kFPS) || (frames > foundFps)) {
+			if (frames < this.fps.kFPS || frames > foundFps) {
 				continue;
 			}
 
@@ -175,7 +180,7 @@ public class USBCamera implements Camera {
 			final String fmt = matcher.group("format");
 			final boolean jpg = fmt.equalsIgnoreCase("jpeg");
 
-			if ((this.jpeg && !jpg) || (!this.jpeg && jpg)) {
+			if (this.jpeg && !jpg || !this.jpeg && jpg) {
 				continue;
 			}
 

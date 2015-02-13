@@ -24,7 +24,8 @@ public abstract class ReadOnlyValueHelper<T> {
 	}
 
 	public static <T> void fireChangeEvent(ReadOnlyValueHelper<T> helper) {
-		if (helper == null) return;
+		if (helper == null)
+			return;
 
 		helper.fireChangeEvent();
 	}
@@ -109,7 +110,7 @@ public abstract class ReadOnlyValueHelper<T> {
 				this.changeSize = 1;
 			} else {
 				if (this.changeSize == this.listeners.length) {
-					final int newSize = ((this.listeners.length * 3) / 2) + 1;
+					final int newSize = this.listeners.length * 3 / 2 + 1;
 					this.listeners = Arrays.copyOf(this.listeners, newSize);
 				}
 

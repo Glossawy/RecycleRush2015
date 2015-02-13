@@ -55,7 +55,8 @@ class ImageContainer<T extends ImageBase> {
 	}
 
 	public boolean isComplete() {
-		if (this.processing) return false;
+		if (this.processing)
+			return false;
 
 		checkFutures();
 		return this.futures.size == 0;

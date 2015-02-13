@@ -28,7 +28,7 @@ public final class Sets {
 	}
 
 	public static <E> HashSet<E> newHashSet(Iterable<E> elements) {
-		return (elements instanceof Collection) ? new HashSet<E>(CollectionsUtil.cast(elements)) : newHashSet(elements.iterator());
+		return elements instanceof Collection ? new HashSet<E>(CollectionsUtil.cast(elements)) : newHashSet(elements.iterator());
 	}
 
 	public static <E> HashSet<E> newHashSet(Iterator<E> iter) {

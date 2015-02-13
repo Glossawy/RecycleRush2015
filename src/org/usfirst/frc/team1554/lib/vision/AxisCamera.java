@@ -21,8 +21,7 @@ import edu.wpi.first.wpilibj.image.HSLImage;
 import edu.wpi.first.wpilibj.image.NIVisionException;
 
 /**
- * Implementation of WPILib's AxisCamera. Comes with quite a few optimizations and
- * modifications to fit into this API and to use a few modern features.
+ * Implementation of WPILib's AxisCamera. Comes with quite a few optimizations and modifications to fit into this API and to use a few modern features.
  * 
  * @author Matthew
  */
@@ -61,29 +60,26 @@ public class AxisCamera implements Camera {
 
 	@Override
 	public void open() {
-		this.camThread = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				int errors = 0;
+		this.camThread = new Thread(() -> {
+			int errors = 0;
 
-				while (!AxisCamera.this.done) {
-					final String request = "GET /mjpg/video.mjpg HTTP/1.1\n" + "User-Agent: HTTPStreamClient\n" + "Connection: Keep-Alive\n" + "Cache-Control: no-cache\n" + "Authorization: Basic R1JDOkZSQw==\n\n";
+			while (!AxisCamera.this.done) {
+				final String request = "GET /mjpg/video.mjpg HTTP/1.1\n" + "User-Agent: HTTPStreamClient\n" + "Connection: Keep-Alive\n" + "Cache-Control: no-cache\n" + "Authorization: Basic R1JDOkZSQw==\n\n";
 
-					try {
-						AxisCamera.this.socket = createSocket(request);
-						readImages();
+				try {
+					AxisCamera.this.socket = createSocket(request);
+					readImages();
 
-						errors = 0;
-					} catch (final IOException e) {
-						errors++;
+					errors = 0;
+				} catch (final IOException e) {
+					errors++;
 
-						if (errors > 5) {
-							Console.exception(e);
-						}
+					if (errors > 5) {
+						Console.exception(e);
 					}
-
-					Timer.delay(0.5);
 				}
+
+				Timer.delay(0.5);
 			}
 		});
 	}
@@ -105,7 +101,8 @@ public class AxisCamera implements Camera {
 
 	@Override
 	public void setFPS(CameraFPS fps) {
-		if (fps == this.fps) return;
+		if (fps == this.fps)
+			return;
 
 		this.parameterLock.lock();
 		try {
@@ -119,7 +116,8 @@ public class AxisCamera implements Camera {
 
 	@Override
 	public void setSize(CameraSize size) {
-		if (size == this.resolution) return;
+		if (size == this.resolution)
+			return;
 
 		this.parameterLock.lock();
 		try {
@@ -133,7 +131,8 @@ public class AxisCamera implements Camera {
 
 	@Override
 	public void setQuality(CameraQuality qual) {
-		if (qual == this.quality) return;
+		if (qual == this.quality)
+			return;
 
 		this.parameterLock.lock();
 		try {
@@ -147,7 +146,8 @@ public class AxisCamera implements Camera {
 
 	@Override
 	public void setBrightness(int brightness) {
-		if (brightness == this.brightness) return;
+		if (brightness == this.brightness)
+			return;
 
 		this.parameterLock.lock();
 		try {
@@ -160,7 +160,8 @@ public class AxisCamera implements Camera {
 	}
 
 	public void setColorLevel(int colorLevel) {
-		if (colorLevel == this.colorLevel) return;
+		if (colorLevel == this.colorLevel)
+			return;
 
 		this.parameterLock.lock();
 		try {
@@ -173,7 +174,8 @@ public class AxisCamera implements Camera {
 	}
 
 	public void setExposurePriority(int priority) {
-		if (priority == this.exposurePriority) return;
+		if (priority == this.exposurePriority)
+			return;
 
 		this.parameterLock.lock();
 		try {
@@ -222,7 +224,8 @@ public class AxisCamera implements Camera {
 	public ColorImage getImage() throws NIVisionException {
 		final HSLImage img = new HSLImage();
 
-		if (this.imageData.limit() == 0) return img;
+		if (this.imageData.limit() == 0)
+			return img;
 
 		this.imageDataLock.lock();
 		try {
@@ -236,7 +239,8 @@ public class AxisCamera implements Camera {
 	}
 
 	public boolean getImage(ColorImage img) throws NIVisionException {
-		if (this.imageData.limit() == 0) return false;
+		if (this.imageData.limit() == 0)
+			return false;
 
 		this.imageDataLock.lock();
 		try {
@@ -250,7 +254,8 @@ public class AxisCamera implements Camera {
 
 	@Override
 	public boolean _frameGrab(Image img) {
-		if (this.imageData.limit() == 0) return false;
+		if (this.imageData.limit() == 0)
+			return false;
 
 		this.imageDataLock.lock();
 		try {

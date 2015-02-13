@@ -50,7 +50,8 @@ public class RoboServerSocket implements ServerSocket {
 
 	@Override
 	public void dispose() {
-		if (this.server == null) return;
+		if (this.server == null)
+			return;
 
 		IOUtils.closeSilently(this.server);
 		this.server = null;

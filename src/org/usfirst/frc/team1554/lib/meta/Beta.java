@@ -13,12 +13,12 @@ import java.lang.annotation.Target;
 
 /**
  * 
- * Developer Annotation. Marks the target as in development and volatile. Staying is
- * not guaranteed, nor is usability.
+ * Developer Annotation. Marks the target as in development and volatile. Staying is not guaranteed, nor is usability.
  * 
  * @author Matthew
  */
 @Documented
 @Retention(RetentionPolicy.SOURCE)
 @Target({ TYPE, METHOD, CONSTRUCTOR, PACKAGE, ANNOTATION_TYPE })
-public @interface Beta {}
+public @interface Beta {
+}

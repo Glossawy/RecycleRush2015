@@ -22,8 +22,7 @@ import org.usfirst.frc.team1554.lib.collect.Maps;
 import org.usfirst.frc.team1554.lib.collect.ObjectSet;
 
 /**
- * Small Utility to Determine OS and OS Architecture based on an enumeration of
- * supported OS's and Architectures. Plus other utilities.
+ * Small Utility to Determine OS and OS Architecture based on an enumeration of supported OS's and Architectures. Plus other utilities.
  * 
  * @author Matthew Crocco
  */
@@ -31,13 +30,9 @@ public final class OS {
 
 	// Totally not inspired by java.util.concurrent.TimeUnit
 	/**
-	 * Convenience class for dealing with conversions to and from different units of
-	 * memory storage. Includes SI Units (Kilobytes, Megabytes, Gigabytes) and non-SI
-	 * Units (Kibibytes, Mebibytes, Gibibytes) assisted by the common base unit they
-	 * share, the Byte. <br />
+	 * Convenience class for dealing with conversions to and from different units of memory storage. Includes SI Units (Kilobytes, Megabytes, Gigabytes) and non-SI Units (Kibibytes, Mebibytes, Gibibytes) assisted by the common base unit they share, the Byte. <br />
 	 * <br />
-	 * Currently this class only deals with 64-bit Integer Values (Although 32-bit
-	 * Integers can be used).
+	 * Currently this class only deals with 64-bit Integer Values (Although 32-bit Integers can be used).
 	 * 
 	 * @author Matthew
 	 */
@@ -96,7 +91,7 @@ public final class OS {
 
 			@Override
 			public long toKibibytes(long amt) {
-				return (amt * C_KB) / C_KiB;
+				return amt * C_KB / C_KiB;
 			}
 
 			@Override
@@ -106,7 +101,7 @@ public final class OS {
 
 			@Override
 			public long toMebibytes(long amt) {
-				return (amt * C_KB) / C_MiB;
+				return amt * C_KB / C_MiB;
 			}
 
 			@Override
@@ -116,7 +111,7 @@ public final class OS {
 
 			@Override
 			public long toGibibytes(long amt) {
-				return (amt * C_KB) / C_GiB;
+				return amt * C_KB / C_GiB;
 			}
 
 			@Override
@@ -132,7 +127,7 @@ public final class OS {
 
 			@Override
 			public long toKilobytes(long amt) {
-				return (amt * C_KiB) / C_KB;
+				return amt * C_KiB / C_KB;
 			}
 
 			@Override
@@ -142,7 +137,7 @@ public final class OS {
 
 			@Override
 			public long toMegabytes(long amt) {
-				return (amt * C_KiB) / C_MB;
+				return amt * C_KiB / C_MB;
 			}
 
 			@Override
@@ -152,7 +147,7 @@ public final class OS {
 
 			@Override
 			public long toGigabytes(long amt) {
-				return (amt * C_KiB) / C_GB;
+				return amt * C_KiB / C_GB;
 			}
 
 			@Override
@@ -178,7 +173,7 @@ public final class OS {
 
 			@Override
 			public long toKibibytes(long amt) {
-				return (amt * C_MB) / C_KiB;
+				return amt * C_MB / C_KiB;
 			}
 
 			@Override
@@ -188,7 +183,7 @@ public final class OS {
 
 			@Override
 			public long toMebibytes(long amt) {
-				return (amt * C_MB) / C_MiB;
+				return amt * C_MB / C_MiB;
 			}
 
 			@Override
@@ -198,7 +193,7 @@ public final class OS {
 
 			@Override
 			public long toGibibytes(long amt) {
-				return (amt * C_MB) / C_GiB;
+				return amt * C_MB / C_GiB;
 			}
 
 			@Override
@@ -214,7 +209,7 @@ public final class OS {
 
 			@Override
 			public long toKilobytes(long amt) {
-				return (amt * C_MiB) / C_KB;
+				return amt * C_MiB / C_KB;
 			}
 
 			@Override
@@ -224,7 +219,7 @@ public final class OS {
 
 			@Override
 			public long toMegabytes(long amt) {
-				return (amt * C_MiB) / C_MB;
+				return amt * C_MiB / C_MB;
 			}
 
 			@Override
@@ -234,7 +229,7 @@ public final class OS {
 
 			@Override
 			public long toGigabytes(long amt) {
-				return (amt * C_MiB) / C_GB;
+				return amt * C_MiB / C_GB;
 			}
 
 			@Override
@@ -260,7 +255,7 @@ public final class OS {
 
 			@Override
 			public long toKibibytes(long amt) {
-				return (amt * C_GB) / C_KiB;
+				return amt * C_GB / C_KiB;
 			}
 
 			@Override
@@ -270,7 +265,7 @@ public final class OS {
 
 			@Override
 			public long toMebibytes(long amt) {
-				return (amt * C_GB) / C_MiB;
+				return amt * C_GB / C_MiB;
 			}
 
 			@Override
@@ -280,7 +275,7 @@ public final class OS {
 
 			@Override
 			public long toGibibytes(long amt) {
-				return (amt * C_GB) / C_GiB;
+				return amt * C_GB / C_GiB;
 			}
 
 			@Override
@@ -296,7 +291,7 @@ public final class OS {
 
 			@Override
 			public long toKilobytes(long amt) {
-				return (amt * C_GiB) / C_KB;
+				return amt * C_GiB / C_KB;
 			}
 
 			@Override
@@ -306,7 +301,7 @@ public final class OS {
 
 			@Override
 			public long toMegabytes(long amt) {
-				return (amt * C_GiB) / C_MB;
+				return amt * C_GiB / C_MB;
 			}
 
 			@Override
@@ -316,7 +311,7 @@ public final class OS {
 
 			@Override
 			public long toGigabytes(long amt) {
-				return (amt * C_GiB) / C_GB;
+				return amt * C_GiB / C_GB;
 			}
 
 			@Override
@@ -428,8 +423,7 @@ public final class OS {
 		}
 
 		/**
-		 * The appropriate tag for the Unit of Memory Storage, e.g., MB, MiB, GiB,
-		 * GB, etc.
+		 * The appropriate tag for the Unit of Memory Storage, e.g., MB, MiB, GiB, GB, etc.
 		 * 
 		 * @return
 		 */
@@ -500,7 +494,8 @@ public final class OS {
 	public boolean isValidAlias(String alias) {
 		Preconditions.checkNotNull(alias);
 		for (final String s : this.aliases)
-			if (s.equalsIgnoreCase(alias)) return true;
+			if (s.equalsIgnoreCase(alias))
+				return true;
 
 		return false;
 	}
@@ -508,7 +503,8 @@ public final class OS {
 	public static OS forAlias(String alias) {
 		Preconditions.checkNotNull(alias);
 		for (final OS os : OS.values())
-			if (os.isValidAlias(alias)) return os;
+			if (os.isValidAlias(alias))
+				return os;
 
 		return null;
 	}
@@ -523,15 +519,14 @@ public final class OS {
 
 		if (name.indexOf("win") >= 0)
 			return WINDOWS;
-		else if ((name.indexOf("nix") >= 0) || (name.indexOf("nux") >= 0) || (name.indexOf("nax") >= 0))
+		else if (name.indexOf("nix") >= 0 || name.indexOf("nux") >= 0 || name.indexOf("nax") >= 0)
 			return UNIX;
 		else
 			return UNSUPPORTED;
 	}
 
 	/**
-	 * Get the intended Architecture of the JVM. This is not necessarily the
-	 * Computer's architecture. <br />
+	 * Get the intended Architecture of the JVM. This is not necessarily the Computer's architecture. <br />
 	 * A 32-bit JVM can be run on a 64-bit Computer. <br />
 	 * <br />
 	 * To get the Computer Architecture, use {@link #getArch()}.
@@ -548,10 +543,8 @@ public final class OS {
 	}
 
 	/**
-	 * Get Architecture of the computer. This determines the ACTUAL Bitness of the
-	 * computer <br />
-	 * this means that the COMPUTER may be 64 bit, but may be running a 32 bit JVM.
-	 * To get <br />
+	 * Get Architecture of the computer. This determines the ACTUAL Bitness of the computer <br />
+	 * this means that the COMPUTER may be 64 bit, but may be running a 32 bit JVM. To get <br />
 	 * the JVM Bitness, use {@link #getArchJVM()}.
 	 * 
 	 * @return Actual Architecture of the Computer (x86 or x64)
@@ -560,7 +553,7 @@ public final class OS {
 		final String arch = System.getenv("PROCESSOR_ARCHITECTURE");
 		final String wow64 = System.getenv("PROCESSOR_ARCHITEW6432");
 
-		if ((arch.indexOf("64") > 0) || ((wow64 != null) && (wow64.indexOf("64") > 0)))
+		if (arch.indexOf("64") > 0 || wow64 != null && wow64.indexOf("64") > 0)
 			return Bit.BIT_64;
 		else
 			return Bit.BIT_32;

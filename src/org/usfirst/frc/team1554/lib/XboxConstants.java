@@ -32,5 +32,5 @@ public interface XboxConstants {
 	public static final double TRIGGER_MAX = 1;
 	public static final double TRIGGER_MIN = 0;
 
-	public static final int DPAD_POV = 0;
+	public static final int DPAD_POV_INDEX = 0;
 }

@@ -2,6 +2,11 @@ package org.usfirst.frc.team1554.lib.meta;
 
 public class TimingException extends RobotExecutionException {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2312476725389106205L;
+
 	public TimingException() {
 		super();
 	}

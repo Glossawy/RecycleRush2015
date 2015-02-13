@@ -20,13 +20,9 @@ import edu.wpi.first.wpilibj.image.HSLImage;
 import edu.wpi.first.wpilibj.image.NIVisionException;
 
 /**
- * Generic Implementation of Ethernet Camera that is nearly identical to
- * {@link USBCamera} but does an additional search for connected Ethernet Devices. <br />
+ * Generic Implementation of Ethernet Camera that is nearly identical to {@link USBCamera} but does an additional search for connected Ethernet Devices. <br />
  * <br />
- * This class is in Beta and is not guaranteed to stay or function correctly.
- * Improvements will be made as needed since this is not guaranteed to work and will
- * change if more NIVision functions become available or if Ethernet specific
- * Functions need to be used. <br />
+ * This class is in Beta and is not guaranteed to stay or function correctly. Improvements will be made as needed since this is not guaranteed to work and will change if more NIVision functions become available or if Ethernet specific Functions need to be used. <br />
  * <br />
  * This class will likely become more specific over time.
  * 
@@ -73,7 +69,8 @@ public class EthernetCamera implements Camera {
 
 	@Override
 	public synchronized void open() {
-		if (this.vid != -1) return;
+		if (this.vid != -1)
+			return;
 
 		NIVision.IMAQdxDiscoverEthernetCameras(this.ethernetAddress, 500);
 
@@ -81,7 +78,8 @@ public class EthernetCamera implements Camera {
 			try {
 				this.vid = NIVision.IMAQdxOpenCamera(this.name, IMAQdxCameraControlMode.CameraControlModeController);
 			} catch (final VisionException e) {
-				if (i == 2) throw e;
+				if (i == 2)
+					throw e;
 
 				Timer.delay(2);
 				continue;
@@ -92,7 +90,8 @@ public class EthernetCamera implements Camera {
 
 	@Override
 	public void close() {
-		if (this.vid == -1) return;
+		if (this.vid == -1)
+			return;
 
 		NIVision.IMAQdxCloseCamera(this.vid);
 		this.vid = -1;
@@ -100,7 +99,8 @@ public class EthernetCamera implements Camera {
 
 	@Override
 	public void startCapture() {
-		if ((this.vid == -1) || this.active) return;
+		if (this.vid == -1 || this.active)
+			return;
 
 		NIVision.IMAQdxConfigureGrab(this.vid);
 		NIVision.IMAQdxStartAcquisition(this.vid);
@@ -109,7 +109,8 @@ public class EthernetCamera implements Camera {
 
 	@Override
 	public void stopCapture() {
-		if ((this.vid == -1) || !this.active) return;
+		if (this.vid == -1 || !this.active)
+			return;
 
 		NIVision.IMAQdxStopAcquisition(this.vid);
 		NIVision.IMAQdxUnconfigureAcquisition(this.vid);
@@ -178,7 +179,7 @@ public class EthernetCamera implements Camera {
 
 			// Check if FPS is Valid for current params
 			final double frames = Double.parseDouble(matcher.group("fps"));
-			if ((frames < this.fps.kFPS) || (frames > foundFPS)) {
+			if (frames < this.fps.kFPS || frames > foundFPS) {
 				continue;
 			}
 
@@ -186,7 +187,7 @@ public class EthernetCamera implements Camera {
 			final String fmt = matcher.group("format");
 			final boolean jpg = fmt.equalsIgnoreCase("jpeg");
 
-			if ((this.jpeg && !jpg) || (!this.jpeg && jpg)) {
+			if (this.jpeg && !jpg || !this.jpeg && jpg) {
 				continue;
 			}
 

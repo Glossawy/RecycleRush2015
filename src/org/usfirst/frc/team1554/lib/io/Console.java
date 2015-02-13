@@ -51,10 +51,8 @@ public class Console {
 	}
 
 	/**
-	 * Does the same as {@link #log(Object, Level)} but goes further by taking a
-	 * Throwable and <br />
-	 * passing it to {@link Logger#log(org.apache.log4j.Priority, Object, Throwable)}
-	 * to be parsed. <br />
+	 * Does the same as {@link #log(Object, Level)} but goes further by taking a Throwable and <br />
+	 * passing it to {@link Logger#log(org.apache.log4j.Priority, Object, Throwable)} to be parsed. <br />
 	 * <br />
 	 * The Throwable is parsed independently by each Appender. <br />
 	 * In a normal use case this is ConsoleAppender and RollingFileAppender. <br />
@@ -73,8 +71,7 @@ public class Console {
 	 * Takes an Object as a message and obtains its String Value <br />
 	 * via {@link String#valueOf(Object)} which is null-safe. <br />
 	 * <br />
-	 * The String Message and Level are passed to
-	 * {@link Logger#log(org.apache.log4j.Priority, Object)} <br />
+	 * The String Message and Level are passed to {@link Logger#log(org.apache.log4j.Priority, Object)} <br />
 	 * to be printed to the Console and Log File (If created) <br />
 	 * 
 	 * @param msg
@@ -115,8 +112,7 @@ public class Console {
 	}
 
 	/**
-	 * Write a Stack Trace to the log with the given additional message. Writes 16
-	 * Stack Trace Elements at most.
+	 * Write a Stack Trace to the log with the given additional message. Writes 16 Stack Trace Elements at most.
 	 * 
 	 * @param msg
 	 */
@@ -131,8 +127,8 @@ public class Console {
 		debug(String.format("|| Detailed Stack Trace of %s[%s] Thread", current.getName(), current.getId()));
 		debug("|| Trace Message: " + String.valueOf(msg));
 		debug(border);
-		for (int i = 2; (i < 18) && (i < trace.length); i++) {
-			debug(String.format("||   at %s%s", trace[i].toString(), (i < 15) && (i < (trace.length - 1)) ? "..." : ""));
+		for (int i = 2; i < 18 && i < trace.length; i++) {
+			debug(String.format("||   at %s%s", trace[i].toString(), i < 15 && i < trace.length - 1 ? "..." : ""));
 			lines++;
 		}
 		debug(border);
@@ -175,8 +171,8 @@ public class Console {
 		warn(border);
 		warn("* Warning! - " + String.valueOf(msg));
 		warn(border);
-		for (int i = 2; (i < 8) && (i < trace.length); i++) {
-			warn(String.format("*   at %s%s", trace[i].toString(), (i < 7) && (i < (trace.length - 1)) ? "..." : ""));
+		for (int i = 2; i < 8 && i < trace.length; i++) {
+			warn(String.format("*   at %s%s", trace[i].toString(), i < 7 && i < trace.length - 1 ? "..." : ""));
 		}
 		warn(border);
 		warn("");
@@ -302,7 +298,8 @@ public class Console {
 	}
 
 	private static final void close(Handler handler) {
-		if (handler == null) return;
+		if (handler == null)
+			return;
 
 		try {
 			handler.close();

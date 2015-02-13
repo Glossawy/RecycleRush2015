@@ -19,23 +19,12 @@ import edu.wpi.first.wpilibj.Talon;
 
 // FIXME is this a case of trying to do too much in one interface?
 /**
- * A Code representation of what is basically a Motor Schematic. This class is mostly
- * used for managing Drive Motors though there is the optional functionality of
- * centralizing all motors and abstracting them to just Channel IDs. This abstraction
- * will force them to their bare {@link SpeedController}, and tangentially their
- * {@link PWM}, representations. <br />
- * All Motors in a MotorScheme must be {@link PWM PWMs} and {@link SpeedController
- * SpeedControllers} to behave as expected. <br />
+ * A Code representation of what is basically a Motor Schematic. This class is mostly used for managing Drive Motors though there is the optional functionality of centralizing all motors and abstracting them to just Channel IDs. This abstraction will force them to their bare {@link SpeedController}, and tangentially their {@link PWM}, representations. <br />
+ * All Motors in a MotorScheme must be {@link PWM PWMs} and {@link SpeedController SpeedControllers} to behave as expected. <br />
  * <br />
- * The Only Exception to the Name/ID System are {@link MotorGroup MotorGroups} which
- * are used for motor synchronization. Each of the individual motors are registered
- * by Channel ID but not by Name; The MotorGroup is registered by Name but not by
- * Channel ID. i.e. You can get the individual motors by their Channel ID while you
- * can get the entire MotorGroup by Name but not the other way around.<br />
+ * The Only Exception to the Name/ID System are {@link MotorGroup MotorGroups} which are used for motor synchronization. Each of the individual motors are registered by Channel ID but not by Name; The MotorGroup is registered by Name but not by Channel ID. i.e. You can get the individual motors by their Channel ID while you can get the entire MotorGroup by Name but not the other way around.<br />
  * <br />
- * That exception was included out of a desire to have Synchronized SpeedController
- * Groups be a part of a MotorScheme... but MotorGroups have no way of having a
- * Channel ID to act as an ID. This was an odd solution to that problem.
+ * That exception was included out of a desire to have Synchronized SpeedController Groups be a part of a MotorScheme... but MotorGroups have no way of having a Channel ID to act as an ID. This was an odd solution to that problem.
  * 
  * @author Matthew
  * @see Builder
@@ -44,23 +33,17 @@ import edu.wpi.first.wpilibj.Talon;
 public interface MotorScheme extends Disposable {
 
 	/**
-	 * Simple Enumeration to define RobotDrive type and possibly switching between
-	 * them. <br />
+	 * Simple Enumeration to define RobotDrive type and possibly switching between them. <br />
 	 * <br />
-	 * Takes the {@link RobotDrive} and {@link JoystickControl} associated with a
-	 * Robot and updates the RobotDrive motors appropriately for a drive type. e.g.
-	 * Using Polar Methods for {@value #MECANUM_POLAR} and using Left-Right Sided
-	 * Stick Driving for {@value #TANK}.
+	 * Takes the {@link RobotDrive} and {@link JoystickControl} associated with a Robot and updates the RobotDrive motors appropriately for a drive type. e.g. Using Polar Methods for {@value #MECANUM_POLAR} and using Left-Right Sided Stick Driving for {@value #TANK}.
 	 * 
 	 * @author Matthew
 	 */
 	public enum DriveManager {
 		/**
-		 * Drive the Robot by Mecanum Cartesian controls. Using X, Y, Theta and Gyro
-		 * Theta. <br />
+		 * Drive the Robot by Mecanum Cartesian controls. Using X, Y, Theta and Gyro Theta. <br />
 		 * <br />
-		 * If a Gyro is available then the robot is driven relative to the Field, not
-		 * the Robot.
+		 * If a Gyro is available then the robot is driven relative to the Field, not the Robot.
 		 */
 		MECANUM_CARTESIAN {
 			@Override
@@ -69,8 +52,7 @@ public interface MotorScheme extends Disposable {
 			}
 		},
 		/**
-		 * Drive the Robot by Mecanum Polar controls. Using Magnitude, Direction and
-		 * Theta. <br />
+		 * Drive the Robot by Mecanum Polar controls. Using Magnitude, Direction and Theta. <br />
 		 * This is always relative to the driver.
 		 */
 		MECANUM_POLAR {
@@ -80,8 +62,7 @@ public interface MotorScheme extends Disposable {
 			}
 		},
 		/**
-		 * Drive the Robot with One Stick only. Uses Up Down for movement and Left
-		 * Right for rotation.
+		 * Drive the Robot with One Stick only. Uses Up Down for movement and Left Right for rotation.
 		 */
 		ARCADE {
 			@Override
@@ -90,8 +71,7 @@ public interface MotorScheme extends Disposable {
 			}
 		},
 		/**
-		 * Drive the Robot with Two Sticks. One controlling the left side of the
-		 * robot, the other controlling the right side.
+		 * Drive the Robot with Two Sticks. One controlling the left side of the robot, the other controlling the right side.
 		 */
 		TANK {
 			@Override
@@ -101,8 +81,7 @@ public interface MotorScheme extends Disposable {
 		};
 
 		/**
-		 * Update RobotDrive motor speeds according to the provided Joystick
-		 * measurements based on selected DriveManager.
+		 * Update RobotDrive motor speeds according to the provided Joystick measurements based on selected DriveManager.
 		 * 
 		 * @param drive
 		 * @param c
@@ -118,8 +97,7 @@ public interface MotorScheme extends Disposable {
 	SpeedController[] getDriveMotors();
 
 	/**
-	 * Check if this MotorScheme uses a Two-Channel (Two-Motor) Drive Train
-	 * configuration.
+	 * Check if this MotorScheme uses a Two-Channel (Two-Motor) Drive Train configuration.
 	 * 
 	 * @return
 	 */
@@ -133,8 +111,7 @@ public interface MotorScheme extends Disposable {
 	IntMap<SpeedController> pidMap();
 
 	/**
-	 * Return the mapping of each registered motor it to it's registered name. This
-	 * is not reliable since in certain scenarios a name may not be provided at all!
+	 * Return the mapping of each registered motor it to it's registered name. This is not reliable since in certain scenarios a name may not be provided at all!
 	 * 
 	 * @return
 	 */
@@ -169,9 +146,7 @@ public interface MotorScheme extends Disposable {
 	}
 
 	/**
-	 * Set the Raw Value of this motor in the range [0, 255]. Any input will be
-	 * bounded to this range. e.g. 330000 will be bounded to 255 and -231 will be
-	 * bounded to 0. <br />
+	 * Set the Raw Value of this motor in the range [0, 255]. Any input will be bounded to this range. e.g. 330000 will be bounded to 255 and -231 will be bounded to 0. <br />
 	 * 
 	 * @param pwm
 	 * @param value
@@ -179,16 +154,16 @@ public interface MotorScheme extends Disposable {
 	default void setRaw(int pwm, int value) {
 		final SpeedController motor = pidMap().get(pwm, null);
 
-		if (motor == null) throw new NullPointerException("No PWM Found at id of " + pwm);
-		if (!(motor instanceof PWM)) throw new IllegalArgumentException("Motor of ID " + pwm + " is NOT a PWM!");
+		if (motor == null)
+			throw new NullPointerException("No PWM Found at id of " + pwm);
+		if (!(motor instanceof PWM))
+			throw new IllegalArgumentException("Motor of ID " + pwm + " is NOT a PWM!");
 
 		((PWM) motor).setRaw(Math.max(0, Math.min(255, value)));
 	}
 
 	/**
-	 * Set the Speed Value of this motor in the range [-1.0, 1.0]. Any input will be
-	 * bounded to this range. e.g. -3123 will be bounded to -1.0 and 323 will be
-	 * bounded to 1.0.
+	 * Set the Speed Value of this motor in the range [-1.0, 1.0]. Any input will be bounded to this range. e.g. -3123 will be bounded to -1.0 and 323 will be bounded to 1.0.
 	 * 
 	 * @param pwm
 	 * @param speed
@@ -196,14 +171,13 @@ public interface MotorScheme extends Disposable {
 	default void setSpeed(int pwm, double speed) {
 		final SpeedController motor = pidMap().get(pwm, null);
 
-		if (motor == null) throw new NullPointerException("No PWM Found at id of " + pwm);
+		if (motor == null)
+			throw new NullPointerException("No PWM Found at id of " + pwm);
 		motor.set(speed);
 	}
 
 	/**
-	 * Set the Speed Value of this motor in the range [-1.0, 1.0]. Any input will be
-	 * bounded to this range. e.g. -3123 will be bounded to -1.0 and 323 will be
-	 * bounded to 1.0.
+	 * Set the Speed Value of this motor in the range [-1.0, 1.0]. Any input will be bounded to this range. e.g. -3123 will be bounded to -1.0 and 323 will be bounded to 1.0.
 	 * 
 	 * @param name
 	 * @param speed
@@ -211,13 +185,13 @@ public interface MotorScheme extends Disposable {
 	default void setSpeed(String name, double speed) {
 		final SpeedController motor = nameMap().get(name);
 
-		if (motor == null) throw new NullPointerException("No PWM Found at name of " + name);
+		if (motor == null)
+			throw new NullPointerException("No PWM Found at name of " + name);
 		motor.set(speed);
 	}
 
 	/**
-	 * Get the Raw Value of this PWM. You must be certain this object is a subclass
-	 * of PWM!
+	 * Get the Raw Value of this PWM. You must be certain this object is a subclass of PWM!
 	 * 
 	 * @param pwm
 	 * @return
@@ -225,8 +199,10 @@ public interface MotorScheme extends Disposable {
 	default int getRaw(int pwm) {
 		final SpeedController motor = pidMap().get(pwm, null);
 
-		if (motor == null) throw new NullPointerException("No PWM Found at id of " + pwm);
-		if (!(motor instanceof PWM)) throw new IllegalArgumentException("Motor of ID " + pwm + " is NOT a PWM!");
+		if (motor == null)
+			throw new NullPointerException("No PWM Found at id of " + pwm);
+		if (!(motor instanceof PWM))
+			throw new IllegalArgumentException("Motor of ID " + pwm + " is NOT a PWM!");
 
 		return ((PWM) motor).getRaw();
 	}
@@ -240,7 +216,8 @@ public interface MotorScheme extends Disposable {
 	default double getSpeed(int pwm) {
 		final SpeedController motor = pidMap().get(pwm, null);
 
-		if (motor == null) throw new NullPointerException("No PWM Found at id of " + pwm);
+		if (motor == null)
+			throw new NullPointerException("No PWM Found at id of " + pwm);
 		return motor.get();
 	}
 
@@ -253,7 +230,8 @@ public interface MotorScheme extends Disposable {
 	default double getSpeed(String name) {
 		final SpeedController motor = nameMap().get(name);
 
-		if (motor == null) throw new NullPointerException("No PWM Found at name of " + name);
+		if (motor == null)
+			throw new NullPointerException("No PWM Found at name of " + name);
 		return motor.get();
 	}
 
@@ -270,10 +248,7 @@ public interface MotorScheme extends Disposable {
 	}
 
 	/**
-	 * Use to build instances of MotorScheme. Allows for easy creation of Two Motor
-	 * and Four Motor Drives while also allowing you to add arbitrary motors. These
-	 * arbitrary motors are mapped to their channels, to retrieve a motor just
-	 * provide either a Name or a Channel.
+	 * Use to build instances of MotorScheme. Allows for easy creation of Two Motor and Four Motor Drives while also allowing you to add arbitrary motors. These arbitrary motors are mapped to their channels, to retrieve a motor just provide either a Name or a Channel.
 	 * 
 	 * @author Matthew
 	 */
@@ -289,9 +264,7 @@ public interface MotorScheme extends Disposable {
 		private final ObjectMap<String, SpeedController> additionalMotorNames = Maps.newObjectMap();
 
 		/**
-		 * Create a MotorScheme based on a Two Channel Drive System. This defaults to
-		 * a Tank Drive {@link DriveManager} and uses the two {@link SpeedController
-		 * SpeedControllers} given for control.
+		 * Create a MotorScheme based on a Two Channel Drive System. This defaults to a Tank Drive {@link DriveManager} and uses the two {@link SpeedController SpeedControllers} given for control.
 		 * 
 		 * @param left
 		 *            - Left Channel Motor
@@ -312,14 +285,9 @@ public interface MotorScheme extends Disposable {
 		}
 
 		/**
-		 * Create a MotorScheme based on a Two Channel Drive System. This defaults to
-		 * a Tank Drive {@link DriveManager} and uses the two {@link SpeedController
-		 * SpeedControllers} given for control. <br />
+		 * Create a MotorScheme based on a Two Channel Drive System. This defaults to a Tank Drive {@link DriveManager} and uses the two {@link SpeedController SpeedControllers} given for control. <br />
 		 * <br />
-		 * This method creates two {@link Talon Talons} from the two given Channel
-		 * IDs and delegates to
-		 * {@link #newTwoChannelDrive(SpeedController, SpeedController)
-		 * newTwoChannelDrive}
+		 * This method creates two {@link Talon Talons} from the two given Channel IDs and delegates to {@link #newTwoChannelDrive(SpeedController, SpeedController) newTwoChannelDrive}
 		 * 
 		 * @param leftChannel
 		 *            - Left Channel ID
@@ -332,10 +300,7 @@ public interface MotorScheme extends Disposable {
 		}
 
 		/**
-		 * Create a MotorScheme based on a Four Motor Drive System. This is the
-		 * maximum accounted for in the {@link RobotDrive} class. This defaults to a
-		 * Tank Drive {@link DriveManager} and uses the four {@link SpeedController
-		 * SpeedControllers} provided for control.
+		 * Create a MotorScheme based on a Four Motor Drive System. This is the maximum accounted for in the {@link RobotDrive} class. This defaults to a Tank Drive {@link DriveManager} and uses the four {@link SpeedController SpeedControllers} provided for control.
 		 * 
 		 * @param frontLeft
 		 *            - Front Left Wheel Motor
@@ -360,15 +325,9 @@ public interface MotorScheme extends Disposable {
 		}
 
 		/**
-		 * Create a MotorScheme based on a Four Motor Drive System. This is the
-		 * maximum accounted for in the {@link RobotDrive} class. This defaults to a
-		 * Tank Drive {@link DriveManager} and uses the four {@link SpeedController
-		 * SpeedControllers} provided for control. <br />
+		 * Create a MotorScheme based on a Four Motor Drive System. This is the maximum accounted for in the {@link RobotDrive} class. This defaults to a Tank Drive {@link DriveManager} and uses the four {@link SpeedController SpeedControllers} provided for control. <br />
 		 * <br />
-		 * This method creates four {@link Talon Talons} from the four given Channel
-		 * IDs and delegates to
-		 * {@link #newFourMotorDrive(SpeedController, SpeedController, SpeedController, SpeedController)
-		 * newFourMotorDrive}.
+		 * This method creates four {@link Talon Talons} from the four given Channel IDs and delegates to {@link #newFourMotorDrive(SpeedController, SpeedController, SpeedController, SpeedController) newFourMotorDrive}.
 		 * 
 		 * @param frontLeftMotor
 		 *            - Front Left Wheel Channel
@@ -385,8 +344,7 @@ public interface MotorScheme extends Disposable {
 		}
 
 		/**
-		 * Set the {@link DriveManager} used by this MotorScheme. Default:
-		 * {@value DriveManager#TANK Tank Drive}.
+		 * Set the {@link DriveManager} used by this MotorScheme. Default: {@value DriveManager#TANK Tank Drive}.
 		 * 
 		 * @param manager
 		 * @return
@@ -398,8 +356,7 @@ public interface MotorScheme extends Disposable {
 		}
 
 		/**
-		 * Add a Valid Motor (Extends {@link PWM} and implements
-		 * {@link SpeedController}) to the Motor Scheme.
+		 * Add a Valid Motor (Extends {@link PWM} and implements {@link SpeedController}) to the Motor Scheme.
 		 * 
 		 * @param motor
 		 * @param name
@@ -413,8 +370,7 @@ public interface MotorScheme extends Disposable {
 		}
 
 		/**
-		 * Add a Valid Motor (Extends {@link PWM} and implements
-		 * {@link SpeedController}) to the Motor Scheme. <br />
+		 * Add a Valid Motor (Extends {@link PWM} and implements {@link SpeedController}) to the Motor Scheme. <br />
 		 * <br />
 		 * Creates a {@link Talon} from the given Channel ID.
 		 * 
@@ -427,8 +383,7 @@ public interface MotorScheme extends Disposable {
 		}
 
 		/**
-		 * Registers the entire {@link MotorGroup} by name and each of it's
-		 * individual motors by channel.
+		 * Registers the entire {@link MotorGroup} by name and each of it's individual motors by channel.
 		 * 
 		 * @param group
 		 * @param groupName
@@ -524,13 +479,9 @@ public interface MotorScheme extends Disposable {
 	}
 
 	/**
-	 * A Simple Wrapper Class for Motors that exist in MotorGroups but follow the odd
-	 * exception to {@link MotorScheme} rules for {@link MotorGroup MotorGroups}.
-	 * This ensures that any attempt to change the individual motor will be delegated
-	 * to it's respective MotorGroup, providing continued synchronization. <br />
+	 * A Simple Wrapper Class for Motors that exist in MotorGroups but follow the odd exception to {@link MotorScheme} rules for {@link MotorGroup MotorGroups}. This ensures that any attempt to change the individual motor will be delegated to it's respective MotorGroup, providing continued synchronization. <br />
 	 * <br />
-	 * In the special case it is necessary, this type cna be determined and the Motor
-	 * retrieved as either a {@link PWM} or a {@link SpeedController}.
+	 * In the special case it is necessary, this type cna be determined and the Motor retrieved as either a {@link PWM} or a {@link SpeedController}.
 	 * 
 	 * @author Matthew
 	 * @param <T>

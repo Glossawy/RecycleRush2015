@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1554.lib;
 
-import org.usfirst.frc.team1554.lib.io.Console; 
+import org.usfirst.frc.team1554.lib.io.Console;
 import org.usfirst.frc.team1554.lib.meta.RobotExecutionException;
 import org.usfirst.frc.team1554.lib.util.RoboUtils;
 
@@ -12,9 +12,7 @@ import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary;
 public abstract class EnhancedRobotBase extends RobotBase implements Disposable {
 
 	/**
-	 * Representation of Current Robot State. This is the alternative solution to the
-	 * boolean flag switches in {@link IterativeRobot} that encapsulates method calls
-	 * as well.
+	 * Representation of Current Robot State. This is the alternative solution to the boolean flag switches in {@link IterativeRobot} that encapsulates method calls as well.
 	 * 
 	 * @author Matthew
 	 */
@@ -128,7 +126,7 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
 		 * @param bot
 		 */
 		abstract public void doPostMethod(EnhancedRobotBase bot);
-		
+
 	}
 
 	public EnhancedRobotBase(String teamName, int teamNumber) {
@@ -139,7 +137,9 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
 	abstract public void startCompetition();
 
 	protected abstract void onInitialization();
-	public void onAny(){}
+
+	public void onAny() {
+	}
 
 	/**
 	 * Code to execute before entering Disabled Mode.
@@ -152,11 +152,10 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
 	abstract public void onDisabled();
 
 	/**
-	 * Code to execute while leaving Disabled Mode. Free or Reset State-Dependent
-	 * Resources and Objects here.
+	 * Code to execute while leaving Disabled Mode. Free or Reset State-Dependent Resources and Objects here.
 	 */
 	public void postDisabled() {
-//		Console.info("DEFAULT POSTDISABLED()! Override me!");
+		// Console.info("DEFAULT POSTDISABLED()! Override me!");
 	}
 
 	/**
@@ -170,11 +169,10 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
 	abstract public void onAutonomous();
 
 	/**
-	 * Code to execute while leaving Autonomous. Free or Reset State-Dependent
-	 * Resources and Objects here.
+	 * Code to execute while leaving Autonomous. Free or Reset State-Dependent Resources and Objects here.
 	 */
 	public void postAutonomous() {
-//		Console.info("DEFAULT POSTAUTONOMOUS()! Override me!");
+		// Console.info("DEFAULT POSTAUTONOMOUS()! Override me!");
 	}
 
 	/**
@@ -188,18 +186,17 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
 	abstract public void onTeleop();
 
 	/**
-	 * Code to execute while leaving Teleop. Free or Reset State-Dependent Resources
-	 * and Objects here.
+	 * Code to execute while leaving Teleop. Free or Reset State-Dependent Resources and Objects here.
 	 */
 	public void postTeleop() {
-//		Console.info("DEFAULT POSTTELEOP()! Override me!");
+		// Console.info("DEFAULT POSTTELEOP()! Override me!");
 	}
 
 	/**
 	 * Code to execute before entering Test Mode.
 	 */
 	public void preTest() {
-//		Console.info("DEFAULT PRETEST()! Override me!");
+		// Console.info("DEFAULT PRETEST()! Override me!");
 	}
 
 	/**
@@ -208,11 +205,10 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
 	abstract public void onTest();
 
 	/**
-	 * Code to execute while leaving Test Mode. Free or Reset State-Dependent
-	 * Resources and Objects here.
+	 * Code to execute while leaving Test Mode. Free or Reset State-Dependent Resources and Objects here.
 	 */
 	public void postTest() {
-//		Console.info("DEFAULT POSTTEST()! Override me!");
+		// Console.info("DEFAULT POSTTEST()! Override me!");
 	}
 
 	/**
@@ -237,9 +233,9 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
 	abstract public BasicSense getBasicSenses();
 
 	public final DriverStation ds() {
-		return m_ds;
+		return this.m_ds;
 	}
-	
+
 	@Override
 	public void free() {
 		super.free();
@@ -253,7 +249,7 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
 	public static final void ensureNativesLoaded() {
 		try {
 			// Force the Static Initializers to Run
-//			Class.forName(Native.class.getName());
+			// Class.forName(Native.class.getName());
 		} catch (final Exception e) {
 			Console.exception(e);
 			RoboUtils.exceptionToDS(e);

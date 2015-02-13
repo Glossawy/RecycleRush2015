@@ -33,7 +33,8 @@ public class RoboSocket implements Socket {
 	}
 
 	private void apply(SocketParams params) {
-		if (params == null) return;
+		if (params == null)
+			return;
 
 		try {
 			this.socket.setPerformancePreferences(params.performanceConnectionTime, params.performanceLatency, params.performanceBandwidth);
@@ -70,7 +71,8 @@ public class RoboSocket implements Socket {
 
 	@Override
 	public boolean isConnected() {
-		if (this.socket == null) return false;
+		if (this.socket == null)
+			return false;
 
 		return this.socket.isConnected();
 	}

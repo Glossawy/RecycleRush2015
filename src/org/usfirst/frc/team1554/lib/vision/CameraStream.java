@@ -96,14 +96,11 @@ public enum CameraStream {
 		this.dataPool.addLast(ByteBuffer.allocateDirect(MAX_SIZE));
 
 		// Create Serving Thread
-		this.serverThread = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					serveStream();
-				} catch (final Exception e) {
-					Console.exception(e);
-				}
+		this.serverThread = new Thread(() -> {
+			try {
+				serveStream();
+			} catch (final Exception e) {
+				Console.exception(e);
 			}
 		});
 		this.serverThread.setName("CameraStream-Out");
@@ -115,14 +112,11 @@ public enum CameraStream {
 		/*
 		 * Set the Camera Data being sent to the new Camera Data.
 		 * 
-		 * Remember that Data objects hold onto the buffers that originate from our
-		 * Data Pool. This means that we may handle MANY Data objects but only use 3
-		 * Buffers at a time.
+		 * Remember that Data objects hold onto the buffers that originate from our Data Pool. This means that we may handle MANY Data objects but only use 3 Buffers at a time.
 		 * 
-		 * The addLast() call at the end just makes the buffer available to the
-		 * serving thread.
+		 * The addLast() call at the end just makes the buffer available to the serving thread.
 		 */
-		if ((this.cameraData != null) && (this.cameraData.data != null)) {
+		if (this.cameraData != null && this.cameraData.data != null) {
 			this.cameraData.data.free();
 			if (this.cameraData.data.getBuffer() != null) {
 				this.dataPool.addLast(this.cameraData.data.getBuffer());
@@ -148,8 +142,7 @@ public enum CameraStream {
 	/**
 	 * Set the Image Currently being Streamed to the Client <br />
 	 * <br />
-	 * {@link #setImage(ImageBase) setImage} essentially calls this method with the
-	 * {@link ImageBase Image's} underlying NIVision Image Object.
+	 * {@link #setImage(ImageBase) setImage} essentially calls this method with the {@link ImageBase Image's} underlying NIVision Image Object.
 	 * 
 	 * @param image
 	 */
@@ -168,8 +161,8 @@ public enum CameraStream {
 		// 0xFF and 0xD8 are the Start Bytes described by the JPEG Specification
 		int index = 0;
 		if (hwClient) {
-			while (index < (buffer.limit() - 1)) {
-				if (((buffer.get(index) & 0xFF) == 0xFF) && ((buffer.get(index + 1) & 0xFF) == 0xD8)) {
+			while (index < buffer.limit() - 1) {
+				if ((buffer.get(index) & 0xFF) == 0xFF && (buffer.get(index + 1) & 0xFF) == 0xD8) {
 					break;
 				}
 
@@ -178,21 +171,20 @@ public enum CameraStream {
 		}
 
 		// If there are only the start bytes then we have a problem.
-		if ((buffer.limit() - index - 1) <= 2) throw new VisionException("Data size of flattened image is less than 2. Try another camera!");
+		if (buffer.limit() - index - 1 <= 2)
+			throw new VisionException("Data size of flattened image is less than 2. Try another camera!");
 
 		setImageData(data, index);
 	}
 
 	/**
-	 * Set the Camera and Automatically Capture images in a separate thread. This is
-	 * useful if you don't wish to use {@link #setImage(ImageBase)} in your loop
-	 * (typically for on-roboRIO image processing) or wish to use the DriverStation
-	 * for Image Processing.
+	 * Set the Camera and Automatically Capture images in a separate thread. This is useful if you don't wish to use {@link #setImage(ImageBase)} in your loop (typically for on-roboRIO image processing) or wish to use the DriverStation for Image Processing.
 	 * 
 	 * @param camera
 	 */
 	public void startAutomaticCapture(Camera camera) {
-		if (this.captureStarted) return;
+		if (this.captureStarted)
+			return;
 
 		camera.open();
 		this.captureStarted = true;
@@ -200,12 +192,7 @@ public enum CameraStream {
 
 		this.camera.startCapture();
 
-		final Thread captureThread = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				runCapture();
-			}
-		});
+		final Thread captureThread = new Thread(() -> runCapture());
 
 		captureThread.setName("CameraStream-Capture");
 		captureThread.start();
@@ -275,8 +262,7 @@ public enum CameraStream {
 						}
 
 						/*
-						 * Set buffer position to start of data, and then create a
-						 * new wrapper for the data at that position
+						 * Set buffer position to start of data, and then create a new wrapper for the data at that position
 						 */
 						imgData.data.getBuffer().position(imgData.start);
 						final byte[] imgArr = new byte[imgData.data.getBuffer().remaining()];
@@ -338,7 +324,7 @@ public enum CameraStream {
 
 			try {
 				// Retrieve the current frame's data.
-				if (hwClient && (dataBuffer != null)) {
+				if (hwClient && dataBuffer != null) {
 					dataBuffer.limit(dataBuffer.capacity() - 1);
 					this.camera.getImageData(dataBuffer);
 					setImageData(new RawData(dataBuffer), 0);
@@ -365,13 +351,15 @@ public enum CameraStream {
 	}
 
 	public synchronized void setSize(CameraSize size) {
-		if (this.camera == null) return;
+		if (this.camera == null)
+			return;
 
 		this.camera.setSize(size);
 	}
 
 	public synchronized CameraSize getSize() {
-		if (this.camera == null) return CameraSize.MEDIUM;
+		if (this.camera == null)
+			return CameraSize.MEDIUM;
 
 		return this.camera.getSize();
 	}

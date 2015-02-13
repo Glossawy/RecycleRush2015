@@ -3,7 +3,7 @@ package org.usfirst.frc.team1554.lib.math;
 public class FloatingPoint {
 
 	public static final float ROUNDING_ERROR_32_BITS = 1.0f / (1 << 24);
-	public static final double ROUNDING_ERROR_64_BITS = 1.0 / (1L << 53);	// Maybe?
+	public static final double ROUNDING_ERROR_64_BITS = 1.0 / (1L << 53); // Maybe?
 
 	public static final boolean isZero(float val) {
 		return Math.abs(val) < ROUNDING_ERROR_32_BITS;

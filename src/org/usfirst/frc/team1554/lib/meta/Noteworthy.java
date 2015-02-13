@@ -14,8 +14,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * A simple developer annotation that indicates that there is REALLY something of
- * note that a comment simply cannot express.
+ * A simple developer annotation that indicates that there is REALLY something of note that a comment simply cannot express.
  * 
  * @author Matthew
  */

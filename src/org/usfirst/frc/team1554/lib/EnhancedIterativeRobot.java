@@ -13,22 +13,11 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 // TODO Listeners
 /**
- * An Alternative (and hopefully enhanced) approach to {@link IterativeRobot}. For
- * one this class is Abstract and requires the user to implement certain methods that
- * just make sense. <br />
+ * An Alternative (and hopefully enhanced) approach to {@link IterativeRobot}. For one this class is Abstract and requires the user to implement certain methods that just make sense. <br />
  * <br />
- * This implementation also uses a separate {@link RobotState} enum to manage State
- * and State Transfer. This bot also uses the more abstract {@link JoystickControl}
- * and {@link MotorScheme} classes to make getting started much easier and providing
- * convenience methods for many things. Creating a {@link RobotDrive} is abstracted
- * to {@link RoboUtils#makeRobotDrive(MotorScheme) makeRobotDrive} and basic movement
- * is abstracted to {@link MotorScheme#updateDrive(RobotDrive, JoystickControl)
- * MotorScheme.updateDrive} or even just {@link #updateDrive()}.<br />
+ * This implementation also uses a separate {@link RobotState} enum to manage State and State Transfer. This bot also uses the more abstract {@link JoystickControl} and {@link MotorScheme} classes to make getting started much easier and providing convenience methods for many things. Creating a {@link RobotDrive} is abstracted to {@link RoboUtils#makeRobotDrive(MotorScheme) makeRobotDrive} and basic movement is abstracted to {@link MotorScheme#updateDrive(RobotDrive, JoystickControl) MotorScheme.updateDrive} or even just {@link #updateDrive()}.<br />
  * <br />
- * This implementation is noticeably larger than IterativeBot due to the fact that
- * instead of just initX() and periodicX(), this class uses Entrance, On, AND Exit
- * methods. i.e. preX(), onX(), postX() for a probably more logical flow of
- * initialization, execution and finalization between states.
+ * This implementation is noticeably larger than IterativeBot due to the fact that instead of just initX() and periodicX(), this class uses Entrance, On, AND Exit methods. i.e. preX(), onX(), postX() for a probably more logical flow of initialization, execution and finalization between states.
  * 
  * @author Matthew
  */
@@ -48,16 +37,13 @@ public abstract class EnhancedIterativeRobot extends EnhancedRobotBase {
 	}
 
 	/**
-	 * Run Competition in an Infinite Loop akin to {@link IterativeRobot} but using
-	 * modern Java features such as enums ({@link RobotState}) and now with "Pre",
-	 * "On" and "Post" methods. Essentially states not have an Entrance method, a
-	 * During method and an Exit method. <br />
+	 * Run Competition in an Infinite Loop akin to {@link IterativeRobot} but using modern Java features such as enums ({@link RobotState}) and now with "Pre", "On" and "Post" methods. Essentially states not have an Entrance method, a During method and an Exit method. <br />
 	 * <br />
 	 * The general method call sequence in a state change is: <Br />
 	 * <br />
 	 * 
 	 * <pre>
-	 * {@code                             
+	 * {@code
 	 *                                   When Moving from State X to State Y
 	 *  startCompetition() -> preX() -> onX() -> postX() -> preY() -> ...
 	 *                          ^         |
@@ -67,12 +53,9 @@ public abstract class EnhancedIterativeRobot extends EnhancedRobotBase {
 	 * </pre>
 	 * 
 	 * <br />
-	 * Where X is the Start State and Y is the Proceeding State. '...' represents the
-	 * Y version of this same loop which will then move to either State X or State Z. <br />
+	 * Where X is the Start State and Y is the Proceeding State. '...' represents the Y version of this same loop which will then move to either State X or State Z. <br />
 	 * <br />
-	 * If the Robot reaches an exceptional state (throws an Exception) and it is not
-	 * caught by User Code, then the exception is logged (By {@link Console} and to
-	 * the DS. appropriate.
+	 * If the Robot reaches an exceptional state (throws an Exception) and it is not caught by User Code, then the exception is logged (By {@link Console} and to the DS. appropriate.
 	 * 
 	 * @author Matthew Crocco
 	 */
@@ -148,15 +131,10 @@ public abstract class EnhancedIterativeRobot extends EnhancedRobotBase {
 	}
 
 	/**
-	 * Called before the Iterative Loop begins. Any and all variables should be
-	 * initialized here if not in the constructor. After this is called,
-	 * {@link #getJoysticks()} and {@link #getMotorScheme()} is called. If these are
-	 * null then an exception is thrown as they are required by
-	 * {@link EnhancedIterativeRobot}.
+	 * Called before the Iterative Loop begins. Any and all variables should be initialized here if not in the constructor. After this is called, {@link #getJoysticks()} and {@link #getMotorScheme()} is called. If these are null then an exception is thrown as they are required by {@link EnhancedIterativeRobot}.
 	 */
 	@Override
-	protected
-	abstract void onInitialization();
+	protected abstract void onInitialization();
 
 	/**
 	 * Fprce LiveWindow to be available in ALL modes.

@@ -30,7 +30,7 @@ public final class Lists {
 	public static <E> ArrayList<E> newArrayList(Iterable<E> elements) {
 		Preconditions.checkNotNull(elements);
 
-		return (elements instanceof Collection) ? new ArrayList<E>(cast(elements)) : newArrayList(elements.iterator());
+		return elements instanceof Collection ? new ArrayList<E>(cast(elements)) : newArrayList(elements.iterator());
 	}
 
 	public static <E> ArrayList<E> newArrayList(Iterator<E> elements) {

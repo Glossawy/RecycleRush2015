@@ -74,16 +74,16 @@ public class Quaternion {
 		final double coshy_coshp = coshy * coshp;
 		final double sinhy_sinhp = sinhy * sinhp;
 
-		this.x = (coshy_sinhp * coshr) + (sinhy_coshp * sinhr);
-		this.y = (sinhy_coshp * coshr) - (coshy_sinhp * sinhr);
-		this.z = (coshy_coshp * sinhr) - (sinhy_sinhp * coshr);
-		this.w = (coshy_coshp * coshr) + (sinhy_sinhp * sinhr);
+		this.x = coshy_sinhp * coshr + sinhy_coshp * sinhr;
+		this.y = sinhy_coshp * coshr - coshy_sinhp * sinhr;
+		this.z = coshy_coshp * sinhr - sinhy_sinhp * coshr;
+		this.w = coshy_coshp * coshr + sinhy_sinhp * sinhr;
 		return this;
 	}
 
 	public Pole getGimbalPole() {
-		final double det = (this.y * this.x) + (this.z * this.w);
-		return det > 0.499 ? Pole.NORTH : (det < 0.499 ? Pole.SOUTH : Pole.NONE);
+		final double det = this.y * this.x + this.z * this.w;
+		return det > 0.499 ? Pole.NORTH : det < 0.499 ? Pole.SOUTH : Pole.NONE;
 	}
 
 	public double getRoll() {
@@ -92,7 +92,7 @@ public class Quaternion {
 
 	public double getRollRadians() {
 		final int p = getGimbalPole().POLE_VAL;
-		return p == 0 ? Math.atan2(2 * ((this.w * this.z) + (this.y * this.x)), 1 - (2 * ((this.x * this.x) + (this.z * this.z)))) : p * 2 * Math.atan2(this.y, this.w);
+		return p == 0 ? Math.atan2(2 * (this.w * this.z + this.y * this.x), 1 - 2 * (this.x * this.x + this.z * this.z)) : p * 2 * Math.atan2(this.y, this.w);
 	}
 
 	public double getPitch() {
@@ -101,7 +101,7 @@ public class Quaternion {
 
 	public double getPitchRadians() {
 		final int p = getGimbalPole().POLE_VAL;
-		return p == 0 ? Math.asin(MathUtils.clamp(2 * ((this.w * this.x) - (this.z * this.y)), -1, 1)) : p * Math.PI * 0.5;
+		return p == 0 ? Math.asin(MathUtils.clamp(2 * (this.w * this.x - this.z * this.y), -1, 1)) : p * Math.PI * 0.5;
 	}
 
 	public double getYaw() {
@@ -110,7 +110,7 @@ public class Quaternion {
 
 	public double getYawRadians() {
 		final int p = getGimbalPole().POLE_VAL;
-		return p == 0 ? Math.atan2(2 * ((this.y * this.w) + (this.x * this.z)), 1 - (2 * ((this.y * this.y) + (this.x * this.x)))) : 0;
+		return p == 0 ? Math.atan2(2 * (this.y * this.w + this.x * this.z), 1 - 2 * (this.y * this.y + this.x * this.x)) : 0;
 	}
 
 	public Quaternion cpy() {
@@ -118,7 +118,7 @@ public class Quaternion {
 	}
 
 	public final static double len(double x, double y, double z, double w) {
-		return Math.sqrt((x * x) + (y * y) + (z * z) + (w * w));
+		return Math.sqrt(x * x + y * y + z * z + w * w);
 	}
 
 	public double len() {
@@ -126,12 +126,12 @@ public class Quaternion {
 	}
 
 	public double len2() {
-		return (this.x * this.x) + (this.y * this.y) + (this.z * this.z) + (this.w * this.w);
+		return this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w;
 	}
 
 	public Quaternion nor() {
 		double len = len2();
-		if ((len != 0) && !FloatingPoint.isEqual(len, 1.0)) {
+		if (len != 0 && !FloatingPoint.isEqual(len, 1.0)) {
 			len = Math.sqrt(len);
 			this.x /= len;
 			this.y /= len;
@@ -161,10 +161,10 @@ public class Quaternion {
 	}
 
 	public Quaternion mul(Quaternion q) {
-		final double newx = ((this.w * q.x) + (this.x * q.w) + (this.y * q.z)) - (this.z * q.y);
-		final double newy = ((this.w * q.y) + (this.y * q.w) + (this.z * q.x)) - (this.x * q.z);
-		final double newz = ((this.w * q.z) + (this.z * q.w) + (this.x * q.y)) - (this.y * q.x);
-		final double neww = (this.w * q.w) - (this.x * q.x) - (this.y * q.y) - (this.z * q.z);
+		final double newx = this.w * q.x + this.x * q.w + this.y * q.z - this.z * q.y;
+		final double newy = this.w * q.y + this.y * q.w + this.z * q.x - this.x * q.z;
+		final double newz = this.w * q.z + this.z * q.w + this.x * q.y - this.y * q.x;
+		final double neww = this.w * q.w - this.x * q.x - this.y * q.y - this.z * q.z;
 
 		this.x = newx;
 		this.y = newy;
@@ -178,10 +178,10 @@ public class Quaternion {
 	}
 
 	public Quaternion mulLeft(Quaternion q) {
-		final double newx = ((q.w * this.x) + (q.x * this.w) + (q.y * this.z)) - (q.z * this.y);
-		final double newy = ((q.w * this.y) + (q.y * this.w) + (q.z * this.x)) - (q.x * this.z);
-		final double newz = ((q.w * this.z) + (q.z * this.w) + (q.x * this.y)) - (q.y * this.x);
-		final double neww = (q.w * this.w) - (q.x * this.x) - (q.y * this.y) - (q.z * this.z);
+		final double newx = q.w * this.x + q.x * this.w + q.y * this.z - q.z * this.y;
+		final double newy = q.w * this.y + q.y * this.w + q.z * this.x - q.x * this.z;
+		final double newz = q.w * this.z + q.z * this.w + q.x * this.y - q.y * this.x;
+		final double neww = q.w * this.w - q.x * this.x - q.y * this.y - q.z * this.z;
 
 		this.x = newx;
 		this.y = newy;
@@ -223,17 +223,17 @@ public class Quaternion {
 		final double zz = this.z * this.z;
 		final double zw = this.z * this.w;
 
-		matrix[Matrix4.M_00] = 1 - (2 * (yy + zz));
+		matrix[Matrix4.M_00] = 1 - 2 * (yy + zz);
 		matrix[Matrix4.M_01] = 2 * (xy - zw);
 		matrix[Matrix4.M_02] = 2 * (xz + yw);
 		matrix[Matrix4.M_03] = 0;
 		matrix[Matrix4.M_10] = 2 * (xy + zw);
-		matrix[Matrix4.M_11] = 1 - (2 * (xx + zz));
+		matrix[Matrix4.M_11] = 1 - 2 * (xx + zz);
 		matrix[Matrix4.M_12] = 2 * (yz - xw);
 		matrix[Matrix4.M_13] = 0;
 		matrix[Matrix4.M_20] = 2 * (xz - yw);
 		matrix[Matrix4.M_21] = 2 * (yz + xw);
-		matrix[Matrix4.M_22] = 1 - (2 * (xx + yy));
+		matrix[Matrix4.M_22] = 1 - 2 * (xx + yy);
 		matrix[Matrix4.M_23] = 0;
 		matrix[Matrix4.M_30] = 0;
 		matrix[Matrix4.M_31] = 0;
@@ -268,10 +268,11 @@ public class Quaternion {
 
 	public Quaternion setFromAxisRad(double x, double y, double z, double rad) {
 		final double det = Vector3.len(x, y, z);
-		if (det == 0.0) return identity();
+		if (det == 0.0)
+			return identity();
 
 		final double PI2 = Math.PI * 2;
-		final double lenAng = rad < 0 ? PI2 - (-rad % PI2) : rad % PI2;
+		final double lenAng = rad < 0 ? PI2 - -rad % PI2 : rad % PI2;
 		final double lenSin = Math.sin(lenAng / 2);
 		final double lenCos = Math.cos(lenAng / 2);
 
@@ -330,22 +331,22 @@ public class Quaternion {
 			this.x = (zy - yz) * s;
 			this.y = (xz - zx) * s;
 			this.z = (yx - xy) * s;
-		} else if ((xx > yy) && (xx > zz)) {
-			double s = Math.sqrt((1.0 + xx) - yy - zz); // |s|>=1
+		} else if (xx > yy && xx > zz) {
+			double s = Math.sqrt(1.0 + xx - yy - zz); // |s|>=1
 			this.x = s * 0.5; // |x| >= .5
 			s = 0.5 / s;
 			this.y = (yx + xy) * s;
 			this.z = (xz + zx) * s;
 			this.w = (zy - yz) * s;
 		} else if (yy > zz) {
-			double s = Math.sqrt((1.0 + yy) - xx - zz); // |s|>=1
+			double s = Math.sqrt(1.0 + yy - xx - zz); // |s|>=1
 			this.y = s * 0.5f; // |y| >= .5
 			s = 0.5 / s;
 			this.x = (yx + xy) * s;
 			this.z = (zy + yz) * s;
 			this.w = (xz - zx) * s;
 		} else {
-			double s = Math.sqrt((1.0 + zz) - xx - yy); // |s|>=1
+			double s = Math.sqrt(1.0 + zz - xx - yy); // |s|>=1
 			this.z = s * 0.5f; // |z| >= .5
 			s = 0.5 / s;
 			this.x = (xz + zx) * s;
@@ -359,13 +360,13 @@ public class Quaternion {
 	public Quaternion setFromCross(final Vector3 v1, final Vector3 v2) {
 		final double dot = MathUtils.clamp(v1.dot(v2), -1, 1);
 		final double angle = Math.acos(dot);
-		return setFromAxisRad((v1.y * v2.z) - (v1.z * v2.y), (v1.z * v2.x) - (v1.x * v2.z), (v1.x * v2.y) - (v1.y * v2.x), angle);
+		return setFromAxisRad(v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x, angle);
 	}
 
 	public Quaternion setFromCross(final double x1, final double y1, final double z1, final double x2, final double y2, final double z2) {
 		final double dot = MathUtils.clamp(Vector3.dot(x1, y1, z1, x2, y2, z2), -1, 1);
 		final double angle = Math.acos(dot);
-		return setFromAxisRad((y1 * z2) - (z1 * y2), (z1 * x2) - (x1 * z2), (x1 * y2) - (y1 * x2), angle);
+		return setFromAxisRad(y1 * z2 - z1 * y2, z1 * x2 - x1 * z2, x1 * y2 - y1 * x2, angle);
 	}
 
 	public Quaternion slerp(Quaternion end, double alpha) {
@@ -378,15 +379,15 @@ public class Quaternion {
 
 		// Check if the angle between the 2 quaternions was big enough to
 		// warrant such calculations
-		if ((1 - absDot) > 0.1) {// Get the angle between the 2 quaternions,
+		if (1 - absDot > 0.1) {// Get the angle between the 2 quaternions,
 			// and then store the sin() of that angle
 			final double angle = Math.acos(absDot);
 			final double invSinTheta = 1f / Math.sin(angle);
 
 			// Calculate the scale for q1 and q2, according to the angle and
 			// it's sine value
-			scale0 = (Math.sin((1 - alpha) * angle) * invSinTheta);
-			scale1 = (Math.sin((alpha * angle)) * invSinTheta);
+			scale0 = Math.sin((1 - alpha) * angle) * invSinTheta;
+			scale1 = Math.sin(alpha * angle) * invSinTheta;
 		}
 
 		if (dot < 0.0) {
@@ -395,10 +396,10 @@ public class Quaternion {
 
 		// Calculate the x, y, z and w values for the quaternion by using a
 		// special form of linear interpolation for quaternions.
-		this.x = (scale0 * this.x) + (scale1 * end.x);
-		this.y = (scale0 * this.y) + (scale1 * end.y);
-		this.z = (scale0 * this.z) + (scale1 * end.z);
-		this.w = (scale0 * this.w) + (scale1 * end.w);
+		this.x = scale0 * this.x + scale1 * end.x;
+		this.y = scale0 * this.y + scale1 * end.y;
+		this.z = scale0 * this.z + scale1 * end.z;
+		this.w = scale0 * this.w + scale1 * end.w;
 
 		// Return the interpolated quaternion
 		return this;
@@ -439,13 +440,13 @@ public class Quaternion {
 		// Calculate coefficient of basis elements
 		double coeff = 0;
 		if (Math.abs(theta) < 0.001) {
-			coeff = (normExp * alpha) / norm;
+			coeff = normExp * alpha / norm;
 		} else {
-			coeff = (normExp * Math.sin(alpha * theta)) / (norm * Math.sin(theta));
+			coeff = normExp * Math.sin(alpha * theta) / (norm * Math.sin(theta));
 		}
 
 		// Write results
-		this.w = (normExp * Math.cos(alpha * theta));
+		this.w = normExp * Math.cos(alpha * theta);
 		this.x *= coeff;
 		this.y *= coeff;
 		this.z *= coeff;
@@ -456,15 +457,15 @@ public class Quaternion {
 	}
 
 	public final static double dot(final double x1, final double y1, final double z1, final double w1, final double x2, final double y2, final double z2, final double w2) {
-		return (x1 * x2) + (y1 * y2) + (z1 * z2) + (w1 * w2);
+		return x1 * x2 + y1 * y2 + z1 * z2 + w1 * w2;
 	}
 
 	public double dot(final Quaternion other) {
-		return (this.x * other.x) + (this.y * other.y) + (this.z * other.z) + (this.w * other.w);
+		return this.x * other.x + this.y * other.y + this.z * other.z + this.w * other.w;
 	}
 
 	public double dot(final double x, final double y, final double z, final double w) {
-		return (this.x * x) + (this.y * y) + (this.z * z) + (this.w * w);
+		return this.x * x + this.y * y + this.z * z + this.w * w;
 	}
 
 	public Quaternion mul(double scalar) {

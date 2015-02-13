@@ -47,11 +47,12 @@ public class DualJoystickControl implements JoystickControl {
 
 	@Override
 	public double getTwist() {
-		if (this.prefs.getBoolean(LEFT_STICK_TWIST_DISABLE, false)) return 0;
+		if (this.prefs.getBoolean(LEFT_STICK_TWIST_DISABLE, false))
+			return 0;
 		final boolean cutoff = this.prefs.getBoolean(LEFT_STICK_DO_CUTOFF, false);
 
 		final double twist = this.leftStick.getTwist();
-		return Math.abs(twist) <= this.twistLim ? 0.0 : cutoff ? twist : twist - (this.twistLim * (twist < 0 ? -1 : 1));
+		return Math.abs(twist) <= this.twistLim ? 0.0 : cutoff ? twist : twist - this.twistLim * (twist < 0 ? -1 : 1);
 	}
 
 	@Override
@@ -60,7 +61,7 @@ public class DualJoystickControl implements JoystickControl {
 		final double x = getX();
 		final double y = getY();
 
-		final double mag = Math.sqrt((x * x) + (y * y));
+		final double mag = Math.sqrt(x * x + y * y);
 
 		return mag <= this.magLim ? 0.0 : cutoff ? mag : mag - this.magLim;
 		// return mag <= this.magLim ? 0.0 : mag;
@@ -87,16 +88,28 @@ public class DualJoystickControl implements JoystickControl {
 			throw new UnsupportedOperationException("Cannot get POV for both joysticks!");
 		}
 	}
-	
+
 	@Override
 	public IntMap<Array<String>> getBindingInformation(Hand side) {
-		switch(side) {
+		switch (side) {
 		case LEFT:
-			return JoystickControl.toBindings(leftActions);
+			return JoystickControl.toBindings(this.leftActions);
 		case RIGHT:
-			return JoystickControl.toBindings(rightActions);
+			return JoystickControl.toBindings(this.rightActions);
 		case BOTH:
-			
+			final IntMap<Array<String>> bindings = JoystickControl.toBindings(this.leftActions);
+
+			for (final Entry<Array<String>> entry : JoystickControl.toBindings(this.rightActions).entries()) {
+				if (bindings.get(entry.key, null) != null) {
+					bindings.get(entry.key, null).addAll(entry.value);
+				} else {
+					bindings.put(entry.key, entry.value);
+				}
+			}
+
+			return bindings;
+		default:
+			throw new IllegalStateException();
 		}
 	}
 
@@ -131,7 +144,7 @@ public class DualJoystickControl implements JoystickControl {
 
 	@Override
 	public void swapJoysticks() {
-		final IntMap<ObjectSet<Runnable>> tmpMap = this.leftActions;
+		final IntMap<ObjectSet<ButtonAction>> tmpMap = this.leftActions;
 		final Joystick temp = this.leftStick;
 		final boolean tbool = this.prefs.getBoolean(LEFT_STICK_TWIST_DISABLE, false);
 		final boolean cbool = this.prefs.getBoolean(LEFT_STICK_DO_CUTOFF, false);
@@ -207,17 +220,17 @@ public class DualJoystickControl implements JoystickControl {
 			return;
 		}
 
-		final IntMap<ObjectSet<Runnable>> actions = side == Hand.LEFT ? this.leftActions : this.rightActions;
+		final IntMap<ObjectSet<ButtonAction>> actions = side == Hand.LEFT ? this.leftActions : this.rightActions;
 		final Joystick stick = side == Hand.RIGHT ? this.leftStick : this.rightStick;
 
-		if (bId > stick.getButtonCount()) throw new IllegalArgumentException("Button ID can't be greater than the joystick button count!: " + bId + " -> " + stick.getButtonCount() + " max");
+		if (bId > stick.getButtonCount())
+			throw new IllegalArgumentException("Button ID can't be greater than the joystick button count!: " + bId + " -> " + stick.getButtonCount() + " max");
 
-		ObjectSet<Runnable> list = actions.get(bId, null);
-		if(list == null) {
-			actions.put(bId, list = new ObjectSet<Runnable>());
+		ObjectSet<ButtonAction> list = actions.get(bId, null);
+		if (list == null) {
+			actions.put(bId, list = new ObjectSet<ButtonAction>());
 		}
-			
-		
+
 		list.add(action);
 	}
 
@@ -229,31 +242,33 @@ public class DualJoystickControl implements JoystickControl {
 			removeButtonAction(bId, Hand.RIGHT);
 		}
 
-		final IntMap<ObjectSet<Runnable>> actions = side == Hand.LEFT ? this.leftActions : this.rightActions;
+		final IntMap<ObjectSet<ButtonAction>> actions = side == Hand.LEFT ? this.leftActions : this.rightActions;
 
 		actions.remove(bId);
 	}
 
 	@Override
 	public void update() {
-		Iterator<Entry<ObjectSet<Runnable>>> ids = this.rightActions.iterator();
+		Iterator<Entry<ObjectSet<ButtonAction>>> ids = this.rightActions.iterator();
 
 		while (ids.hasNext()) {
-			final Entry<ObjectSet<Runnable>> entry = ids.next();
+			final Entry<ObjectSet<ButtonAction>> entry = ids.next();
 
 			if (this.rightStick.getRawButton(entry.key)) {
-				for(Runnable action: entry.value)
-					action.run();
+				for (final ButtonAction action : entry.value) {
+					action.act();
+				}
 			}
 		}
 
 		ids = this.leftActions.iterator();
 		while (ids.hasNext()) {
-			final Entry<ObjectSet<Runnable>> entry = ids.next();
+			final Entry<ObjectSet<ButtonAction>> entry = ids.next();
 
 			if (this.leftStick.getRawButton(entry.key)) {
-				for(Runnable action: entry.value)
-					action.run();
+				for (final ButtonAction action : entry.value) {
+					action.act();
+				}
 			}
 		}
 	}

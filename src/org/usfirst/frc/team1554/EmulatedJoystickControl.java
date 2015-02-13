@@ -1,37 +1,40 @@
 package org.usfirst.frc.team1554;
 
+import org.usfirst.frc.team1554.lib.ButtonAction;
 import org.usfirst.frc.team1554.lib.JoystickControl;
+import org.usfirst.frc.team1554.lib.collect.Array;
+import org.usfirst.frc.team1554.lib.collect.IntMap;
 
 import edu.wpi.first.wpilibj.Joystick;
 
 class EmulatedJoystickControl implements JoystickControl {
 
 	public final double x, y, twist;
-	
+
 	EmulatedJoystickControl(double x, double y, double twist) {
 		this.x = x;
 		this.y = y;
 		this.twist = twist;
 	}
-	
+
 	@Override
 	public double getX() {
-		return x;
+		return this.x;
 	}
 
 	@Override
 	public double getY() {
-		return y;
+		return this.y;
 	}
 
 	@Override
 	public double getTwist() {
-		return twist;
+		return this.twist;
 	}
 
 	@Override
 	public double getMagnitude() {
-		return Math.sqrt(x*x + y*y);
+		return Math.sqrt(this.x * this.x + this.y * this.y);
 	}
 
 	@Override
@@ -65,9 +68,9 @@ class EmulatedJoystickControl implements JoystickControl {
 	}
 
 	@Override
-	public void putButtonAction(int bId, Runnable action, Hand side) {
+	public void putButtonAction(int bId, ButtonAction action, Hand side) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -78,49 +81,55 @@ class EmulatedJoystickControl implements JoystickControl {
 	@Override
 	public void swapJoysticks() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setDampenOutputs(boolean dampen) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setTwistThreshold(double val) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setMagnitudeThreshold(double val) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setDisableTwistAxis(Hand side, boolean disable) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setJoystickCutoff(Hand side, boolean cutoff) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	@Override
+	public IntMap<Array<String>> getBindingInformation(Hand side) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

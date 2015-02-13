@@ -4,6 +4,11 @@ import org.usfirst.frc.team1554.lib.LibVersion;
 
 public class OutOfDateException extends RobotExecutionException {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8350304045145582352L;
+
 	public OutOfDateException() {
 		super("Running Version " + LibVersion.VERSION + " of " + LibVersion.NAME);
 	}

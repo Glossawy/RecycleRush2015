@@ -8,8 +8,7 @@ import org.usfirst.frc.team1554.lib.meta.Author;
 import org.usfirst.frc.team1554.lib.meta.Noteworthy;
 
 /**
- * Implementation of Cuckoo Hash Map with a Stash to store problematic hashes. This
- * is inspired by similar implementations. <br />
+ * Implementation of Cuckoo Hash Map with a Stash to store problematic hashes. This is inspired by similar implementations. <br />
  * <br />
  * Runs efficiently while being able to use primitive int keys.
  * 
@@ -52,12 +51,15 @@ public class IntMap<V> {
 
 	@SuppressWarnings("unchecked")
 	public IntMap(int initialCapacity, float loadFactor) {
-		if (initialCapacity < 0) throw new IllegalArgumentException("Initial Capacity must be >= 0: " + initialCapacity);
-		if (initialCapacity > (1 << 30)) throw new IllegalArgumentException("Initial Capcity is too large!: " + initialCapacity);
+		if (initialCapacity < 0)
+			throw new IllegalArgumentException("Initial Capacity must be >= 0: " + initialCapacity);
+		if (initialCapacity > 1 << 30)
+			throw new IllegalArgumentException("Initial Capcity is too large!: " + initialCapacity);
 
 		this.capacity = MathUtils.nextPowerOfTwo(initialCapacity);
 
-		if (loadFactor <= 0) throw new IllegalArgumentException("Load Factor Can't be <= 0!: " + loadFactor);
+		if (loadFactor <= 0)
+			throw new IllegalArgumentException("Load Factor Can't be <= 0!: " + loadFactor);
 		this.loadFactor = loadFactor;
 
 		this.threshold = (int) (this.capacity * loadFactor);
@@ -167,7 +169,8 @@ public class IntMap<V> {
 
 	public V get(int key, V defaultVal) {
 		if (key == 0) {
-			if (!this.hasZeroValue) return defaultVal;
+			if (!this.hasZeroValue)
+				return defaultVal;
 			return this.zeroValue;
 		}
 
@@ -176,7 +179,8 @@ public class IntMap<V> {
 			i = hash(key);
 			if (this.keyTable[i] != key) {
 				i = hash2(key);
-				if (this.keyTable[i] != key) return getStash(key, defaultVal);
+				if (this.keyTable[i] != key)
+					return getStash(key, defaultVal);
 			}
 		}
 
@@ -185,7 +189,8 @@ public class IntMap<V> {
 
 	public V remove(int key) {
 		if (key == 0) {
-			if (!this.hasZeroValue) return null;
+			if (!this.hasZeroValue)
+				return null;
 
 			final V oldValue = this.zeroValue;
 			this.zeroValue = null;
@@ -226,7 +231,8 @@ public class IntMap<V> {
 
 	public void shrink(int maxCap) {
 		// Negative Capacity?
-		if (maxCap < 0) throw new IllegalArgumentException("Capacity < 0: " + maxCap);
+		if (maxCap < 0)
+			throw new IllegalArgumentException("Capacity < 0: " + maxCap);
 
 		// We can't shirnk less than our size... Madness
 		if (this.size > maxCap) {
@@ -234,7 +240,8 @@ public class IntMap<V> {
 		}
 
 		// Why shrink if we are already smaller?
-		if (this.capacity <= maxCap) return;
+		if (this.capacity <= maxCap)
+			return;
 
 		maxCap = MathUtils.nextPowerOfTwo(maxCap);
 		resize(maxCap);
@@ -253,7 +260,8 @@ public class IntMap<V> {
 	}
 
 	public void clear() {
-		if (this.size == 0) return;
+		if (this.size == 0)
+			return;
 
 		final int[] kt = this.keyTable;
 		final V[] vt = this.valueTable;
@@ -272,28 +280,35 @@ public class IntMap<V> {
 		final V[] vt = this.valueTable;
 
 		if (val == null) {
-			if (this.hasZeroValue && (this.zeroValue == null)) return true;
+			if (this.hasZeroValue && this.zeroValue == null)
+				return true;
 
 			final int[] kt = this.keyTable;
 			for (int i = this.capacity + this.stashSize; i > 0; i--)
-				if ((kt[i] != EMPTY) && (vt[i] == null)) return true;
+				if (kt[i] != EMPTY && vt[i] == null)
+					return true;
 		} else if (identity) {
-			if (val == this.zeroValue) return true;
+			if (val == this.zeroValue)
+				return true;
 
 			for (int i = this.capacity + this.stashSize; i > 0; i--)
-				if (vt[i] == val) return true;
+				if (vt[i] == val)
+					return true;
 		} else {
-			if (this.hasZeroValue && val.equals(this.zeroValue)) return true;
+			if (this.hasZeroValue && val.equals(this.zeroValue))
+				return true;
 
 			for (int i = this.capacity + this.stashSize; i > 0; i--)
-				if (val.equals(vt[i])) return true;
+				if (val.equals(vt[i]))
+					return true;
 		}
 
 		return false;
 	}
 
 	public boolean containsKey(int key) {
-		if (key == 0) return this.hasZeroValue;
+		if (key == 0)
+			return this.hasZeroValue;
 
 		final int[] kt = this.keyTable;
 		int i = key & this.mask;
@@ -302,7 +317,8 @@ public class IntMap<V> {
 			i = hash(key);
 			if (kt[i] != key) {
 				i = hash2(key);
-				if (kt[i] != key) return containsKeyStash(key);
+				if (kt[i] != key)
+					return containsKeyStash(key);
 			}
 		}
 
@@ -314,20 +330,26 @@ public class IntMap<V> {
 		final int[] kt = this.keyTable;
 
 		if (val == null) {
-			if (this.hasZeroValue && (this.zeroValue == null)) return 0;
+			if (this.hasZeroValue && this.zeroValue == null)
+				return 0;
 
 			for (int i = this.capacity + this.stashSize; i > 0; i--)
-				if ((kt[i] != EMPTY) && (vt[i] == null)) return kt[i];
+				if (kt[i] != EMPTY && vt[i] == null)
+					return kt[i];
 		} else if (identity) {
-			if (val == this.zeroValue) return 0;
+			if (val == this.zeroValue)
+				return 0;
 
 			for (int i = this.capacity + this.stashSize; i > 0; i--)
-				if (vt[i] == val) return kt[i];
+				if (vt[i] == val)
+					return kt[i];
 		} else {
-			if (this.hasZeroValue && val.equals(this.zeroValue)) return 0;
+			if (this.hasZeroValue && val.equals(this.zeroValue))
+				return 0;
 
 			for (int i = this.capacity + this.stashSize; i > 0; i--)
-				if (val.equals(vt[i])) return kt[i];
+				if (val.equals(vt[i]))
+					return kt[i];
 		}
 
 		return notFound;
@@ -538,7 +560,8 @@ public class IntMap<V> {
 	private V getStash(int key, V defaultVal) {
 		final int[] kt = this.keyTable;
 		for (int i = this.capacity, n = i + this.stashSize; i < n; i++)
-			if (kt[i] == key) return this.valueTable[i];
+			if (kt[i] == key)
+				return this.valueTable[i];
 
 		return defaultVal;
 	}
@@ -575,7 +598,8 @@ public class IntMap<V> {
 		final int[] kt = this.keyTable;
 
 		for (int i = this.capacity, n = i + this.stashSize; i < n; i++)
-			if (kt[i] == key) return true;
+			if (kt[i] == key)
+				return true;
 
 		return false;
 	}
@@ -612,17 +636,18 @@ public class IntMap<V> {
 
 	private int hash(int h) {
 		h *= PRIME1;
-		return (h ^ (h >>> this.hashShift)) & this.mask;
+		return (h ^ h >>> this.hashShift) & this.mask;
 	}
 
 	private int hash2(int h) {
 		h *= PRIME2;
-		return (h ^ (h >>> this.hashShift)) & this.mask;
+		return (h ^ h >>> this.hashShift) & this.mask;
 	}
 
 	@Override
 	public String toString() {
-		if (this.size == 0) return "[]";
+		if (this.size == 0)
+			return "[]";
 
 		final StringBuilder sb = new StringBuilder(32);
 		sb.append('[');
@@ -704,7 +729,7 @@ public class IntMap<V> {
 		}
 
 		public void remove() {
-			if ((this.curIndex == INDEX_ZERO) && this.map.hasZeroValue) {
+			if (this.curIndex == INDEX_ZERO && this.map.hasZeroValue) {
 				this.map.zeroValue = null;
 				this.map.hasZeroValue = false;
 			} else if (this.curIndex < 0)
@@ -733,14 +758,17 @@ public class IntMap<V> {
 
 		@Override
 		public boolean hasNext() {
-			if (!this.valid) throw new RuntimeException("#iterator() can not be used nested");
+			if (!this.valid)
+				throw new RuntimeException("#iterator() can not be used nested");
 			return this.hasNext;
 		}
 
 		@Override
 		public Entry<V> next() {
-			if (!this.hasNext) throw new NoSuchElementException();
-			if (!this.valid) throw new RuntimeException("#iterator() can not be used nested");
+			if (!this.hasNext)
+				throw new NoSuchElementException();
+			if (!this.valid)
+				throw new RuntimeException("#iterator() can not be used nested");
 
 			if (this.nextIndex == INDEX_ZERO) {
 				this.entry.key = 0;
@@ -768,15 +796,18 @@ public class IntMap<V> {
 
 		@Override
 		public boolean hasNext() {
-			if (!this.valid) throw new RuntimeException("#iterator() can not be used nested");
+			if (!this.valid)
+				throw new RuntimeException("#iterator() can not be used nested");
 
 			return this.hasNext;
 		}
 
 		@Override
 		public V next() {
-			if (!this.hasNext) throw new NoSuchElementException();
-			if (!this.valid) throw new RuntimeException("#iterator() can not be used nested");
+			if (!this.hasNext)
+				throw new NoSuchElementException();
+			if (!this.valid)
+				throw new RuntimeException("#iterator() can not be used nested");
 
 			V value;
 			if (this.nextIndex == INDEX_ZERO) {
@@ -804,8 +835,10 @@ public class IntMap<V> {
 		}
 
 		public int next() {
-			if (!this.hasNext) throw new NoSuchElementException();
-			if (!this.valid) throw new RuntimeException("#iterator() can not be used nested");
+			if (!this.hasNext)
+				throw new NoSuchElementException();
+			if (!this.valid)
+				throw new RuntimeException("#iterator() can not be used nested");
 
 			final int key = this.nextIndex == INDEX_ZERO ? 0 : this.map.keyTable[this.nextIndex];
 			this.curIndex = this.nextIndex;
