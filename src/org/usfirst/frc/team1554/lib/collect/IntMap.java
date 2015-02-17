@@ -628,7 +628,7 @@ public class IntMap<V> {
 			for (int i = 0; i < prevEnd; i++) {
 				final int key = prevKT[i];
 				if (key != EMPTY) {
-					putResize(key, prevVT[key]);
+					putResize(key, prevVT[i]);
 				}
 			}
 		}
