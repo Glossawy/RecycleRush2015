@@ -432,6 +432,7 @@ public interface MotorScheme extends Disposable {
 			drive.setInvertedMotor(kRearLeft, inverted[1]);
 			drive.setInvertedMotor(kFrontRight, inverted[2]);
 			drive.setInvertedMotor(kRearRight, inverted[3]);
+			drive.setSafetyEnabled(false);
 
 			return new MotorScheme() {
 

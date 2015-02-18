@@ -9,4 +9,5 @@ public interface Names {
 	public static final String ALLOW_MOVEMENT = "Allow Movement";
 	public static final String JOYSTICK_LEFT = "Left Joystick Bindings";
 	public static final String JOYSTICK_RIGHT = "Right Joystick Bindings";
+	public static final String VERTICAL_FORKLIFT_MOVEMENT = "Vertical Forklift";
 }

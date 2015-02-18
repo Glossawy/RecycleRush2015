@@ -138,9 +138,6 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
 
 	protected abstract void onInitialization();
 
-	public void onAny() {
-	}
-
 	/**
 	 * Code to execute before entering Disabled Mode.
 	 */

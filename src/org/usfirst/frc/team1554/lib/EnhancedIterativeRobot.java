@@ -114,7 +114,6 @@ public abstract class EnhancedIterativeRobot extends EnhancedRobotBase {
 				}
 
 				if (this.m_ds.isNewControlData()) {
-					onAny();
 					this.state.doOnMethod(this);
 				}
 

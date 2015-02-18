@@ -71,7 +71,6 @@ public abstract class EnhancedSimpleRobot extends EnhancedRobotBase {
 
 			final RobotState tempState = this.state;
 			while (tempState == RobotState.DISABLED ? isDisabled() : isEnabled() && tempState == this.state) {
-				onAny();
 				tempState.doOnMethod(this);
 				Timer.delay(0.01);
 			}
