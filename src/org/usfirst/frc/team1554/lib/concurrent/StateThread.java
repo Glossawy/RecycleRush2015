@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1554.lib.concurrent;
 
-import org.usfirst.frc.team1554.lib.io.Console;
+import edu.wpi.first.wpilibj.Timer;
+import org.usfirst.frc.team1554.lib.Console;
 import org.usfirst.frc.team1554.lib.meta.Author;
 import org.usfirst.frc.team1554.lib.meta.Noteworthy;
 
@@ -8,57 +9,57 @@ import org.usfirst.frc.team1554.lib.meta.Noteworthy;
 @Noteworthy("Multi-threaded Logic. Refrain from Editing!")
 public class StateThread extends Thread {
 
-	private final Runnable runnable;
-	private boolean paused = false;
-	private boolean exit = false;
+    private final Runnable runnable;
+    private boolean paused = false;
+    private boolean exit = false;
 
-	public StateThread(Runnable runnable) {
-		this.runnable = runnable;
-	}
+    public StateThread(Runnable runnable) {
+        this.runnable = runnable;
+    }
 
-	@Override
-	public void run() {
-		while (true) {
-			synchronized (this) {
-				try {
-					while (this.paused) {
-						wait();
-					}
-				} catch (final InterruptedException e) {
-					Console.exception(e);
-				}
+    @Override
+    public void run() {
+        while (true) {
+            synchronized (this) {
+                try {
+                    while (this.paused) {
+                        wait();
+                    }
+                } catch (final InterruptedException e) {
+                    Console.exception(e);
+                }
 
-				if (this.exit)
-					return;
+                if (this.exit) return;
 
-				this.runnable.run();
-			}
-		}
-	}
+                this.runnable.run();
+                Timer.delay(0.003);
+            }
+        }
+    }
 
-	public void pauseExecution() {
-		this.paused = true;
-	}
+    public void pauseExecution() {
+        this.paused = true;
+    }
 
-	public void resumeExecution() {
-		synchronized (this) {
-			this.paused = false;
-			notifyAll();
-		}
-	}
+    public void resumeExecution() {
+        synchronized (this) {
+            this.paused = false;
+            notifyAll();
+        }
+    }
 
-	public boolean isPaused() {
-		return this.paused;
-	}
+    public boolean isPaused() {
+        return this.paused;
+    }
 
-	public boolean isExited() {
-		return this.exit;
-	}
+    public boolean isExited() {
+        return this.exit;
+    }
 
-	public void exitThread() {
-		this.exit = true;
-		if (this.paused) {
-			resumeExecution();
-		}
-	}
+    public void exitThread() {
+        this.exit = true;
+        if (this.paused) {
+            resumeExecution();
+        }
+    }
 }

@@ -1,30 +1,30 @@
 package org.usfirst.frc.team1554.lib.net;
 
+import org.usfirst.frc.team1554.lib.Disposable;
+
 import java.io.Closeable;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.usfirst.frc.team1554.lib.Disposable;
-
 public interface Socket extends Disposable, Closeable {
 
-	InputStream input();
+    InputStream input();
 
-	OutputStream output();
+    OutputStream output();
 
-	boolean isConnected();
+    boolean isConnected();
 
-	String getRemoteAddress();
+    String getRemoteAddress();
 
-	String getInetAddress();
+    String getInetAddress();
 
-	int getPort();
+    int getPort();
 
-	@Override
-	void dispose();
+    @Override
+    void dispose();
 
-	@Override
-	default void close() {
-		dispose();
-	}
+    @Override
+    default void close() {
+        dispose();
+    }
 }

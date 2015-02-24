@@ -4,8 +4,8 @@ import java.io.IOException;
 
 public interface LineProcessor<T> {
 
-	boolean processLine(String line) throws IOException;
+    boolean processLine(String line) throws IOException;
 
-	T result();
+    T result();
 
 }

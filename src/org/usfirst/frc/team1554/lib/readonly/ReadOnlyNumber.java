@@ -2,12 +2,12 @@ package org.usfirst.frc.team1554.lib.readonly;
 
 public interface ReadOnlyNumber extends ReadOnlyValue<Number> {
 
-	int intValue();
+    int intValue();
 
-	long longValue();
+    long longValue();
 
-	float floatValue();
+    float floatValue();
 
-	double doubleValue();
+    double doubleValue();
 
 }

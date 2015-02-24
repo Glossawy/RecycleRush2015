@@ -1,467 +1,288 @@
 package org.usfirst.frc.team1554.lib.util;
 
-import java.nio.Buffer;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.CharBuffer;
-import java.nio.DoubleBuffer;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-import java.nio.LongBuffer;
-import java.nio.ShortBuffer;
-
+import org.usfirst.frc.team1554.lib.Console;
+import org.usfirst.frc.team1554.lib.RobotExecutionException;
 import org.usfirst.frc.team1554.lib.collect.Array;
+import sun.misc.Cleaner;
+import sun.nio.ch.DirectBuffer;
+
+import java.nio.*;
+import java.util.Arrays;
+
+import static org.usfirst.frc.team1554.lib.util.ReflectionHelper.getInstanceField;
 
 /**
- * Small Handler Class for quickening up Buffer usage. All ByteOrder's are ByteOrder.LITTLE_ENDIAN since the RoboRIO uses a Little Endian architecture.
- * 
- * @author Matthew
+ * A Utility to Create and Manage NIO Buffers. In almost all cases, this class will use DirectByteBuffer's for speed. If you desire a normal ByteBuffer you should use {@link ByteBuffer#allocate(int) ByteBuffer#allocate} or {@link #newSafeByteBuffer(int)}. <br />
+ * <br />
+ * Even calling {@link #newByteBuffer(int)} will createMethodCall a DirectByteBuffer, you must use {@link #newSafeByteBuffer(int)}. "safe" ByteBuffers will NOT be managed by this class and do not need to be disposed, they will not be disposed when {@link #disposeAllBuffers()} is called.
  *
+ * @author Matthew
  */
 public final class BufferUtils {
 
-	private static final Array<ByteBuffer> unsafeBuffers = new Array<ByteBuffer>();
-	private static int unsafeAllocated = 0;
+    private BufferUtils() {
+    }
 
-	/**
-	 * Copies numFloats floats from src starting at offset to dst. Dst is assumed to be a direct {@link Buffer}. The method will crash if that is not the case. The position and limit of the buffer are ignored, the copy is placed at position 0 in the buffer. After the copying process the position of the buffer is set to 0 and its limit is set to numFloats * 4 if it is a ByteBuffer and numFloats if it is a FloatBuffer. In case the Buffer is neither a ByteBuffer nor a FloatBuffer the limit is not set. This is an expert method, use at your own risk.
-	 * 
-	 * @param src
-	 *            the source array
-	 * @param dst
-	 *            the destination buffer, has to be a direct Buffer
-	 * @param numFloats
-	 *            the number of floats to copy
-	 * @param offset
-	 *            the offset in src to start copying from
-	 */
-	public static void copy(float[] src, Buffer dst, int floatCount, int offset) {
-		copyJNI(src, dst, floatCount, offset);
-		dst.position(0);
+    private static final Array<ByteBuffer> unsafeBuffers = new Array<ByteBuffer>(ByteBuffer.class);
+    private static int unsafeAllocated = 0;
 
-		if (dst instanceof ByteBuffer) {
-			dst.limit(floatCount << 2);
-		} else if (dst instanceof FloatBuffer) {
-			dst.limit(floatCount);
-		}
-	}
+    /**
+     * Create a new Memory Mapped FloatBuffer
+     *
+     * @param numFloats
+     * @return
+     */
+    public static FloatBuffer newFloatBuffer(int numFloats) {
+        final ByteBuffer buffer = ByteBuffer.allocateDirect(numFloats * 4);
+        buffer.order(ByteOrder.nativeOrder());
+        return buffer.asFloatBuffer();
+    }
 
-	/**
-	 * Copies the contents of src to dst, starting from src[srcOffset], copying numElements elements. The {@link Buffer} instance's {@link Buffer#position()} is used to define the offset into the Buffer itself. The position will stay the same, the limit will be set to position + numElements. <b>The Buffer must be a direct Buffer with native byte order. No error checking is performed</b>.
-	 * 
-	 * @param src
-	 *            the source array.
-	 * @param srcOffset
-	 *            the offset into the source array.
-	 * @param dst
-	 *            the destination Buffer, its position is used as an offset.
-	 * @param numElements
-	 *            the number of elements to copy.
-	 */
-	public static void copy(byte[] src, int srcOffset, Buffer dst, int numElements) {
-		copyJNI(src, srcOffset, dst, positionInBytes(dst), numElements);
-		dst.limit(dst.position() + bytesToElements(dst, numElements));
-	}
+    /**
+     * Create a new Memory Mapped DoubleBuffer
+     *
+     * @param numDoubles
+     * @return
+     */
+    public static DoubleBuffer newDoubleBuffer(int numDoubles) {
+        final ByteBuffer buffer = ByteBuffer.allocateDirect(numDoubles * 8);
+        buffer.order(ByteOrder.nativeOrder());
+        return buffer.asDoubleBuffer();
+    }
 
-	/**
-	 * Copies the contents of src to dst, starting from src[srcOffset], copying numElements elements. The {@link Buffer} instance's {@link Buffer#position()} is used to define the offset into the Buffer itself. The position will stay the same, the limit will be set to position + numElements. <b>The Buffer must be a direct Buffer with native byte order. No error checking is performed</b>.
-	 * 
-	 * @param src
-	 *            the source array.
-	 * @param srcOffset
-	 *            the offset into the source array.
-	 * @param dst
-	 *            the destination Buffer, its position is used as an offset.
-	 * @param numElements
-	 *            the number of elements to copy.
-	 */
-	public static void copy(short[] src, int srcOffset, Buffer dst, int numElements) {
-		copyJNI(src, srcOffset << 1, dst, positionInBytes(dst), numElements << 1);
-		dst.limit(dst.position() + bytesToElements(dst, numElements << 1));
-	}
+    /**
+     * Create a new Memory Mapped ByteBuffer
+     *
+     * @param numBytes
+     * @return
+     */
+    public static ByteBuffer newByteBuffer(int numBytes) {
+        final ByteBuffer buffer = ByteBuffer.allocateDirect(numBytes);
+        buffer.order(ByteOrder.nativeOrder());
+        return buffer;
+    }
 
-	/**
-	 * Copies the contents of src to dst, starting from src[srcOffset], copying numElements elements. The {@link Buffer} instance's {@link Buffer#position()} is used to define the offset into the Buffer itself. The position and limit will stay the same. <b>The Buffer must be a direct Buffer with native byte order. No error checking is performed</b>.
-	 * 
-	 * @param src
-	 *            the source array.
-	 * @param srcOffset
-	 *            the offset into the source array.
-	 * @param numElements
-	 *            the number of elements to copy.
-	 * @param dst
-	 *            the destination Buffer, its position is used as an offset.
-	 */
-	public static void copy(char[] src, int srcOffset, int numElements, Buffer dst) {
-		copyJNI(src, srcOffset << 1, dst, positionInBytes(dst), numElements << 1);
-	}
+    /**
+     * Create a new Memory Mapped ShortBuffer
+     *
+     * @param numShorts
+     * @return
+     */
+    public static ShortBuffer newShortBuffer(int numShorts) {
+        final ByteBuffer buffer = ByteBuffer.allocateDirect(numShorts * 2);
+        buffer.order(ByteOrder.nativeOrder());
+        return buffer.asShortBuffer();
+    }
 
-	/**
-	 * Copies the contents of src to dst, starting from src[srcOffset], copying numElements elements. The {@link Buffer} instance's {@link Buffer#position()} is used to define the offset into the Buffer itself. The position and limit will stay the same. <b>The Buffer must be a direct Buffer with native byte order. No error checking is performed</b>.
-	 * 
-	 * @param src
-	 *            the source array.
-	 * @param srcOffset
-	 *            the offset into the source array.
-	 * @param numElements
-	 *            the number of elements to copy.
-	 * @param dst
-	 *            the destination Buffer, its position is used as an offset.
-	 */
-	public static void copy(int[] src, int srcOffset, int numElements, Buffer dst) {
-		copyJNI(src, srcOffset << 2, dst, positionInBytes(dst), numElements << 2);
-	}
+    /**
+     * Create a new Memory Mapped CharBuffer
+     *
+     * @param numChars
+     * @return
+     */
+    public static CharBuffer newCharBuffer(int numChars) {
+        final ByteBuffer buffer = ByteBuffer.allocateDirect(numChars * 2);
+        buffer.order(ByteOrder.nativeOrder());
+        return buffer.asCharBuffer();
+    }
 
-	/**
-	 * Copies the contents of src to dst, starting from src[srcOffset], copying numElements elements. The {@link Buffer} instance's {@link Buffer#position()} is used to define the offset into the Buffer itself. The position and limit will stay the same. <b>The Buffer must be a direct Buffer with native byte order. No error checking is performed</b>.
-	 * 
-	 * @param src
-	 *            the source array.
-	 * @param srcOffset
-	 *            the offset into the source array.
-	 * @param numElements
-	 *            the number of elements to copy.
-	 * @param dst
-	 *            the destination Buffer, its position is used as an offset.
-	 */
-	public static void copy(long[] src, int srcOffset, int numElements, Buffer dst) {
-		copyJNI(src, srcOffset << 3, dst, positionInBytes(dst), numElements << 3);
-	}
+    /**
+     * Create a new Memory Mapped IntBuffer
+     *
+     * @param numInts
+     * @return
+     */
+    public static IntBuffer newIntBuffer(int numInts) {
+        final ByteBuffer buffer = ByteBuffer.allocateDirect(numInts * 4);
+        buffer.order(ByteOrder.nativeOrder());
+        return buffer.asIntBuffer();
+    }
 
-	/**
-	 * Copies the contents of src to dst, starting from src[srcOffset], copying numElements elements. The {@link Buffer} instance's {@link Buffer#position()} is used to define the offset into the Buffer itself. The position and limit will stay the same. <b>The Buffer must be a direct Buffer with native byte order. No error checking is performed</b>.
-	 * 
-	 * @param src
-	 *            the source array.
-	 * @param srcOffset
-	 *            the offset into the source array.
-	 * @param numElements
-	 *            the number of elements to copy.
-	 * @param dst
-	 *            the destination Buffer, its position is used as an offset.
-	 */
-	public static void copy(float[] src, int srcOffset, int numElements, Buffer dst) {
-		copyJNI(src, srcOffset << 2, dst, positionInBytes(dst), numElements << 2);
-	}
+    /**
+     * Create a new Memory Mapped LongBuffer
+     *
+     * @param numLongs
+     * @return
+     */
+    public static LongBuffer newLongBuffer(int numLongs) {
+        final ByteBuffer buffer = ByteBuffer.allocateDirect(numLongs * 8);
+        buffer.order(ByteOrder.nativeOrder());
+        return buffer.asLongBuffer();
+    }
 
-	/**
-	 * Copies the contents of src to dst, starting from src[srcOffset], copying numElements elements. The {@link Buffer} instance's {@link Buffer#position()} is used to define the offset into the Buffer itself. The position and limit will stay the same. <b>The Buffer must be a direct Buffer with native byte order. No error checking is performed</b>.
-	 * 
-	 * @param src
-	 *            the source array.
-	 * @param srcOffset
-	 *            the offset into the source array.
-	 * @param numElements
-	 *            the number of elements to copy.
-	 * @param dst
-	 *            the destination Buffer, its position is used as an offset.
-	 */
-	public static void copy(double[] src, int srcOffset, int numElements, Buffer dst) {
-		copyJNI(src, srcOffset << 3, dst, positionInBytes(dst), numElements << 3);
-	}
+    /**
+     * Create a new, standard, ByteBuffer on the Heap.
+     *
+     * @param numBytes
+     * @return
+     */
+    public static ByteBuffer newSafeByteBuffer(int numBytes) {
+        return ByteBuffer.allocate(numBytes);
+    }
 
-	/**
-	 * Copies the contents of src to dst, starting from src[srcOffset], copying numElements elements. The {@link Buffer} instance's {@link Buffer#position()} is used to define the offset into the Buffer itself. The position will stay the same, the limit will be set to position + numElements. <b>The Buffer must be a direct Buffer with native byte order. No error checking is performed</b>.
-	 * 
-	 * @param src
-	 *            the source array.
-	 * @param srcOffset
-	 *            the offset into the source array.
-	 * @param dst
-	 *            the destination Buffer, its position is used as an offset.
-	 * @param numElements
-	 *            the number of elements to copy.
-	 */
-	public static void copy(char[] src, int srcOffset, Buffer dst, int numElements) {
-		copyJNI(src, srcOffset << 1, dst, positionInBytes(dst), numElements << 1);
-		dst.limit(dst.position() + bytesToElements(dst, numElements << 1));
-	}
+    /**
+     * Creates a Direct ByteBuffer and keeps track of it for later automatic disposal.
+     *
+     * @param numBytes
+     * @return
+     */
+    public static ByteBuffer newUnsafeByteBuffer(int numBytes) {
+        final ByteBuffer buffer = ByteBuffer.allocateDirect(numBytes);
+        buffer.order(ByteOrder.nativeOrder());
+        unsafeAllocated += numBytes;
 
-	/**
-	 * Copies the contents of src to dst, starting from src[srcOffset], copying numElements elements. The {@link Buffer} instance's {@link Buffer#position()} is used to define the offset into the Buffer itself. The position will stay the same, the limit will be set to position + numElements. <b>The Buffer must be a direct Buffer with native byte order. No error checking is performed</b>.
-	 * 
-	 * @param src
-	 *            the source array.
-	 * @param srcOffset
-	 *            the offset into the source array.
-	 * @param dst
-	 *            the destination Buffer, its position is used as an offset.
-	 * @param numElements
-	 *            the number of elements to copy.
-	 */
-	public static void copy(int[] src, int srcOffset, Buffer dst, int numElements) {
-		copyJNI(src, srcOffset << 2, dst, positionInBytes(dst), numElements << 2);
-		dst.limit(dst.position() + bytesToElements(dst, numElements << 2));
-	}
+        synchronized (unsafeBuffers) {
+            unsafeBuffers.add(buffer);
+        }
 
-	/**
-	 * Copies the contents of src to dst, starting from src[srcOffset], copying numElements elements. The {@link Buffer} instance's {@link Buffer#position()} is used to define the offset into the Buffer itself. The position will stay the same, the limit will be set to position + numElements. <b>The Buffer must be a direct Buffer with native byte order. No error checking is performed</b>.
-	 * 
-	 * @param src
-	 *            the source array.
-	 * @param srcOffset
-	 *            the offset into the source array.
-	 * @param dst
-	 *            the destination Buffer, its position is used as an offset.
-	 * @param numElements
-	 *            the number of elements to copy.
-	 */
-	public static void copy(long[] src, int srcOffset, Buffer dst, int numElements) {
-		copyJNI(src, srcOffset << 3, dst, positionInBytes(dst), numElements << 3);
-		dst.limit(dst.position() + bytesToElements(dst, numElements << 3));
-	}
+        return buffer;
+    }
 
-	/**
-	 * Copies the contents of src to dst, starting from src[srcOffset], copying numElements elements. The {@link Buffer} instance's {@link Buffer#position()} is used to define the offset into the Buffer itself. The position will stay the same, the limit will be set to position + numElements. <b>The Buffer must be a direct Buffer with native byte order. No error checking is performed</b>.
-	 * 
-	 * @param src
-	 *            the source array.
-	 * @param srcOffset
-	 *            the offset into the source array.
-	 * @param dst
-	 *            the destination Buffer, its position is used as an offset.
-	 * @param numElements
-	 *            the number of elements to copy.
-	 */
-	public static void copy(float[] src, int srcOffset, Buffer dst, int numElements) {
-		copyJNI(src, srcOffset << 2, dst, positionInBytes(dst), numElements << 2);
-		dst.limit(dst.position() + bytesToElements(dst, numElements << 2));
-	}
+    /**
+     * Create a new Memory Mapped ByteBuffer at a specific memory address.
+     *
+     * @param addr
+     * @param numBytes
+     * @return
+     */
+    public static ByteBuffer newUnsafeByteBuffer(long addr, int numBytes) {
+        final ByteBuffer buffer = unsafeAllocate(addr, numBytes);
+        buffer.order(ByteOrder.nativeOrder());
+        unsafeAllocated += numBytes;
 
-	/**
-	 * Copies the contents of src to dst, starting from src[srcOffset], copying numElements elements. The {@link Buffer} instance's {@link Buffer#position()} is used to define the offset into the Buffer itself. The position will stay the same, the limit will be set to position + numElements. <b>The Buffer must be a direct Buffer with native byte order. No error checking is performed</b>.
-	 * 
-	 * @param src
-	 *            the source array.
-	 * @param srcOffset
-	 *            the offset into the source array.
-	 * @param dst
-	 *            the destination Buffer, its position is used as an offset.
-	 * @param numElements
-	 *            the number of elements to copy.
-	 */
+        synchronized (unsafeBuffers) {
+            unsafeBuffers.add(buffer);
+        }
 
-	public static void copy(double[] src, int srcOffset, Buffer dst, int numElements) {
-		copyJNI(src, srcOffset << 3, dst, positionInBytes(dst), numElements << 3);
-		dst.limit(dst.position() + bytesToElements(dst, numElements << 3));
-	}
+        return buffer;
+    }
 
-	/**
-	 * Copies the contents of src to dst, starting from the current position of src, copying numElements elements (using the data type of src, no matter the datatype of dst). The dst {@link Buffer#position()} is used as the writing offset. The position of both Buffers will stay the same. The limit of the src Buffer will stay the same. The limit of the dst Buffer will be set to dst.position() + numElements, where numElements are translated to the number of elements appropriate for the dst Buffer data type. <b>The Buffers must be direct Buffers with native byte order. No error checking is performed</b>.
-	 * 
-	 * @param src
-	 *            the source Buffer.
-	 * @param dst
-	 *            the destination Buffer.
-	 * @param numElements
-	 *            the number of elements to copy.
-	 */
-	public static void copy(Buffer src, Buffer dst, int numElements) {
-		final int numBytes = elementsToBytes(src, numElements);
-		copyJNI(src, positionInBytes(src), dst, positionInBytes(dst), numBytes);
-		dst.limit(dst.position() + bytesToElements(dst, numBytes));
-	}
+    /**
+     * Get the address of a memory mapped Buffer
+     *
+     * @param buffer
+     * @return
+     */
+    public static long getUnsafeBufferAddress(ByteBuffer buffer) {
+        unsafeBBChecks(buffer);
 
-	private static int positionInBytes(Buffer dst) {
-		if (dst instanceof ByteBuffer)
-			return dst.position();
-		else if (dst instanceof ShortBuffer)
-			return dst.position() << 1;
-		else if (dst instanceof CharBuffer)
-			return dst.position() << 1;
-		else if (dst instanceof IntBuffer)
-			return dst.position() << 2;
-		else if (dst instanceof LongBuffer)
-			return dst.position() << 3;
-		else if (dst instanceof FloatBuffer)
-			return dst.position() << 2;
-		else if (dst instanceof DoubleBuffer)
-			return dst.position() << 3;
-		else
-			throw new RuntimeException("Can't copy to a " + dst.getClass().getName() + " instance");
-	}
+        return getInstanceField(Buffer.class, buffer, "address", Long.class);
+    }
 
-	private static int bytesToElements(Buffer dst, int bytes) {
-		if (dst instanceof ByteBuffer)
-			return bytes;
-		else if (dst instanceof ShortBuffer)
-			return bytes >>> 1;
-		else if (dst instanceof CharBuffer)
-			return bytes >>> 1;
-		else if (dst instanceof IntBuffer)
-			return bytes >>> 2;
-		else if (dst instanceof LongBuffer)
-			return bytes >>> 3;
-		else if (dst instanceof FloatBuffer)
-			return bytes >>> 2;
-		else if (dst instanceof DoubleBuffer)
-			return bytes >>> 3;
-		else
-			throw new RuntimeException("Can't copy to a " + dst.getClass().getName() + " instance");
-	}
+    /**
+     * Mark a ByteBuffer as Unsafe and keep track of it for later disposal. <br />
+     * The ByteBuffer must be a DirectByteBuffer.
+     *
+     * @param buffer
+     * @return
+     */
+    public static ByteBuffer newUnsafeByteBuffer(ByteBuffer buffer) {
+        unsafeBBChecks(buffer);
 
-	private static int elementsToBytes(Buffer dst, int elements) {
-		if (dst instanceof ByteBuffer)
-			return elements;
-		else if (dst instanceof ShortBuffer)
-			return elements << 1;
-		else if (dst instanceof CharBuffer)
-			return elements << 1;
-		else if (dst instanceof IntBuffer)
-			return elements << 2;
-		else if (dst instanceof LongBuffer)
-			return elements << 3;
-		else if (dst instanceof FloatBuffer)
-			return elements << 2;
-		else if (dst instanceof DoubleBuffer)
-			return elements << 3;
-		else
-			throw new RuntimeException("Can't copy to a " + dst.getClass().getName() + " instance");
-	}
+        unsafeAllocated += buffer.capacity();
+        synchronized (unsafeBuffers) {
+            unsafeBuffers.add(buffer);
+        }
 
-	public static FloatBuffer newFloatBuffer(int numFloats) {
-		final ByteBuffer buffer = ByteBuffer.allocateDirect(numFloats * 4);
-		buffer.order(ByteOrder.LITTLE_ENDIAN);
-		return buffer.asFloatBuffer();
-	}
+        return buffer;
+    }
 
-	public static DoubleBuffer newDoubleBuffer(int numDoubles) {
-		final ByteBuffer buffer = ByteBuffer.allocateDirect(numDoubles * 8);
-		buffer.order(ByteOrder.LITTLE_ENDIAN);
-		return buffer.asDoubleBuffer();
-	}
+    /**
+     * Dispose ByteBuffer and free the memory it is using up immediately.
+     *
+     * @param buffer
+     */
+    public static void disposeUnsafeByteBuffer(ByteBuffer buffer) {
+        unsafeBBChecks(buffer);
+        final int size = buffer.capacity();
 
-	public static ByteBuffer newByteBuffer(int numBytes) {
-		final ByteBuffer buffer = ByteBuffer.allocateDirect(numBytes);
-		buffer.order(ByteOrder.LITTLE_ENDIAN);
-		return buffer;
-	}
+        synchronized (unsafeBuffers) {
+            Preconditions.checkExpression(unsafeBuffers.removeValue(buffer, true), "Buffer Not Allocated with newUnsafeByteBuffer() or Already Disposed!");
+        }
 
-	public static ShortBuffer newShortBuffer(int numShorts) {
-		final ByteBuffer buffer = ByteBuffer.allocateDirect(numShorts * 2);
-		buffer.order(ByteOrder.LITTLE_ENDIAN);
-		return buffer.asShortBuffer();
-	}
+        unsafeAllocated -= size;
+        freeMemory(buffer);
+    }
 
-	public static CharBuffer newCharBuffer(int numChars) {
-		final ByteBuffer buffer = ByteBuffer.allocateDirect(numChars * 2);
-		buffer.order(ByteOrder.LITTLE_ENDIAN);
-		return buffer.asCharBuffer();
-	}
+    /**
+     * Clear ByteBuffer by filling it with 0's
+     *
+     * @param buffer
+     */
+    public static void clear(ByteBuffer buffer) {
+        if (!buffer.hasArray() || buffer.isReadOnly()) {
+            buffer.position(0);
+            buffer.put(new byte[buffer.capacity()]);
+        } else {
+            Arrays.fill(buffer.array(), (byte) 0);
+        }
 
-	public static IntBuffer newIntBuffer(int numInts) {
-		final ByteBuffer buffer = ByteBuffer.allocateDirect(numInts * 4);
-		buffer.order(ByteOrder.LITTLE_ENDIAN);
-		return buffer.asIntBuffer();
-	}
+        buffer.clear();
+    }
 
-	public static LongBuffer newLongBuffer(int numLongs) {
-		final ByteBuffer buffer = ByteBuffer.allocateDirect(numLongs * 8);
-		buffer.order(ByteOrder.LITTLE_ENDIAN);
-		return buffer.asLongBuffer();
-	}
+    /**
+     * Get the number of bytes currently reserved by Unsafe ByteBuffers.
+     *
+     * @return
+     */
+    public static int getAllocatedUnsafeBytes() {
+        return unsafeAllocated;
+    }
 
-	// @off
-	/*
-	 * JNI #include <stdio.h> #include <stdlib.h> #include <string.h>
-	 */
+    /**
+     * Dispose all Unsafe Buffers. This should be called at the termination of a program.
+     */
+    public static final void disposeAllBuffers() {
+        final int itemCount = unsafeBuffers.size;
+        final ByteBuffer[] tmp = new ByteBuffer[itemCount];
+        System.arraycopy(unsafeBuffers.items, 0, tmp, 0, itemCount);
 
-	public static void disposeUnsafeBuffer(ByteBuffer buffer) {
-		final int size = buffer.capacity();
-		boolean success = false;
-		synchronized (unsafeBuffers) {
-			for (int i = 0; i < unsafeBuffers.size; i++) {
-				if (unsafeBuffers.get(i) == buffer) {
-					success = true;
-					break;
-				}
-			}
-		}
+        for (final ByteBuffer buf : tmp) {
+            disposeUnsafeByteBuffer(buf);
+        }
+    }
 
-		if (!success)
-			throw new IllegalArgumentException("Buffer Not Allocated with newUnsafeByteBuffer() or already disposed!");
+    // Free Memory by accessing the Sun Implemented Cleaner
+    // For this to be actually effective, the buffer must be a DirectBuffer.
+    private static void freeMemory(ByteBuffer buffer) {
+        if (!(buffer instanceof DirectBuffer))
+            return;
 
-		unsafeAllocated -= size;
-		freeMemory(buffer);
-	}
+        final Cleaner cleaner = ((DirectBuffer) buffer).cleaner();
 
-	public static ByteBuffer newUnsafeByteBuffer(int numBytes) {
-		final ByteBuffer buffer = newDisposableByteBuffer(numBytes);
-		buffer.order(ByteOrder.LITTLE_ENDIAN);
-		unsafeAllocated += numBytes;
-		synchronized (unsafeBuffers) {
-			unsafeBuffers.add(buffer);
-		}
+        if (cleaner == null) {
+            // Sun provided us with a nice cleanup implementation as long
+            // as we use a DirectBuffer cast. An alternative cleanup using Unsafe operations
+            // is provided which is meant to mimic the operation of
+            cleaner.clean();
+        } else {
+            long address = getUnsafeBufferAddress(buffer);
+            if (address != 0) {
+                try {
+                    NIOAccess.magicallyFreeBuffer_LikeABlackBoxOfDarkWizardry_ExceptItSolvesProblems(address, buffer);
+                } catch (RobotExecutionException e) {
+                    Console.exception(e, "Error in freeing Buffer Memory, likely unintentional!");
+                    RoboUtils.writeToDS("Error In Freeing Buffer Memory...\n[See RIOConsole]");
+                }
+            } else {
+                Console.warn("Attempted to free memory in a DirectByteBuffer but the address was 0... Was it not Unsafe or was it already freed?");
+            }
+        }
+    }
 
-		return buffer;
-	}
+    // Allocates a DirectByteBuffer at the specific Address with a capacity of numBytes
+    private static ByteBuffer unsafeAllocate(long addr, int numBytes) {
+        try {
+            return (ByteBuffer) NIOAccess.DANGEROUS_CONSTRUCTOR_DONT_TOUCH_OR_DOLPHINS_DIE.newInstance(addr, numBytes);
+        } catch (final Exception e) {
+            throw new RobotExecutionException("Failed to Create Direct Byte Buffer at " + Long.toHexString(addr) + " of size " + numBytes + "b", e);
+        }
+    }
 
-	public static long getUnsafeBufferAddress(Buffer buffer) {
-		return getBufferAddress(buffer) + buffer.position();
-	}
+    // Perform DirectByteBuffer checks.
+    private static void unsafeBBChecks(ByteBuffer bb) {
+        Preconditions.checkNotNull(bb);
+        Preconditions.checkExpression(NIOAccess.SCARY_NATIVE_BUFFER_CLASS.isInstance(bb), "ByteBuffer is NOT An Unsafe/Direct ByteBuffer!");
+    }
 
-	public static ByteBuffer newUnsafeByteBuffer(ByteBuffer buffer) {
-		unsafeAllocated += buffer.capacity();
-		synchronized (unsafeBuffers) {
-			unsafeBuffers.add(buffer);
-		}
-
-		return buffer;
-	}
-
-	public static int getAllocatedBytesUnsafe() {
-		return unsafeAllocated;
-	}
-
-	private static native ByteBuffer newDisposableByteBuffer(int numBytes);/*
-																			 * return env->NewDirectByteBuffer((char*)malloc(numBytes), numBytes);
-																			 */
-
-	private static native long getBufferAddress(Buffer buffer);/*
-																 * return (jlong)buffer;
-																 */
-
-	private static native void freeMemory(ByteBuffer buf); /*
-															 * free(buf);
-															 */
-
-	public static native void clear(ByteBuffer buffer, int bytes); /*
-																	 * memset(buffer, 0, bytes);
-																	 */
-
-	private static native void copyJNI(float[] src, Buffer dst, int floatCount, int offset);/*
-																							 * memcpy(dst, src + offset, floatCount << 2);
-																							 */
-
-	private static native void copyJNI(byte[] src, int srcOffset, Buffer dst, int dstOffset, int bytes);/*
-																										 * memcpy(dst + dstOffset, src + srcOffset, bytes);
-																										 */
-
-	private static native void copyJNI(char[] src, int srcOffset, Buffer dst, int dstOffset, int chars);/*
-																										 * memcpy(dst + dstOffset, src + srcOffset, chars);
-																										 */
-
-	private static native void copyJNI(short[] src, int srcOffset, Buffer dst, int dstOffset, int shorts);/*
-																										 * memcpy(dst + dstOffset, src + srcOffset, shorts);
-																										 */
-
-	private static native void copyJNI(int[] src, int srcOffset, Buffer dst, int dstOffset, int ints);/*
-																									 * memcpy(dst + dstOffset, src + srcOffset, ints);
-																									 */
-
-	private static native void copyJNI(long[] src, int srcOffset, Buffer dst, int dstOffset, int longs);/*
-																										 * memcpy(dst + dstOffset, src + srcOffset, longs);
-																										 */
-
-	private static native void copyJNI(float[] src, int srcOffset, Buffer dst, int dstOffset, int floats);/*
-																										 * memcpy(dst + dstOffset, src + srcOffset, floats);
-																										 */
-
-	private static native void copyJNI(double[] src, int srcOffset, Buffer dst, int dstOffset, int doubles);/*
-																											 * memcpy(dst + dstOffset, src + srcOffset, doubles);
-																											 */
-
-	private static native void copyJNI(Buffer src, int srcOffset, Buffer dst, int dstOffset, int length);/*
-																										 * memcpy(dst + dstOffset, src + srcOffset, length);
-																										 */
 }

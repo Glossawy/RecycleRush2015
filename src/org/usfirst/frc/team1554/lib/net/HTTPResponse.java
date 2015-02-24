@@ -5,15 +5,15 @@ import java.util.List;
 import java.util.Map;
 
 public interface HTTPResponse {
-	byte[] result();
+    byte[] result();
 
-	String resultAsString();
+    String resultAsString();
 
-	InputStream resultAsStream();
+    InputStream resultAsStream();
 
-	HTTPStatus status();
+    HTTPStatus status();
 
-	String header();
+    String header();
 
-	Map<String, List<String>> headers();
+    Map<String, List<String>> headers();
 }

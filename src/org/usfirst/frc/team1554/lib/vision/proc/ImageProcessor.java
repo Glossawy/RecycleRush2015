@@ -5,6 +5,6 @@ import edu.wpi.first.wpilibj.image.ImageBase;
 @FunctionalInterface
 public interface ImageProcessor<T extends ImageBase> {
 
-	public boolean process(T img);
+    public boolean process(T img);
 
 }

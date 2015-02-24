@@ -1,24 +1,24 @@
 package org.usfirst.frc.team1554.lib.net;
 
-import java.io.Closeable;
-
 import org.usfirst.frc.team1554.lib.Disposable;
+
+import java.io.Closeable;
 
 public interface ServerSocket extends Disposable, Closeable {
 
-	public enum Protocol {
-		TCP;
-	}
+    public enum Protocol {
+        TCP;
+    }
 
-	Protocol protocol();
+    Protocol protocol();
 
-	Socket accept(SocketParams params);
+    Socket accept(SocketParams params);
 
-	@Override
-	void dispose();
+    @Override
+    void dispose();
 
-	@Override
-	default void close() {
-		dispose();
-	}
+    @Override
+    default void close() {
+        dispose();
+    }
 }
