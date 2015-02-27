@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1554.lib.concurrent;
 
-import org.usfirst.frc.team1554.lib.RobotExecutionException;
+import org.usfirst.frc.team1554.lib.common.ex.RobotExecutionException;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;

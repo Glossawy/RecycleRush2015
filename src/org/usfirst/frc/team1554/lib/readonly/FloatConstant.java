@@ -42,7 +42,7 @@ public class FloatConstant implements ReadOnlyFloat {
 
     @Override
     public Float getValue() {
-        return Float.valueOf(this.value);
+        return this.value;
     }
 
     @Override

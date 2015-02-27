@@ -12,10 +12,10 @@ import static org.usfirst.frc.team1554.lib.util.ReflectionHelper.*;
 // See bottom of Class File for REAL documentation
 
 /**
- * If Satan drives out Satan, he is divided against himself. How then can his kingdom stand?
- * And if I drive out demons by Beelzebul, by whom do your people drive them out? So then,
- * they will be your judges. But if I drive out demons by the Spirit of God, then the kingdom of
- * God has come upon you.<br/>
+ * If Satan drives out Satan, he is divided against himself. How then can his kingdom stand? And if
+ * I drive out demons by Beelzebul, by whom do your people drive them out? So then, they will be
+ * your judges. But if I drive out demons by the Spirit of God, then the kingdom of God has come
+ * upon you.<br/>
  * <pre>
  *                                  — Matthew 12:25-28
  * </pre>
@@ -67,18 +67,21 @@ final class NIOAccess {
     }
 
     /**
-     * Free a Direct ByteBuffer manually using Unsafe and the VM/Bits system. Mimicry of DirectByteBuffers Deallocator
+     * Free a Direct ByteBuffer manually using Unsafe and the VM/Bits
+     * system. Mimicry of DirectByteBuffers Deallocator
      * implementation. <br />
      * <br />
-     * Should only be called if the Buffer is a DirectByteBuffer, yet does not have a Cleaner implementation. <br />
+     * Should only be called if the Buffer is a DirectByteBuffer, yet
+     * does not have a Cleaner implementation. <br />
      * <br />
      * <p>
-     * {@code ((DirectBuffer) buffer).cleaner() would be a better option.}
+     * {@code ((DirectBuffer) buffer).cleaner() would be a better
+     * option.}
      *
      * @param addr
      * @param buffer
      */
-    static final void magicallyFreeBuffer_LikeABlackBoxOfDarkWizardry_ExceptItSolvesProblems(long addr, ByteBuffer buffer) {
+    static void magicallyFreeBuffer_LikeABlackBoxOfDarkWizardry_ExceptItSolvesProblems(long addr, ByteBuffer buffer) {
         boolean aligned = invokeStaticMethod(SCARY_VM_CLASS, createMethodCall(MALIGN_GOOD_PEOPLE), Boolean.class);
         int pageSize = invokeStaticMethod(SCARY_NATIVE_BITS_CLASS, createMethodCall(READ_THE_BAD_TEXT), Integer.class);
         int cap = buffer.capacity();

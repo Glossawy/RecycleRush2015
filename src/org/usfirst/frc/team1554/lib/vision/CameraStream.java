@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.image.ImageBase;
 import edu.wpi.first.wpilibj.tables.ITable;
-import org.usfirst.frc.team1554.lib.Console;
+import org.usfirst.frc.team1554.lib.common.Console;
 import org.usfirst.frc.team1554.lib.net.*;
 import org.usfirst.frc.team1554.lib.util.BufferUtils;
 import org.usfirst.frc.team1554.lib.util.IOUtils;
@@ -27,28 +27,33 @@ import static org.usfirst.frc.team1554.lib.net.SocketParams.*;
 //@on
 
 /**
- * An Alternative to {@link CameraServer} that makes use of the Camera API. <br />
+ * An Alternative to {@link CameraServer} that makes use of the Camera
+ * API. <br />
  * <br />
- * This is currently a port of CameraServer with several optimizations.
+ * This is currently a port of CameraServer with several
+ * optimizations.
  *
  * @author Matthew
  * @since v1.0
  */
+@SuppressWarnings({"InfiniteLoopStatement", "WeakerAccess"})
 public enum CameraStream implements Sendable {
 
     INSTANCE;
 
     /**
-     * Data Store class for containing Image Data Buffer metadata. <br />
+     * Data Store class for containing Image Data Buffer metadata. <br
+     * />
      * <br />
-     * Typically this is just the NIVision {@link RawData} and buffer start position.
+     * Typically this is just the NIVision {@link RawData} and buffer
+     * start position.
      *
      * @author Matthew
      */
     private static class Data {
 
-        RawData data;
-        int start;
+        final RawData data;
+        final int start;
 
         Data(RawData data, int s) {
             this.data = data;
@@ -64,7 +69,6 @@ public enum CameraStream implements Sendable {
     public static final int hwCompression = -1;
     public static final int MAX_SIZE = 200_000;
 
-    private Thread serverThread;
     private Camera camera = null;
     private Data cameraData = null;
 
@@ -86,15 +90,15 @@ public enum CameraStream implements Sendable {
         this.dataPool.addLast(BufferUtils.newUnsafeByteBuffer(MAX_SIZE));
 
         // Create Serving Thread
-        this.serverThread = new Thread(() -> {
+        Thread serverThread = new Thread(() -> {
             try {
                 serveStream();
             } catch (final Exception e) {
                 Console.exception(e);
             }
         });
-        this.serverThread.setName("CameraStream-Out");
-        this.serverThread.start();
+        serverThread.setName("CameraStream-Out");
+        serverThread.start();
     }
 
     private synchronized void setImageData(RawData data, int start) {
@@ -132,7 +136,9 @@ public enum CameraStream implements Sendable {
     /**
      * Set the Image Currently being Streamed to the Client <br />
      * <br />
-     * {@link #setImage(ImageBase) setImage} essentially calls this method with the {@link ImageBase Image's} underlying NIVision Image Object.
+     * {@link #setImage(ImageBase) setImage} essentially calls this
+     * method with the {@link ImageBase Image's} underlying NIVision
+     * Image Object.
      *
      * @param image
      */
@@ -168,7 +174,11 @@ public enum CameraStream implements Sendable {
     }
 
     /**
-     * Set the Camera and Automatically Capture images in a separate thread. This is useful if you don't wish to use {@link #setImage(ImageBase)} in your loop (typically for on-roboRIO image processing) or wish to use the DriverStation for Image Processing.
+     * Set the Camera and Automatically Capture images in a separate
+     * thread. This is useful if you don't wish to use {@link
+     * #setImage(ImageBase)} in your loop (typically for on-roboRIO
+     * image processing) or wish to use the DriverStation for Image
+     * Processing.
      *
      * @param camera
      */
@@ -187,7 +197,7 @@ public enum CameraStream implements Sendable {
         captureThread.start();
     }
 
-    private void serveStream() throws IOException, InterruptedException {
+    private void serveStream() throws InterruptedException {
         final ServerSocketParams params = new ServerSocketParams();
         params.acceptTimeout = 0;
 
@@ -290,7 +300,6 @@ public enum CameraStream implements Sendable {
                 } catch (final IOException e) {
                     RoboUtils.exceptionToDS(e);
                     Console.exception(e);
-                    continue;
                 }
             }
         }
@@ -393,7 +402,8 @@ public enum CameraStream implements Sendable {
     // Even to the point of using Byte Streams for a more human readable implemnentation.
 
     /**
-     * Int Table Representation of Huffman Table. Is Converted to Byte[] during initialization.
+     * Int Table Representation of Huffman Table. Is Converted to
+     * Byte[] during initialization.
      */
     private static final int[] huffmanTableTemp = new int[]{
             0xFF, 0xC4, 0x01, 0xA2, 0x00, 0x00, 0x01, 0x05, 0x01, 0x01,

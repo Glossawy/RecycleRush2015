@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1554.lib;
+package org.usfirst.frc.team1554.lib.common;
 
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.Gyro;
@@ -9,12 +9,15 @@ import edu.wpi.first.wpilibj.tables.ITable;
 import org.usfirst.frc.team1554.lib.math.Vector3;
 
 /**
- * A simple container class for representing Basic Sensors inside of this API.<br />
+ * A simple container class for representing Basic Sensors inside of
+ * this API.<br />
  * <br />
- * This only requires a Gyro and Accelerometer. In fact both can be null.
+ * This only requires a Gyro and Accelerometer. In fact both can be
+ * null.
  *
  * @author Matthew
  */
+@SuppressWarnings("SameParameterValue")
 public class BasicSense implements Disposable, NamedSendable {
 
     private final Gyro gyro;
@@ -23,7 +26,8 @@ public class BasicSense implements Disposable, NamedSendable {
     private ITable table;
 
     /**
-     * Returns a "Blind" Robot. No Gyro or Accelerometer is available and we are not using the RoboRIO built in accelerometer.
+     * Returns a "Blind" Robot. No Gyro or Accelerometer is available
+     * and we are not using the RoboRIO built in accelerometer.
      *
      * @return
      */
@@ -32,7 +36,8 @@ public class BasicSense implements Disposable, NamedSendable {
     }
 
     /**
-     * Return a robot that can only sense direction, we are not using the {@link BuiltInAccelerometer}.
+     * Return a robot that can only sense direction, we are not using
+     * the {@link BuiltInAccelerometer}.
      *
      * @param gyro
      * @return
@@ -42,7 +47,8 @@ public class BasicSense implements Disposable, NamedSendable {
     }
 
     /**
-     * Returns a robot that can only sense G Force. We are not using a Gyro.
+     * Returns a robot that can only sense G Force. We are not using a
+     * Gyro.
      *
      * @param accel
      * @return
@@ -52,7 +58,8 @@ public class BasicSense implements Disposable, NamedSendable {
     }
 
     /**
-     * Returns a Robot that can sense both G Force and Gyro Direction.
+     * Returns a Robot that can sense both G Force and Gyro
+     * Direction.
      *
      * @param gyro
      * @param accel
@@ -63,7 +70,8 @@ public class BasicSense implements Disposable, NamedSendable {
     }
 
     /**
-     * Returns a Robot that can sense direction and uses the RoboRIO {@link BuiltInAccelerometer}.
+     * Returns a Robot that can sense direction and uses the RoboRIO
+     * {@link BuiltInAccelerometer}.
      *
      * @param gyro
      * @param range
@@ -74,7 +82,8 @@ public class BasicSense implements Disposable, NamedSendable {
     }
 
     /**
-     * Returns a Robot that can sense directions and uses the RoboRIO {@link BuiltInAccelerometer}.
+     * Returns a Robot that can sense directions and uses the RoboRIO
+     * {@link BuiltInAccelerometer}.
      *
      * @param gyro
      * @return
@@ -84,7 +93,8 @@ public class BasicSense implements Disposable, NamedSendable {
     }
 
     /**
-     * Returns a robot that uses the RoboRIO {@link BuiltInAccelerometer} but cannot sense direction.
+     * Returns a robot that uses the RoboRIO {@link
+     * BuiltInAccelerometer} but cannot sense direction.
      *
      * @param range
      * @return
@@ -94,7 +104,9 @@ public class BasicSense implements Disposable, NamedSendable {
     }
 
     /**
-     * Returns a robot that uses the RoboRIO {@link BuiltInAccelerometer} in an 8G range but cannot sense direction.
+     * Returns a robot that uses the RoboRIO {@link
+     * BuiltInAccelerometer} in an 8G range but cannot sense
+     * direction.
      *
      * @return
      */
@@ -166,7 +178,8 @@ public class BasicSense implements Disposable, NamedSendable {
     }
 
     /**
-     * Get the current Acceleration as a 3D Vector. See {@link Vector3}
+     * Get the current Acceleration as a 3D Vector. See {@link
+     * Vector3}
      *
      * @return
      */

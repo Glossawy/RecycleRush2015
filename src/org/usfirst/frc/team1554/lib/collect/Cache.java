@@ -5,14 +5,22 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 /**
- * A simple Cache implementation making use of a LRU Map and MRU Map to track references and to hold on to only <tt>capacity</tt> number of objects at most as well as any references in the LRU that the GC has not yet collected. <br />
+ * A simple Cache implementation making use of a LRU Map and MRU Map
+ * to track references and to hold on to only <tt>capacity</tt> number
+ * of objects at most as well as any references in the LRU that the GC
+ * has not yet collected. <br />
  * <br />
  * The LRU Map is implemented as a {@link WeakHashMap} <br />
  * The MRU Map is implemented as a {@link LinkedHashMap}. <br />
  * <br />
- * This implementation is extremely simple and rudimentary. As such it will be expanded later in an attempt to be the robotic equivalent of Guava's LRU Cache.<br />
+ * This implementation is extremely simple and rudimentary. As such it
+ * will be expanded later in an attempt to be the robotic equivalent
+ * of Guava's LRU Cache.<br />
  * <br />
- * Any call to this Cache is synchronized to maintain Thread Safety, since this is sub-optimal, this will be made non-synchronized with a separate ConcurrentCache implementation in the future that does not use any <tt>synchronized</tt> blocks.
+ * Any call to this Cache is synchronized to maintain Thread Safety,
+ * since this is sub-optimal, this will be made non-synchronized with
+ * a separate ConcurrentCache implementation in the future that does
+ * not use any <tt>synchronized</tt> blocks.
  *
  * @param <K> - Cache Key Type
  * @param <V> - Cache Value Type
@@ -24,8 +32,8 @@ public class Cache<K, V> {
      * Those objects in the LRU Cache are up for garbage collection.
 	 */
 
-    private Map<K, V> mruCache; // Most Recently Used
-    private Map<K, V> lruCache; // Least Recently Used
+    private final Map<K, V> mruCache; // Most Recently Used
+    private final Map<K, V> lruCache; // Least Recently Used
 
     public Cache(final int capacity) {
         this.lruCache = new WeakHashMap<>();
@@ -51,7 +59,9 @@ public class Cache<K, V> {
     }
 
     /**
-     * Retrieve a Value from this cache if it exists. If the reference has been Garbage Collected or does not exist, this method returns null.
+     * Retrieve a Value from this cache if it exists. If the reference
+     * has been Garbage Collected or does not exist, this method
+     * returns null.
      *
      * @param key
      * @return
@@ -70,7 +80,8 @@ public class Cache<K, V> {
     }
 
     /**
-     * Put a Key-Value pair into the Cache, removing it from the LRU if it already exists and settings it's value in the MRU.
+     * Put a Key-Value pair into the Cache, removing it from the LRU
+     * if it already exists and settings it's value in the MRU.
      *
      * @param key
      * @param value

@@ -8,15 +8,14 @@ import org.usfirst.frc.team1554.control.Move;
 import org.usfirst.frc.team1554.control.PneumaticControl;
 import org.usfirst.frc.team1554.control.WinchControl;
 import org.usfirst.frc.team1554.data.JoystickSendable;
-import org.usfirst.frc.team1554.lib.*;
-import org.usfirst.frc.team1554.lib.JoystickControl.Hand;
-import org.usfirst.frc.team1554.lib.MotorScheme.DriveManager;
+import org.usfirst.frc.team1554.lib.common.*;
+import org.usfirst.frc.team1554.lib.common.JoystickControl.Hand;
+import org.usfirst.frc.team1554.lib.common.MotorScheme.DriveManager;
+import org.usfirst.frc.team1554.lib.collect.IntMap;
 import org.usfirst.frc.team1554.lib.concurrent.AsyncExecutor;
 import org.usfirst.frc.team1554.lib.concurrent.AsyncResult;
 import org.usfirst.frc.team1554.lib.concurrent.AsyncTask;
 import org.usfirst.frc.team1554.lib.io.FileHandle;
-import org.usfirst.frc.team1554.lib.math.MathUtils;
-import org.usfirst.frc.team1554.lib.util.memory.DirectIntArray;
 import org.usfirst.frc.team1554.lib.vision.CameraSize;
 import org.usfirst.frc.team1554.lib.vision.CameraStream;
 import org.usfirst.frc.team1554.lib.vision.USBCamera;
@@ -35,7 +34,11 @@ import static org.usfirst.frc.team1554.control.WinchControl.Direction.UPWARDS;
 // TODO bind value methods and change listeners
 
 /**
- * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as described in the IterativeRobot documentation. If you change the name of this class or the package after creating this project, you must also update the manifest file in the resource directory.
+ * The VM is configured to automatically run this class, and to call
+ * the functions corresponding to each mode, as described in the
+ * IterativeRobot documentation. If you change the name of this class
+ * or the package after creating this project, you must also update
+ * the manifest file in the resource directory.
  */
 public class Robot extends EnhancedIterativeRobot {
 
@@ -46,6 +49,7 @@ public class Robot extends EnhancedIterativeRobot {
     private final WinchControl winch;
     private final MotorScheme motors;
     private final BasicSense senses;
+    @SuppressWarnings("FieldCanBeLocal")
     private final USBCamera camera;
 
     private Move autonomousMoves;
@@ -54,20 +58,6 @@ public class Robot extends EnhancedIterativeRobot {
     private double downWinchValue = 0.6;
 
     private boolean allowMovement = true;
-
-    public static void main(String[] args) {
-        DirectIntArray arr = new DirectIntArray(3);
-
-        for (int i = 0; i < arr.size(); i++) {
-            arr.set(i, MathUtils.random(0, 20));
-        }
-
-        for (int i = 0; i < arr.size(); i++) {
-            System.out.println(arr.get(i));
-        }
-
-        arr.free();
-    }
 
     public Robot() {
         super("Sailors", 0x612);
@@ -94,6 +84,7 @@ public class Robot extends EnhancedIterativeRobot {
         Console.debug(String.format("Resolution: %dx%d | Quality: %s | FPS: %s", this.camera.getSize().WIDTH, this.camera.getSize().HEIGHT, this.camera.getQuality().name(), this.camera.getFPS().kFPS));
     }
 
+
     @Override
     protected void onInitialization() {
         final FileHandle testFile = new FileHandle("Sweet.txt");
@@ -108,6 +99,12 @@ public class Robot extends EnhancedIterativeRobot {
 
         this.autonomousMoves = Move.startChain(this).forward(0.2).delay(1).build();
         initDashboard();
+
+        Console.debug("Checking Button Actions...");
+        for (IntMap.Entry<ButtonAction> entry : control.getButtonActions(Hand.BOTH)) {
+            Console.debug("Registered Button Action: " + entry.value.name() + " (" + entry.key + ")");
+        }
+
         Console.debug("Initialization Complete!");
     }
 
@@ -192,15 +189,15 @@ public class Robot extends EnhancedIterativeRobot {
         this.pneumatics.dispose();
     }
 
-    public static final <T> AsyncResult<T> addAsyncTask(AsyncTask<T> task) {
+    public static <T> AsyncResult<T> addAsyncTask(AsyncTask<T> task) {
         return asyncHub.submit(task);
     }
 
-    public static final <T> AsyncResult<T> addAsyncTask(Callable<T> task) {
+    public static <T> AsyncResult<T> addAsyncTask(Callable<T> task) {
         return asyncHub.submit(() -> task.call());
     }
 
-    public static final AsyncResult<Void> addAsyncTask(Runnable task) {
+    public static AsyncResult<Void> addAsyncTask(Runnable task) {
         return asyncHub.submit(() -> {
             task.run();
             return null;

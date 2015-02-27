@@ -12,6 +12,7 @@ import static org.usfirst.frc.team1554.lib.util.memory.UnsignedConstants.*;
  * @author Matthew
  *         Created 2/23/2015 at 6:05 PM
  */
+@SuppressWarnings("ALL")
 class UnsafeStackMemoryAccess extends MemoryAccess {
 
     private static final Unsafe unsafe = ReflectionHelper.getStaticField(Unsafe.class, "theUnsafe", Unsafe.class);

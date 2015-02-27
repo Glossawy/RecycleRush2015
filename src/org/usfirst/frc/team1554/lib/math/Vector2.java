@@ -154,7 +154,8 @@ public class Vector2 implements Vector<Vector2> {
     }
 
     /**
-     * Returns the Dot Product of this Vector and a Vector of components (x, y)
+     * Returns the Dot Product of this Vector and a Vector of
+     * components (x, y)
      *
      * @param x
      * @param y
@@ -180,7 +181,8 @@ public class Vector2 implements Vector<Vector2> {
     }
 
     /**
-     * Returns the Cross Product of this Vector and another Vector of components (x, y)
+     * Returns the Cross Product of this Vector and another Vector of
+     * components (x, y)
      *
      * @param x
      * @param y
@@ -207,9 +209,12 @@ public class Vector2 implements Vector<Vector2> {
     }
 
     /**
-     * Returns the Angle of this Vector relative to the X-Axis In Degrees.
+     * Returns the Angle of this Vector relative to the X-Axis In
+     * Degrees.
      * <p>
-     * 0 degrees is to the right (realtive to origin) and angles move positively in a counter-clockwise direction. This makes the left (relative to origin) 180 degrees
+     * 0 degrees is to the right (realtive to origin) and angles move
+     * positively in a counter-clockwise direction. This makes the
+     * left (relative to origin) 180 degrees
      *
      * @return Angle of This Vector Relative to X-Axis in Degrees
      */
@@ -227,9 +232,12 @@ public class Vector2 implements Vector<Vector2> {
     }
 
     /**
-     * Returns the Angle of this Vector relative to the X-Axis In Radians.
+     * Returns the Angle of this Vector relative to the X-Axis In
+     * Radians.
      * <p>
-     * 0 radians is to the right (realtive to origin) and angles move positively in a counter-clockwise direction. This makes the left (relative to origin) pi radians
+     * 0 radians is to the right (realtive to origin) and angles move
+     * positively in a counter-clockwise direction. This makes the
+     * left (relative to origin) pi radians
      *
      * @return Angle of This Vector Relative to X-Axis in Radians
      */
@@ -247,7 +255,8 @@ public class Vector2 implements Vector<Vector2> {
     }
 
     /**
-     * Set The Angle of this Vector, in Degrees. The angle is absolute, not relative to the current angle.
+     * Set The Angle of this Vector, in Degrees. The angle is
+     * absolute, not relative to the current angle.
      *
      * @param degrees
      * @return This Vector
@@ -257,7 +266,8 @@ public class Vector2 implements Vector<Vector2> {
     }
 
     /**
-     * Set The Angle of this Vector, in Radians. The angle is absolute, not relative to the current angle.
+     * Set The Angle of this Vector, in Radians. The angle is
+     * absolute, not relative to the current angle.
      *
      * @param radians
      * @return This Vector
@@ -270,7 +280,8 @@ public class Vector2 implements Vector<Vector2> {
     }
 
     /**
-     * Rotates this Vector x degrees with positive angles moving counter-clockwise.
+     * Rotates this Vector x degrees with positive angles moving
+     * counter-clockwise.
      *
      * @param degrees
      * @return This Vector
@@ -280,7 +291,8 @@ public class Vector2 implements Vector<Vector2> {
     }
 
     /**
-     * Rotates this Vector x radians with positive angles moving counter-clockwise.
+     * Rotates this Vector x radians with positive angles moving
+     * counter-clockwise.
      *
      * @param radians
      * @return This Vector
@@ -296,9 +308,11 @@ public class Vector2 implements Vector<Vector2> {
     }
 
     /**
-     * Rotate this Vector 90 Degrees either Clockwise or Counter-Clockwise
+     * Rotate this Vector 90 Degrees either Clockwise or
+     * Counter-Clockwise
      *
-     * @param clockwise - Rotate Clockwise if True, Counter-Clockwise if False.
+     * @param clockwise - Rotate Clockwise if True, Counter-Clockwise
+     *                  if False.
      * @return This Vector, Rotated.
      */
     public Vector2 rotate90(boolean clockwise) {
@@ -400,7 +414,8 @@ public class Vector2 implements Vector<Vector2> {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if ((obj == null) || (getClass() != obj.getClass())) return false;
+        if ((obj == null) || (getClass() != obj.getClass()))
+            return false;
 
         final Vector2 other = (Vector2) obj;
 

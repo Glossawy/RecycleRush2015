@@ -40,7 +40,7 @@ public class LongConstant implements ReadOnlyLong {
 
     @Override
     public Long getValue() {
-        return Long.valueOf(this.value);
+        return this.value;
     }
 
     @Override

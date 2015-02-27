@@ -6,7 +6,8 @@ import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * Various Utilities for handling Java Collections. Akin to Google Guava.
+ * Various Utilities for handling Java Collections. Akin to Google
+ * Guava.
  *
  * @author Matthew
  */

@@ -7,7 +7,8 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.*;
 
 /**
- * A simple developer annotation that indicates that there is REALLY something of note that a comment simply cannot express.
+ * A simple developer annotation that indicates that there is REALLY
+ * something of note that a comment simply cannot express.
  *
  * @author Matthew
  */

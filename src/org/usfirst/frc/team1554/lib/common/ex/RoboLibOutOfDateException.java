@@ -1,4 +1,6 @@
-package org.usfirst.frc.team1554.lib;
+package org.usfirst.frc.team1554.lib.common.ex;
+
+import org.usfirst.frc.team1554.lib.meta.LibVersion;
 
 public class RoboLibOutOfDateException extends RobotExecutionException {
 

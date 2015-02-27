@@ -8,7 +8,8 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * Implementation of Cuckoo Hash Map with a Stash to store problematic hashes. This is inspired by similar implementations. <br />
+ * Implementation of Cuckoo Hash Map with a Stash to store problematic
+ * hashes. This is inspired by similar implementations. <br />
  * <br />
  * Runs efficiently while being able to use primitive int keys.
  *
@@ -57,7 +58,8 @@ public class IntMap<V> {
 
         this.capacity = MathUtils.nextPowerOfTwo(initialCapacity);
 
-        if (loadFactor <= 0) throw new IllegalArgumentException("Load Factor Can't be <= 0!: " + loadFactor);
+        if (loadFactor <= 0)
+            throw new IllegalArgumentException("Load Factor Can't be <= 0!: " + loadFactor);
         this.loadFactor = loadFactor;
 
         this.threshold = (int) (this.capacity * loadFactor);
@@ -176,7 +178,8 @@ public class IntMap<V> {
             i = hash(key);
             if (this.keyTable[i] != key) {
                 i = hash2(key);
-                if (this.keyTable[i] != key) return getStash(key, defaultVal);
+                if (this.keyTable[i] != key)
+                    return getStash(key, defaultVal);
             }
         }
 
@@ -226,7 +229,8 @@ public class IntMap<V> {
 
     public void shrink(int maxCap) {
         // Negative Capacity?
-        if (maxCap < 0) throw new IllegalArgumentException("Capacity < 0: " + maxCap);
+        if (maxCap < 0)
+            throw new IllegalArgumentException("Capacity < 0: " + maxCap);
 
         // We can't shirnk less than our size... Madness
         if (this.size > maxCap) {
@@ -272,7 +276,8 @@ public class IntMap<V> {
         final V[] vt = this.valueTable;
 
         if (val == null) {
-            if (this.hasZeroValue && (this.zeroValue == null)) return true;
+            if (this.hasZeroValue && (this.zeroValue == null))
+                return true;
 
             final int[] kt = this.keyTable;
             for (int i = this.capacity + this.stashSize; i > 0; i--)
@@ -283,7 +288,8 @@ public class IntMap<V> {
             for (int i = this.capacity + this.stashSize; i > 0; i--)
                 if (vt[i] == val) return true;
         } else {
-            if (this.hasZeroValue && val.equals(this.zeroValue)) return true;
+            if (this.hasZeroValue && val.equals(this.zeroValue))
+                return true;
 
             for (int i = this.capacity + this.stashSize; i > 0; i--)
                 if (val.equals(vt[i])) return true;
@@ -314,7 +320,8 @@ public class IntMap<V> {
         final int[] kt = this.keyTable;
 
         if (val == null) {
-            if (this.hasZeroValue && (this.zeroValue == null)) return 0;
+            if (this.hasZeroValue && (this.zeroValue == null))
+                return 0;
 
             for (int i = this.capacity + this.stashSize; i > 0; i--)
                 if ((kt[i] != EMPTY) && (vt[i] == null)) return kt[i];
@@ -324,7 +331,8 @@ public class IntMap<V> {
             for (int i = this.capacity + this.stashSize; i > 0; i--)
                 if (vt[i] == val) return kt[i];
         } else {
-            if (this.hasZeroValue && val.equals(this.zeroValue)) return 0;
+            if (this.hasZeroValue && val.equals(this.zeroValue))
+                return 0;
 
             for (int i = this.capacity + this.stashSize; i > 0; i--)
                 if (val.equals(vt[i])) return kt[i];
@@ -346,8 +354,8 @@ public class IntMap<V> {
 
     public Entries<V> entries() {
         if (this.entries1 == null) {
-            this.entries1 = new Entries<V>(this);
-            this.entries2 = new Entries<V>(this);
+            this.entries1 = new Entries<>(this);
+            this.entries2 = new Entries<>(this);
         }
 
         if (!this.entries1.valid) {
@@ -365,8 +373,8 @@ public class IntMap<V> {
 
     public Values<V> values() {
         if (this.values1 == null) {
-            this.values1 = new Values<V>(this);
-            this.values2 = new Values<V>(this);
+            this.values1 = new Values<>(this);
+            this.values2 = new Values<>(this);
         }
 
         if (!this.values1.valid) {
@@ -725,7 +733,7 @@ public class IntMap<V> {
 
     public static class Entries<V> extends MapIterator<V> implements Iterable<Entry<V>>, Iterator<Entry<V>> {
 
-        private final Entry<V> entry = new Entry<V>();
+        private final Entry<V> entry = new Entry<>();
 
         public Entries(IntMap<V> map) {
             super(map);
@@ -733,14 +741,16 @@ public class IntMap<V> {
 
         @Override
         public boolean hasNext() {
-            if (!this.valid) throw new RuntimeException("#iterator() can not be used nested");
+            if (!this.valid)
+                throw new RuntimeException("#iterator() can not be used nested");
             return this.hasNext;
         }
 
         @Override
         public Entry<V> next() {
             if (!this.hasNext) throw new NoSuchElementException();
-            if (!this.valid) throw new RuntimeException("#iterator() can not be used nested");
+            if (!this.valid)
+                throw new RuntimeException("#iterator() can not be used nested");
 
             if (this.nextIndex == INDEX_ZERO) {
                 this.entry.key = 0;
@@ -768,7 +778,8 @@ public class IntMap<V> {
 
         @Override
         public boolean hasNext() {
-            if (!this.valid) throw new RuntimeException("#iterator() can not be used nested");
+            if (!this.valid)
+                throw new RuntimeException("#iterator() can not be used nested");
 
             return this.hasNext;
         }
@@ -776,7 +787,8 @@ public class IntMap<V> {
         @Override
         public V next() {
             if (!this.hasNext) throw new NoSuchElementException();
-            if (!this.valid) throw new RuntimeException("#iterator() can not be used nested");
+            if (!this.valid)
+                throw new RuntimeException("#iterator() can not be used nested");
 
             V value;
             if (this.nextIndex == INDEX_ZERO) {
@@ -805,7 +817,8 @@ public class IntMap<V> {
 
         public int next() {
             if (!this.hasNext) throw new NoSuchElementException();
-            if (!this.valid) throw new RuntimeException("#iterator() can not be used nested");
+            if (!this.valid)
+                throw new RuntimeException("#iterator() can not be used nested");
 
             final int key = this.nextIndex == INDEX_ZERO ? 0 : this.map.keyTable[this.nextIndex];
             this.curIndex = this.nextIndex;

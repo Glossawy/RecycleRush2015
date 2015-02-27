@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1554.lib;
+package org.usfirst.frc.team1554.lib.common.ex;
 
 /**
  * Created by Matthew on 2/22/2015.

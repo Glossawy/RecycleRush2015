@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1554.lib;
+package org.usfirst.frc.team1554.lib.common;
 
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SpeedController;

@@ -1,13 +1,13 @@
 package org.usfirst.frc.team1554.lib.net;
 
-import org.usfirst.frc.team1554.lib.Disposable;
+import org.usfirst.frc.team1554.lib.common.Disposable;
 
 import java.io.Closeable;
 
 public interface ServerSocket extends Disposable, Closeable {
 
     public enum Protocol {
-        TCP;
+        TCP
     }
 
     Protocol protocol();

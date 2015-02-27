@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1554.lib.net;
 
-import org.usfirst.frc.team1554.lib.Disposable;
+import org.usfirst.frc.team1554.lib.common.Disposable;
 
 import java.io.Closeable;
 import java.io.InputStream;

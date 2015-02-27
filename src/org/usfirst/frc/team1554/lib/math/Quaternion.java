@@ -117,7 +117,7 @@ public class Quaternion {
         return new Quaternion(this);
     }
 
-    public final static double len(double x, double y, double z, double w) {
+    public static double len(double x, double y, double z, double w) {
         return Math.sqrt((x * x) + (y * y) + (z * z) + (w * w));
     }
 
@@ -455,7 +455,7 @@ public class Quaternion {
         return this;
     }
 
-    public final static double dot(final double x1, final double y1, final double z1, final double w1, final double x2, final double y2, final double z2, final double w2) {
+    public static double dot(final double x1, final double y1, final double z1, final double w1, final double x2, final double y2, final double z2, final double w2) {
         return (x1 * x2) + (y1 * y2) + (z1 * z2) + (w1 * w2);
     }
 

@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1554.lib.util.memory;
 
-import org.usfirst.frc.team1554.lib.RobotReflectionException;
+import org.usfirst.frc.team1554.lib.common.ex.RobotReflectionException;
 
 /**
  * Created by Matthew on 2/23/2015.
@@ -18,11 +18,11 @@ public abstract class ByteHandler {
         return bh;
     }
 
-    public static ByteHandler safeByteHandler() {
+    private static ByteHandler safeByteHandler() {
         return new BitShiftByteHandler();
     }
 
-    public static ByteHandler unsafeByteHandler() throws RobotReflectionException {
+    private static ByteHandler unsafeByteHandler() throws RobotReflectionException {
         try {
             Class<? extends ByteHandler> klass = ByteHandler.class.getClassLoader()
                     .loadClass(ByteHandler.class.getPackage().getName() + ".UnsafeByteHandler")

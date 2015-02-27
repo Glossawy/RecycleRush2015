@@ -16,10 +16,13 @@ public enum CameraQuality {
     }
 
     public static CameraQuality getBestFor(int val) {
-        CameraQuality best = null;
-        int distance = Integer.MAX_VALUE;
+        CameraQuality best = MEDIUM;
+        int distance = MEDIUM.kCompression;
 
         for (final CameraQuality quality : values()) {
+            if(quality == best)
+                continue;
+
             if (Math.abs(quality.kCompression - val) < distance) {
                 best = quality;
                 distance = best.kCompression - val;

@@ -167,7 +167,8 @@ public class Matrix3 {
 
     public Matrix3 inv() {
         final double det = det();
-        if (det == 0) throw new RuntimeException("Can't invert a singular matrix");
+        if (det == 0)
+            throw new RuntimeException("Can't invert a singular matrix");
 
         final double inv_det = 1.0 / det;
 

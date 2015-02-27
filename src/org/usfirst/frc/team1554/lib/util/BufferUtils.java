@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1554.lib.util;
 
-import org.usfirst.frc.team1554.lib.Console;
-import org.usfirst.frc.team1554.lib.RobotExecutionException;
+import org.usfirst.frc.team1554.lib.common.Console;
+import org.usfirst.frc.team1554.lib.common.ex.RobotExecutionException;
 import org.usfirst.frc.team1554.lib.collect.Array;
 import sun.misc.Cleaner;
 import sun.nio.ch.DirectBuffer;
@@ -12,9 +12,16 @@ import java.util.Arrays;
 import static org.usfirst.frc.team1554.lib.util.ReflectionHelper.getInstanceField;
 
 /**
- * A Utility to Create and Manage NIO Buffers. In almost all cases, this class will use DirectByteBuffer's for speed. If you desire a normal ByteBuffer you should use {@link ByteBuffer#allocate(int) ByteBuffer#allocate} or {@link #newSafeByteBuffer(int)}. <br />
+ * A Utility to Create and Manage NIO Buffers. In almost all cases,
+ * this class will use DirectByteBuffer's for speed. If you desire a
+ * normal ByteBuffer you should use {@link ByteBuffer#allocate(int)
+ * ByteBuffer#allocate} or {@link #newSafeByteBuffer(int)}. <br />
  * <br />
- * Even calling {@link #newByteBuffer(int)} will createMethodCall a DirectByteBuffer, you must use {@link #newSafeByteBuffer(int)}. "safe" ByteBuffers will NOT be managed by this class and do not need to be disposed, they will not be disposed when {@link #disposeAllBuffers()} is called.
+ * Even calling {@link #newByteBuffer(int)} will createMethodCall a
+ * DirectByteBuffer, you must use {@link #newSafeByteBuffer(int)}.
+ * "safe" ByteBuffers will NOT be managed by this class and do not
+ * need to be disposed, they will not be disposed when {@link
+ * #disposeAllBuffers()} is called.
  *
  * @author Matthew
  */
@@ -23,7 +30,7 @@ public final class BufferUtils {
     private BufferUtils() {
     }
 
-    private static final Array<ByteBuffer> unsafeBuffers = new Array<ByteBuffer>(ByteBuffer.class);
+    private static final Array<ByteBuffer> unsafeBuffers = new Array<>(ByteBuffer.class);
     private static int unsafeAllocated = 0;
 
     /**
@@ -121,7 +128,8 @@ public final class BufferUtils {
     }
 
     /**
-     * Creates a Direct ByteBuffer and keeps track of it for later automatic disposal.
+     * Creates a Direct ByteBuffer and keeps track of it for later
+     * automatic disposal.
      *
      * @param numBytes
      * @return
@@ -139,7 +147,8 @@ public final class BufferUtils {
     }
 
     /**
-     * Create a new Memory Mapped ByteBuffer at a specific memory address.
+     * Create a new Memory Mapped ByteBuffer at a specific memory
+     * address.
      *
      * @param addr
      * @param numBytes
@@ -170,7 +179,8 @@ public final class BufferUtils {
     }
 
     /**
-     * Mark a ByteBuffer as Unsafe and keep track of it for later disposal. <br />
+     * Mark a ByteBuffer as Unsafe and keep track of it for later
+     * disposal. <br />
      * The ByteBuffer must be a DirectByteBuffer.
      *
      * @param buffer
@@ -188,7 +198,8 @@ public final class BufferUtils {
     }
 
     /**
-     * Dispose ByteBuffer and free the memory it is using up immediately.
+     * Dispose ByteBuffer and free the memory it is using up
+     * immediately.
      *
      * @param buffer
      */
@@ -221,7 +232,8 @@ public final class BufferUtils {
     }
 
     /**
-     * Get the number of bytes currently reserved by Unsafe ByteBuffers.
+     * Get the number of bytes currently reserved by Unsafe
+     * ByteBuffers.
      *
      * @return
      */
@@ -230,9 +242,10 @@ public final class BufferUtils {
     }
 
     /**
-     * Dispose all Unsafe Buffers. This should be called at the termination of a program.
+     * Dispose all Unsafe Buffers. This should be called at the
+     * termination of a program.
      */
-    public static final void disposeAllBuffers() {
+    public static void disposeAllBuffers() {
         final int itemCount = unsafeBuffers.size;
         final ByteBuffer[] tmp = new ByteBuffer[itemCount];
         System.arraycopy(unsafeBuffers.items, 0, tmp, 0, itemCount);

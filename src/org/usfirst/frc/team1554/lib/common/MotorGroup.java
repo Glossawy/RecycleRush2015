@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1554.lib;
+package org.usfirst.frc.team1554.lib.common;
 
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.livewindow.LiveWindowSendable;
@@ -7,7 +7,8 @@ import edu.wpi.first.wpilibj.tables.ITableListener;
 import org.usfirst.frc.team1554.lib.collect.ObjectSet;
 
 /**
- * Represents a Group of Motors that must attempt to remain synchronized in speed.
+ * Represents a Group of Motors that must attempt to remain
+ * synchronized in speed.
  *
  * @param <T>
  * @author Matthew

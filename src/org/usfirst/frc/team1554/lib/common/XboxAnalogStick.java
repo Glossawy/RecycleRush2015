@@ -1,22 +1,20 @@
-package org.usfirst.frc.team1554.lib;
+package org.usfirst.frc.team1554.lib.common;
 
 import edu.wpi.first.wpilibj.Joystick;
-import org.usfirst.frc.team1554.lib.XboxControl.Axes;
-import org.usfirst.frc.team1554.lib.collect.Array;
 import org.usfirst.frc.team1554.lib.collect.IntMap;
 
 class XboxAnalogStick implements JoystickControl {
 
-    private final Axes axes;
+    private final XboxControl.Axes axes;
     private final Joystick control;
 
-    XboxAnalogStick(Axes axes, XboxControl control) {
+    XboxAnalogStick(XboxControl.Axes axes, XboxControl control) {
         this.axes = axes;
         this.control = control.stick;
     }
 
     XboxAnalogStick(int xAxis, int yAxis, XboxControl control) {
-        this(new Axes(xAxis, yAxis), control);
+        this(new XboxControl.Axes(xAxis, yAxis), control);
     }
 
     @Override
@@ -68,6 +66,11 @@ class XboxAnalogStick implements JoystickControl {
     }
 
     @Override
+    public Iterable<IntMap.Entry<ButtonAction>> getButtonActions(Hand hand) {
+        throw new UnsupportedOperationException("Unable to store ButtonActions on an Analog stick");
+    }
+
+    @Override
     public void putButtonAction(int bId, ButtonAction action, Hand side) {
     }
 
@@ -109,8 +112,8 @@ class XboxAnalogStick implements JoystickControl {
     }
 
     @Override
-    public IntMap<Array<String>> getBindingInformation(Hand side) {
-        return null;
+    public IntMap<String> getBindingInformation(Hand side) {
+        return new IntMap<>();
     }
 
 }

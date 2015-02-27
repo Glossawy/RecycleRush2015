@@ -192,7 +192,8 @@ public class Matrix4 {
     public Matrix4 inv() {
         final double[] tmp = new double[16];
         final double l_det = ((((((((((((this.val[M_30] * this.val[M_21] * this.val[M_12] * this.val[M_03]) - (this.val[M_20] * this.val[M_31] * this.val[M_12] * this.val[M_03]) - (this.val[M_30] * this.val[M_11] * this.val[M_22] * this.val[M_03])) + (this.val[M_10] * this.val[M_31] * this.val[M_22] * this.val[M_03]) + (this.val[M_20] * this.val[M_11] * this.val[M_32] * this.val[M_03])) - (this.val[M_10] * this.val[M_21] * this.val[M_32] * this.val[M_03]) - (this.val[M_30] * this.val[M_21] * this.val[M_02] * this.val[M_13])) + (this.val[M_20] * this.val[M_31] * this.val[M_02] * this.val[M_13]) + (this.val[M_30] * this.val[M_01] * this.val[M_22] * this.val[M_13])) - (this.val[M_00] * this.val[M_31] * this.val[M_22] * this.val[M_13]) - (this.val[M_20] * this.val[M_01] * this.val[M_32] * this.val[M_13])) + (this.val[M_00] * this.val[M_21] * this.val[M_32] * this.val[M_13]) + (this.val[M_30] * this.val[M_11] * this.val[M_02] * this.val[M_23])) - (this.val[M_10] * this.val[M_31] * this.val[M_02] * this.val[M_23]) - (this.val[M_30] * this.val[M_01] * this.val[M_12] * this.val[M_23])) + (this.val[M_00] * this.val[M_31] * this.val[M_12] * this.val[M_23]) + (this.val[M_10] * this.val[M_01] * this.val[M_32] * this.val[M_23])) - (this.val[M_00] * this.val[M_11] * this.val[M_32] * this.val[M_23]) - (this.val[M_20] * this.val[M_11] * this.val[M_02] * this.val[M_33])) + (this.val[M_10] * this.val[M_21] * this.val[M_02] * this.val[M_33]) + (this.val[M_20] * this.val[M_01] * this.val[M_12] * this.val[M_33])) - (this.val[M_00] * this.val[M_21] * this.val[M_12] * this.val[M_33]) - (this.val[M_10] * this.val[M_01] * this.val[M_22] * this.val[M_33])) + (this.val[M_00] * this.val[M_11] * this.val[M_22] * this.val[M_33]);
-        if (l_det == 0f) throw new RuntimeException("non-invertible matrix");
+        if (l_det == 0f)
+            throw new RuntimeException("non-invertible matrix");
         final double inv_det = 1.0f / l_det;
         tmp[M_00] = ((((this.val[M_12] * this.val[M_23] * this.val[M_31]) - (this.val[M_13] * this.val[M_22] * this.val[M_31])) + (this.val[M_13] * this.val[M_21] * this.val[M_32])) - (this.val[M_11] * this.val[M_23] * this.val[M_32]) - (this.val[M_12] * this.val[M_21] * this.val[M_33])) + (this.val[M_11] * this.val[M_22] * this.val[M_33]);
         tmp[M_01] = (((this.val[M_03] * this.val[M_22] * this.val[M_31]) - (this.val[M_02] * this.val[M_23] * this.val[M_31]) - (this.val[M_03] * this.val[M_21] * this.val[M_32])) + (this.val[M_01] * this.val[M_23] * this.val[M_32]) + (this.val[M_02] * this.val[M_21] * this.val[M_33])) - (this.val[M_01] * this.val[M_22] * this.val[M_33]);
@@ -549,15 +550,15 @@ public class Matrix4 {
     }
 
     public double getScaleX() {
-        return FloatingPoint.isZero(this.val[Matrix4.M_01]) && FloatingPoint.isZero(this.val[Matrix4.M_02]) ? Math.abs(this.val[Matrix4.M_00]) : (double) Math.sqrt(getScaleXSquared());
+        return FloatingPoint.isZero(this.val[Matrix4.M_01]) && FloatingPoint.isZero(this.val[Matrix4.M_02]) ? Math.abs(this.val[Matrix4.M_00]) : Math.sqrt(getScaleXSquared());
     }
 
     public double getScaleY() {
-        return FloatingPoint.isZero(this.val[Matrix4.M_10]) && FloatingPoint.isZero(this.val[Matrix4.M_12]) ? Math.abs(this.val[Matrix4.M_11]) : (double) Math.sqrt(getScaleYSquared());
+        return FloatingPoint.isZero(this.val[Matrix4.M_10]) && FloatingPoint.isZero(this.val[Matrix4.M_12]) ? Math.abs(this.val[Matrix4.M_11]) : Math.sqrt(getScaleYSquared());
     }
 
     public double getScaleZ() {
-        return FloatingPoint.isZero(this.val[Matrix4.M_20]) && FloatingPoint.isZero(this.val[Matrix4.M_21]) ? Math.abs(this.val[Matrix4.M_22]) : (double) Math.sqrt(getScaleZSquared());
+        return FloatingPoint.isZero(this.val[Matrix4.M_20]) && FloatingPoint.isZero(this.val[Matrix4.M_21]) ? Math.abs(this.val[Matrix4.M_22]) : Math.sqrt(getScaleZSquared());
     }
 
     public Vector3 getScale(Vector3 scale) {

@@ -1,10 +1,8 @@
-package org.usfirst.frc.team1554.lib;
+package org.usfirst.frc.team1554.lib.common;
 
 import edu.wpi.first.wpilibj.Joystick;
-import org.usfirst.frc.team1554.lib.collect.Array;
 import org.usfirst.frc.team1554.lib.collect.IntMap;
 import org.usfirst.frc.team1554.lib.collect.IntMap.Entry;
-import org.usfirst.frc.team1554.lib.collect.ObjectSet;
 import org.usfirst.frc.team1554.lib.math.MathUtils;
 
 import java.util.Iterator;
@@ -12,7 +10,7 @@ import java.util.Iterator;
 public class SingleJoystickControl implements JoystickControl {
 
     private final Joystick stick;
-    private final IntMap<ObjectSet<ButtonAction>> actions = new IntMap<>(8);
+    private final IntMap<ButtonAction> actions = new IntMap<>(8);
 
     private boolean cutoff = false;
     private boolean disableTwist = false;
@@ -121,17 +119,16 @@ public class SingleJoystickControl implements JoystickControl {
     }
 
     @Override
+    public Iterable<Entry<ButtonAction>> getButtonActions(Hand hand) {
+        return actions.entries();
+    }
+
+    @Override
     public void putButtonAction(int bId, ButtonAction action, Hand side) {
         if (bId > this.stick.getButtonCount())
             throw new IllegalArgumentException("Button ID can't be greater than the joystick button count!: " + bId + " -> " + this.stick.getButtonCount() + " max");
 
-        ObjectSet<ButtonAction> actions = this.actions.get(bId, null);
-
-        if (action == null) {
-            this.actions.put(bId, actions = new ObjectSet<>());
-        }
-
-        actions.add(action);
+        actions.put(bId, action);
     }
 
     @Override
@@ -144,15 +141,13 @@ public class SingleJoystickControl implements JoystickControl {
 
     @Override
     public void update() {
-        final Iterator<Entry<ObjectSet<ButtonAction>>> entries = this.actions.iterator();
+        final Iterator<Entry<ButtonAction>> entries = this.actions.iterator();
 
         while (entries.hasNext()) {
-            final Entry<ObjectSet<ButtonAction>> entry = entries.next();
+            final Entry<ButtonAction> entry = entries.next();
 
             if (this.stick.getRawButton(entry.key)) {
-                for (final ButtonAction action : entry.value) {
-                    action.act();
-                }
+                entry.value.act();
             }
         }
     }
@@ -162,7 +157,7 @@ public class SingleJoystickControl implements JoystickControl {
     }
 
     @Override
-    public IntMap<Array<String>> getBindingInformation(Hand side) {
+    public IntMap<String> getBindingInformation(Hand side) {
         return JoystickControl.toBindings(this.actions);
     }
 

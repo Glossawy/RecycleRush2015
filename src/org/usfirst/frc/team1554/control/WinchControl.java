@@ -9,7 +9,7 @@ import org.usfirst.frc.team1554.lib.util.Preconditions;
 public class WinchControl implements NamedSendable {
 
     public enum Direction {
-        UPWARDS, DOWNWARDS;
+        UPWARDS, DOWNWARDS
     }
 
     private final SpeedController winchMotor;
@@ -125,8 +125,8 @@ public class WinchControl implements NamedSendable {
         if (this.dataTable == null) return;
 
         this.dataTable.putBoolean("Enabled", this.enabled);
-        this.dataTable.putBoolean("Top Switch", this.upSwitch == null ? false : this.upSwitch.get());
-        this.dataTable.putBoolean("Bottom Switch", this.downSwitch == null ? false : this.downSwitch.get());
+        this.dataTable.putBoolean("Top Switch", this.upSwitch != null && this.upSwitch.get());
+        this.dataTable.putBoolean("Bottom Switch", this.downSwitch != null && this.downSwitch.get());
         this.dataTable.putNumber("Upwards Speed", this.upValue);
         this.dataTable.putNumber("Downwards Speed", this.downValue);
     }

@@ -1,7 +1,9 @@
 package org.usfirst.frc.team1554.lib.util;
 
 /**
- * A convenience class for handling preconditions. All will throw RuntimeException's if the precondition is not met. Inspired by Google Guava Preconditions.
+ * A convenience class for handling preconditions. All will throw
+ * RuntimeException's if the precondition is not met. Inspired by
+ * Google Guava Preconditions.
  *
  * @author Matthew
  */
@@ -17,7 +19,8 @@ public final class Preconditions {
     }
 
     /**
-     * Ensure an Expression is true or throw an IllegalArgumentException with the given errorMessage.
+     * Ensure an Expression is true or throw an IllegalArgumentException
+     * with the given errorMessage.
      *
      * @param exp
      * @param errorMessage
@@ -27,14 +30,16 @@ public final class Preconditions {
     }
 
     /**
-     * Ensure an Expression is true or throw an IllegalArgumentException with the given, formatted, message.
+     * Ensure an Expression is true or throw an IllegalArgumentException
+     * with the given, formatted, message.
      *
      * @param exp
      * @param format
      * @param messageItems
      */
     public static void checkExpression(boolean exp, String format, Object... messageItems) {
-        if (!exp) throw new IllegalArgumentException(String.format(format, toStringArray(messageItems)));
+        if (!exp)
+            throw new IllegalArgumentException(String.format(format, toStringArray(messageItems)));
     }
 
     /**
@@ -47,7 +52,8 @@ public final class Preconditions {
     }
 
     /**
-     * Ensure an Expression is true or throw an IllegalStateException with the given errorMessage.
+     * Ensure an Expression is true or throw an IllegalStateException
+     * with the given errorMessage.
      *
      * @param exp
      * @param errorMessage
@@ -57,14 +63,16 @@ public final class Preconditions {
     }
 
     /**
-     * Ensure an Expression is true or throw an IllegalStateException with the given, formatted, message.
+     * Ensure an Expression is true or throw an IllegalStateException
+     * with the given, formatted, message.
      *
      * @param exp
      * @param format
      * @param messageItems
      */
     public static void checkState(boolean exp, String format, Object... messageItems) {
-        if (!exp) throw new IllegalStateException(String.format(format, toStringArray(messageItems)));
+        if (!exp)
+            throw new IllegalStateException(String.format(format, toStringArray(messageItems)));
     }
 
     /**
@@ -80,7 +88,8 @@ public final class Preconditions {
     }
 
     /**
-     * Ensure a given Reference is Not Null or throw a NPE with the given message.
+     * Ensure a given Reference is Not Null or throw a NPE with the
+     * given message.
      *
      * @param ref
      * @param errorMessage
@@ -93,7 +102,8 @@ public final class Preconditions {
     }
 
     /**
-     * Ensure a given Reference is Not Null or throw a NPE with the given, formatted, message.
+     * Ensure a given Reference is Not Null or throw a NPE with the
+     * given, formatted, message.
      *
      * @param ref
      * @param format
@@ -101,13 +111,15 @@ public final class Preconditions {
      * @return
      */
     public static <E> E checkNotNull(E ref, String format, Object... messageItems) {
-        if (ref == null) throw new NullPointerException(String.format(format, toStringArray(messageItems)));
+        if (ref == null)
+            throw new NullPointerException(String.format(format, toStringArray(messageItems)));
 
         return ref;
     }
 
     /**
-     * Ensure that an index is in the range [0, size) or throw an IndexOutOfBoundsException
+     * Ensure that an index is in the range [0, size) or throw an
+     * IndexOutOfBoundsException
      *
      * @param index
      * @param size
@@ -117,7 +129,8 @@ public final class Preconditions {
     }
 
     /**
-     * Ensure that an index is in the range [0, size) or throw an IndexOutOfBoundsException with the given description.
+     * Ensure that an index is in the range [0, size) or throw an
+     * IndexOutOfBoundsException with the given description.
      *
      * @param index
      * @param size
@@ -125,7 +138,8 @@ public final class Preconditions {
      * @return
      */
     public static int checkElementIndex(int index, int size, String desc) {
-        if ((index < 0) || (index >= size)) throw new IndexOutOfBoundsException(badElementMessage(index, size, desc));
+        if ((index < 0) || (index >= size))
+            throw new IndexOutOfBoundsException(badElementMessage(index, size, desc));
 
         return index;
     }

@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1554.control;
 
 import edu.wpi.first.wpilibj.Timer;
-import org.usfirst.frc.team1554.lib.EnhancedRobotBase;
+import org.usfirst.frc.team1554.lib.common.EnhancedRobotBase;
 import org.usfirst.frc.team1554.lib.util.IBuilder;
 
 public abstract class Move {
@@ -25,7 +25,7 @@ public abstract class Move {
 
     abstract public void act();
 
-    private final void execute() {
+    private void execute() {
         act();
 
         if (this.child != null) {

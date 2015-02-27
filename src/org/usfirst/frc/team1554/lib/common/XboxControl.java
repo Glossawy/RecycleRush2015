@@ -1,25 +1,24 @@
-package org.usfirst.frc.team1554.lib;
+package org.usfirst.frc.team1554.lib.common;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import org.usfirst.frc.team1554.lib.collect.Array;
 import org.usfirst.frc.team1554.lib.collect.IntMap;
 import org.usfirst.frc.team1554.lib.collect.IntMap.Entry;
 import org.usfirst.frc.team1554.lib.collect.Maps;
-import org.usfirst.frc.team1554.lib.collect.ObjectSet;
 
-import static org.usfirst.frc.team1554.lib.XboxConstants.*;
+import static org.usfirst.frc.team1554.lib.common.XboxConstants.*;
 
 // FIXME Put documentation and Preconditions to try and prevent user error
 
 /**
- * Implementation for Supporting a USB Xbox Controller as a Joystick. Some helper methods are provided for Xbox-Specific Features.
+ * Implementation for Supporting a USB Xbox Controller as a Joystick.
+ * Some helper methods are provided for Xbox-Specific Features.
  *
  * @author Matthew
  */
 public class XboxControl implements JoystickControl {
 
-    private final IntMap<ObjectSet<ButtonAction>> buttonMap = Maps.newIntMap(9);
+    private final IntMap<ButtonAction> buttonMap = Maps.newIntMap(9);
     private final XboxJoystickWrapper wrappedStick;
     final Joystick stick;
 
@@ -137,7 +136,12 @@ public class XboxControl implements JoystickControl {
     }
 
     /**
-     * Returns a JoystickControl representing a single analog stick. Since it is literally just 2 axes and a button, this Control is very limited. The button cannot be configured using the returned JoystickControl to maintain consistency between the "Analog Stick View" and the actual JoystickControl it is attached to.
+     * Returns a JoystickControl representing a single analog stick.
+     * Since it is literally just 2 axes and a button, this Control is
+     * very limited. The button cannot be configured using the
+     * returned JoystickControl to maintain consistency between the
+     * "Analog Stick View" and the actual JoystickControl it is
+     * attached to.
      *
      * @param side
      * @return
@@ -169,11 +173,13 @@ public class XboxControl implements JoystickControl {
     }
 
     @Override
+    public Iterable<Entry<ButtonAction>> getButtonActions(Hand hand) {
+        return buttonMap.entries();
+    }
+
+    @Override
     public void putButtonAction(int bId, ButtonAction action, Hand side) {
-        ObjectSet<ButtonAction> list = this.buttonMap.get(bId, null);
-        if (list == null) {
-            this.buttonMap.put(bId, list = new ObjectSet<ButtonAction>());
-        }
+        buttonMap.put(bId, action);
     }
 
     @Override
@@ -184,7 +190,7 @@ public class XboxControl implements JoystickControl {
     @Override
     public void swapJoysticks() {
         final Axes tempAxes = this.movAxes;
-        final ObjectSet<ButtonAction> tempAct = this.buttonMap.get(BUTTON_STICK_LEFT, DO_NOTHING_SET);
+        final ButtonAction tempAct = this.buttonMap.get(BUTTON_STICK_LEFT, DO_NOTHING);
         final boolean tempCutoff = this.doMovementCutoff;
 
         this.movAxes = this.rotAxes;
@@ -194,7 +200,7 @@ public class XboxControl implements JoystickControl {
         this.doRotationCutoff = tempCutoff;
 
         if (this.doSwapJoystickButtonActions) {
-            this.buttonMap.put(BUTTON_STICK_LEFT, this.buttonMap.get(BUTTON_STICK_RIGHT, DO_NOTHING_SET));
+            this.buttonMap.put(BUTTON_STICK_LEFT, this.buttonMap.get(BUTTON_STICK_RIGHT, DO_NOTHING));
             this.buttonMap.put(BUTTON_STICK_RIGHT, tempAct);
         }
     }
@@ -237,11 +243,9 @@ public class XboxControl implements JoystickControl {
 
     @Override
     public void update() {
-        for (final Entry<ObjectSet<ButtonAction>> entry : this.buttonMap.entries())
+        for (final Entry<ButtonAction> entry : this.buttonMap.entries())
             if (this.stick.getRawButton(entry.key) && (entry.value != null)) {
-                for (final ButtonAction action : entry.value) {
-                    action.act();
-                }
+                entry.value.act();
             }
     }
 
@@ -319,17 +323,17 @@ public class XboxControl implements JoystickControl {
 
         @Override
         public boolean getBumper(Hand hand) {
-            return this.control.isBumperPressed(org.usfirst.frc.team1554.lib.JoystickControl.Hand.from(hand));
+            return this.control.isBumperPressed(JoystickControl.Hand.from(hand));
         }
 
         @Override
         public boolean getTrigger(Hand hand) {
-            return this.control.isTriggerPressed(org.usfirst.frc.team1554.lib.JoystickControl.Hand.from(hand));
+            return this.control.isTriggerPressed(JoystickControl.Hand.from(hand));
         }
 
         @Override
         public boolean getTop(Hand hand) {
-            return this.control.isBumperPressed(org.usfirst.frc.team1554.lib.JoystickControl.Hand.from(hand));
+            return this.control.isBumperPressed(JoystickControl.Hand.from(hand));
         }
     }
 
@@ -338,10 +342,9 @@ public class XboxControl implements JoystickControl {
         public void act() {
         }
     };
-    private static ObjectSet<ButtonAction> DO_NOTHING_SET = ObjectSet.with(DO_NOTHING);
 
     @Override
-    public IntMap<Array<String>> getBindingInformation(Hand side) {
+    public IntMap<String> getBindingInformation(Hand side) {
         return JoystickControl.toBindings(this.buttonMap);
     }
 

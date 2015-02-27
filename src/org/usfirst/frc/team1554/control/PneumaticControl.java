@@ -6,12 +6,13 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.NamedSendable;
 import edu.wpi.first.wpilibj.tables.ITable;
 import org.usfirst.frc.team1554.Ref.Channels;
-import org.usfirst.frc.team1554.lib.Console;
-import org.usfirst.frc.team1554.lib.Disposable;
-import org.usfirst.frc.team1554.lib.SolenoidValues;
+import org.usfirst.frc.team1554.lib.common.Console;
+import org.usfirst.frc.team1554.lib.common.Disposable;
+import org.usfirst.frc.team1554.lib.common.SolenoidValues;
 
 public class PneumaticControl implements Disposable, NamedSendable {
 
+    @SuppressWarnings("FieldCanBeLocal")
     private final Compressor compressor = new Compressor();
     private final DoubleSolenoid arms = new DoubleSolenoid(Channels.CHANNEL_ARM_FWD, Channels.CHANNEL_ARM_BCK);
     private SolenoidValues currentState = SolenoidValues.OFF;

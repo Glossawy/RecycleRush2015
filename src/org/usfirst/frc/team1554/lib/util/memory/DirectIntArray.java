@@ -10,6 +10,7 @@ import java.util.Iterator;
  * @author Matthew
  *         Created 2/23/2015 at 11:37 PM
  */
+@SuppressWarnings({"ALL", "SameParameterValue"})
 public class DirectIntArray implements Freeable, Iterable<Integer> {
 
     public static final int BYTES_SIZE = 4;

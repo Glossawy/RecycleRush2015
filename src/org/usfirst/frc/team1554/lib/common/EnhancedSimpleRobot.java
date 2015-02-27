@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1554.lib;
+package org.usfirst.frc.team1554.lib.common;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary.tInstances;
@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 import static edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary.FRCNetworkCommunicationObserveUserProgramStarting;
 
+@SuppressWarnings("InfiniteLoopStatement")
 public abstract class EnhancedSimpleRobot extends EnhancedRobotBase {
 
     private RobotState state = RobotState.DISABLED;

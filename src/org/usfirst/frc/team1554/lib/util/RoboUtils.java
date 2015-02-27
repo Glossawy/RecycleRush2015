@@ -1,8 +1,8 @@
 package org.usfirst.frc.team1554.lib.util;
 
 import edu.wpi.first.wpilibj.RobotDrive;
-import org.usfirst.frc.team1554.lib.Console;
-import org.usfirst.frc.team1554.lib.MotorScheme;
+import org.usfirst.frc.team1554.lib.common.Console;
+import org.usfirst.frc.team1554.lib.common.MotorScheme;
 
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
@@ -16,20 +16,21 @@ public final class RoboUtils {
     }
 
     /**
-     * Previously Built a RobotDrive, now delegates to {@link MotorScheme#getRobotDrive() MotorScheme}.
+     * Previously Built a RobotDrive, now delegates to {@link
+     * MotorScheme#getRobotDrive() MotorScheme}.
      *
      * @param scheme
      * @return
      */
-    public static final RobotDrive makeRobotDrive(MotorScheme scheme) {
+    public static RobotDrive makeRobotDrive(MotorScheme scheme) {
         return scheme.getRobotDrive();
     }
 
-    public static final boolean isUserButtonPressed() {
+    public static boolean isUserButtonPressed() {
         return HALRoboUtils.userButton();
     }
 
-    public static final void writeToDS(String message) {
+    public static void writeToDS(String message) {
         if (isCodeOnRobot()) {
             HALRoboUtils.toDS(message);
         } else {
@@ -41,11 +42,11 @@ public final class RoboUtils {
         return roborio;
     }
 
-    public static final void clearDS() {
+    public static void clearDS() {
         writeToDS("");
     }
 
-    public static final void exceptionToDS(Throwable t) {
+    public static void exceptionToDS(Throwable t) {
         clearDS();
         final StackTraceElement[] stackTrace = t.getStackTrace();
         final StringBuilder message = new StringBuilder();

@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1554.lib.concurrent;
 
 import edu.wpi.first.wpilibj.Timer;
-import org.usfirst.frc.team1554.lib.Console;
+import org.usfirst.frc.team1554.lib.common.Console;
 import org.usfirst.frc.team1554.lib.meta.Author;
 import org.usfirst.frc.team1554.lib.meta.Noteworthy;
 

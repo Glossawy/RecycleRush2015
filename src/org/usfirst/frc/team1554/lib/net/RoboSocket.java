@@ -70,9 +70,7 @@ public class RoboSocket implements Socket {
 
     @Override
     public boolean isConnected() {
-        if (this.socket == null) return false;
-
-        return this.socket.isConnected();
+        return this.socket != null && this.socket.isConnected();
     }
 
     @Override

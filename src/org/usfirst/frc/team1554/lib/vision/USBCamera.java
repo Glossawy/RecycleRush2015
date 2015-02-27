@@ -7,14 +7,16 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.image.ColorImage;
 import edu.wpi.first.wpilibj.image.HSLImage;
 import edu.wpi.first.wpilibj.image.NIVisionException;
-import org.usfirst.frc.team1554.lib.Console;
+import org.usfirst.frc.team1554.lib.common.Console;
 
 import java.nio.ByteBuffer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Implementation of WPILib's USB Camera with the Camera API. Comes with some optimizations and modifications (some to fit with the new Enum based values).
+ * Implementation of WPILib's USB Camera with the Camera API. Comes
+ * with some optimizations and modifications (some to fit with the new
+ * Enum based values).
  *
  * @author Matthew
  */

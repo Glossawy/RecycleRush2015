@@ -15,7 +15,9 @@ import org.usfirst.frc.team1554.lib.collect.ObjectSet;
 import java.util.Map;
 
 /**
- * Small Utility to Determine OS and OS Architecture based on an enumeration of supported OS's and Architectures. Plus other utilities.
+ * Small Utility to Determine OS and OS Architecture based on an
+ * enumeration of supported OS's and Architectures. Plus other
+ * utilities.
  *
  * @author Matthew Crocco
  */
@@ -24,9 +26,14 @@ public final class OS {
     // Totally not inspired by java.util.concurrent.TimeUnit
 
     /**
-     * Convenience class for dealing with conversions to and from different units of memory storage. Includes SI Units (Kilobytes, Megabytes, Gigabytes) and non-SI Units (Kibibytes, Mebibytes, Gibibytes) assisted by the common base unit they share, the Byte. <br />
+     * Convenience class for dealing with conversions to and from
+     * different units of memory storage. Includes SI Units
+     * (Kilobytes, Megabytes, Gigabytes) and non-SI Units (Kibibytes,
+     * Mebibytes, Gibibytes) assisted by the common base unit they
+     * share, the Byte. <br />
      * <br />
-     * Currently this class only deals with 64-bit Integer Values (Although 32-bit Integers can be used).
+     * Currently this class only deals with 64-bit Integer Values
+     * (Although 32-bit Integers can be used).
      *
      * @author Matthew
      */
@@ -417,7 +424,8 @@ public final class OS {
         }
 
         /**
-         * The appropriate tag for the Unit of Memory Storage, e.g., MB, MiB, GiB, GB, etc.
+         * The appropriate tag for the Unit of Memory Storage, e.g.,
+         * MB, MiB, GiB, GB, etc.
          *
          * @return
          */
@@ -462,9 +470,9 @@ public final class OS {
         }
     }
 
-    public static final OS WINDOWS = new OS(".exe", new String[]{"win", "windows"});
-    public static final OS UNIX = new OS("", new String[]{"lin", "linux", "nux"});
-    public static final OS UNSUPPORTED = new OS("", new String[]{});
+    public static final OS WINDOWS = new OS(".exe", "win", "windows");
+    public static final OS UNIX = new OS("", "lin", "linux", "nux");
+    public static final OS UNSUPPORTED = new OS("");
 
     private static final Map<OS, String> nameLookup = Maps.newHashMap();
 
@@ -518,7 +526,8 @@ public final class OS {
     }
 
     /**
-     * Get the intended Architecture of the JVM. This is not necessarily the Computer's architecture. <br />
+     * Get the intended Architecture of the JVM. This is not
+     * necessarily the Computer's architecture. <br />
      * A 32-bit JVM can be run on a 64-bit Computer. <br />
      * <br />
      * To get the Computer Architecture, use {@link #getArch()}.
@@ -535,8 +544,10 @@ public final class OS {
     }
 
     /**
-     * Get Architecture of the computer. This determines the ACTUAL Bitness of the computer <br />
-     * this means that the COMPUTER may be 64 bit, but may be running a 32 bit JVM. To get <br />
+     * Get Architecture of the computer. This determines the ACTUAL
+     * Bitness of the computer <br />
+     * this means that the COMPUTER may be 64 bit, but may be running
+     * a 32 bit JVM. To get <br />
      * the JVM Bitness, use {@link #getArchJVM()}.
      *
      * @return Actual Architecture of the Computer (x86 or x64)

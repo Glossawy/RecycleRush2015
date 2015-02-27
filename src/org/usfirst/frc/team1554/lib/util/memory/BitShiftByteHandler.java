@@ -7,6 +7,7 @@ import static org.usfirst.frc.team1554.lib.util.memory.UnsignedConstants.*;
 /**
  * Created by Matthew on 2/23/2015.
  */
+@SuppressWarnings("ShiftOutOfRange")
 class BitShiftByteHandler extends ByteHandler {
 
     @Override
@@ -50,7 +51,7 @@ class BitShiftByteHandler extends ByteHandler {
 
     @Override
     public int getUnsignedShort(byte[] data, int offset) {
-        return (((data[offset + 0] & BYTE_TO_UNSIGNED_BYTE) << BYTE_SIZE * 0) |
+        return (((data[offset + 0] & BYTE_TO_UNSIGNED_BYTE)) |
                 ((data[offset + 1] & BYTE_TO_UNSIGNED_BYTE) << BYTE_SIZE * 1))
                 & SHORT_TO_UNSIGNED_SHORT;
     }
@@ -59,13 +60,13 @@ class BitShiftByteHandler extends ByteHandler {
     public void putUnsignedShort(byte[] data, int offset, int val) {
         Preconditions.checkExpression(val >= 0 && val < MAX_UNSIGNED_SHORT, "Unsigned Short must be between 0 and " + MAX_UNSIGNED_SHORT);
 
-        data[offset + 0] = (byte) (val >>> BYTE_SIZE * 0);
+        data[offset + 0] = (byte) (val);
         data[offset + 1] = (byte) (val >>> BYTE_SIZE * 1);
     }
 
     @Override
     public int getInt(byte[] data, int offset) {
-        return (data[offset + 0] & BYTE_TO_UNSIGNED_BYTE) << BYTE_SIZE * 0 |
+        return (data[offset + 0] & BYTE_TO_UNSIGNED_BYTE) |
                 (data[offset + 1] & BYTE_TO_UNSIGNED_BYTE) << BYTE_SIZE * 1 |
                 (data[offset + 2] & BYTE_TO_UNSIGNED_BYTE) << BYTE_SIZE * 2 |
                 (data[offset + 3] & BYTE_TO_UNSIGNED_BYTE) << BYTE_SIZE * 3;
@@ -73,7 +74,7 @@ class BitShiftByteHandler extends ByteHandler {
 
     @Override
     public void putInt(byte[] data, int offset, int value) {
-        data[offset + 0] = (byte) (value >>> BYTE_SIZE * 0);
+        data[offset + 0] = (byte) (value);
         data[offset + 1] = (byte) (value >>> BYTE_SIZE * 1);
         data[offset + 2] = (byte) (value >>> BYTE_SIZE * 2);
         data[offset + 3] = (byte) (value >>> BYTE_SIZE * 3);
@@ -81,7 +82,7 @@ class BitShiftByteHandler extends ByteHandler {
 
     @Override
     public long getUnsignedInt(byte[] data, int offset) {
-        return ((data[offset + 0] & BYTE_TO_UNSIGNED_BYTE) << BYTE_SIZE * 0 |
+        return ((data[offset + 0] & BYTE_TO_UNSIGNED_BYTE) |
                 (data[offset + 1] & BYTE_TO_UNSIGNED_BYTE) << BYTE_SIZE * 1 |
                 (data[offset + 2] & BYTE_TO_UNSIGNED_BYTE) << BYTE_SIZE * 2 |
                 (data[offset + 3] & BYTE_TO_UNSIGNED_BYTE) << BYTE_SIZE * 3) & INT_TO_UNSIGNED_INT;
@@ -91,7 +92,7 @@ class BitShiftByteHandler extends ByteHandler {
     public void putUnsignedInt(byte[] data, int offset, long value) {
         Preconditions.checkExpression(value >= 0 && value < MAX_UNSIGNED_INT, "Unsigned Int must be between 0 and " + MAX_UNSIGNED_INT);
 
-        data[offset + 0] = (byte) (value >>> BYTE_SIZE * 0);
+        data[offset + 0] = (byte) (value);
         data[offset + 1] = (byte) (value >>> BYTE_SIZE * 1);
         data[offset + 2] = (byte) (value >>> BYTE_SIZE * 2);
         data[offset + 3] = (byte) (value >>> BYTE_SIZE * 3);
@@ -99,7 +100,7 @@ class BitShiftByteHandler extends ByteHandler {
 
     @Override
     public long getLong(byte[] data, int offset) {
-        return (data[offset + 0] & BYTE_TO_UNSIGNED_BYTE) << BYTE_SIZE * 0 |
+        return (data[offset + 0] & BYTE_TO_UNSIGNED_BYTE) |
                 (data[offset + 1] & BYTE_TO_UNSIGNED_BYTE) << BYTE_SIZE * 1 |
                 (data[offset + 2] & BYTE_TO_UNSIGNED_BYTE) << BYTE_SIZE * 2 |
                 (data[offset + 3] & BYTE_TO_UNSIGNED_BYTE) << BYTE_SIZE * 3 |
@@ -111,7 +112,7 @@ class BitShiftByteHandler extends ByteHandler {
 
     @Override
     public void putLong(byte[] data, int offset, long value) {
-        data[offset + 0] = (byte) (value >>> BYTE_SIZE * 0);
+        data[offset + 0] = (byte) (value);
         data[offset + 1] = (byte) (value >>> BYTE_SIZE * 1);
         data[offset + 2] = (byte) (value >>> BYTE_SIZE * 2);
         data[offset + 3] = (byte) (value >>> BYTE_SIZE * 3);

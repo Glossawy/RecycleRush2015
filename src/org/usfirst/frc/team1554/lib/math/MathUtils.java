@@ -12,7 +12,7 @@ public class MathUtils {
      * @param upper
      * @return
      */
-    public static final int random(int upper) {
+    public static int random(int upper) {
         return rand.nextInt(upper + 1);
     }
 
@@ -23,7 +23,7 @@ public class MathUtils {
      * @param end
      * @return
      */
-    public static final int random(int start, int end) {
+    public static int random(int start, int end) {
         return start + rand.nextInt((end - start) + 1);
     }
 
@@ -33,7 +33,7 @@ public class MathUtils {
      * @param range
      * @return
      */
-    public static final long random(long range) {
+    public static long random(long range) {
         return ((RandomXS128) rand).nextLong(range + 1);
     }
 
@@ -44,7 +44,7 @@ public class MathUtils {
      * @param end
      * @return
      */
-    public static final long random(long start, long end) {
+    public static long random(long start, long end) {
         return start + random(end - start);
     }
 
@@ -53,17 +53,18 @@ public class MathUtils {
      *
      * @return
      */
-    public static final boolean nextBoolean() {
+    public static boolean nextBoolean() {
         return rand.nextBoolean();
     }
 
     /**
-     * Random Boolean weighted to one side. 1 being true, 0 being flase.
+     * Random Boolean weighted to one side. 1 being true, 0 being
+     * flase.
      *
      * @param chance
      * @return
      */
-    public static final boolean nextBoolean(double chance) {
+    public static boolean nextBoolean(double chance) {
         return random() < chance;
     }
 
@@ -72,7 +73,7 @@ public class MathUtils {
      *
      * @return
      */
-    public static final double random() {
+    public static double random() {
         return rand.nextDouble();
     }
 
@@ -82,7 +83,7 @@ public class MathUtils {
      * @param range
      * @return
      */
-    public static final double random(double range) {
+    public static double random(double range) {
         return rand.nextDouble() * range;
     }
 
@@ -93,7 +94,7 @@ public class MathUtils {
      * @param end
      * @return
      */
-    public static final double random(double start, double end) {
+    public static double random(double start, double end) {
         return start + (rand.nextDouble() * (end - start));
     }
 
@@ -102,46 +103,47 @@ public class MathUtils {
      *
      * @return
      */
-    public static final int randomSign() {
+    public static int randomSign() {
         return 1 | (rand.nextInt() >> 31);
     }
 
     /**
      * Clamp Val between Max and Min
      */
-    public static final int clamp(int val, int max, int min) {
+    public static int clamp(int val, int max, int min) {
         return Math.max(min, Math.min(val, max));
     }
 
     /**
      * Clamp Val between Max and Min
      */
-    public static final long clamp(long val, long max, long min) {
+    public static long clamp(long val, long max, long min) {
         return Math.max(min, Math.min(val, max));
     }
 
     /**
      * Clamp Val between Max and Min
      */
-    public static final float clamp(float val, float max, float min) {
+    public static float clamp(float val, float max, float min) {
         return Math.max(min, Math.min(val, max));
     }
 
     /**
      * Clamp Val between Max and Min
      */
-    public static final double clamp(double value, double min, double max) {
+    public static double clamp(double value, double min, double max) {
         return Math.max(min, Math.min(value, max));
     }
 
     /**
-     * Linearly Interpolate between 'from' and 'to' at 'progress' position.
+     * Linearly Interpolate between 'from' and 'to' at 'progress'
+     * position.
      */
-    public static final double lerp(double from, double to, double progress) {
+    public static double lerp(double from, double to, double progress) {
         return from + ((to - from) * progress);
     }
 
-    public static final int nextPowerOfTwo(int n) {
+    public static int nextPowerOfTwo(int n) {
         n--;
         n |= n >> 1;
         n |= n >> 2;
@@ -159,7 +161,7 @@ public class MathUtils {
      * @param x
      * @return
      */
-    public static final double log(double a, double x) {
+    public static double log(double a, double x) {
         return Math.log(x) / Math.log(a);
     }
 
@@ -169,11 +171,11 @@ public class MathUtils {
      * @param x
      * @return
      */
-    public static final double log2(double x) {
+    public static double log2(double x) {
         return log(2, x);
     }
 
-    public static final int booleanToInt(boolean expression) {
+    public static int booleanToInt(boolean expression) {
         return expression ? 1 : 0;
     }
 

@@ -56,7 +56,8 @@ public interface Predicate<T> {
 
         @Override
         public void remove() {
-            if (peeked) throw new RuntimeException("Cannot Remove between hasNext() and next()!");
+            if (peeked)
+                throw new RuntimeException("Cannot Remove between hasNext() and next()!");
 
             iterator.remove();
         }

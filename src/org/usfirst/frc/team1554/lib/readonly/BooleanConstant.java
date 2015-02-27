@@ -27,7 +27,7 @@ public class BooleanConstant implements ReadOnlyBoolean {
 
     @Override
     public Boolean getValue() {
-        return Boolean.valueOf(this.value);
+        return this.value;
     }
 
 }

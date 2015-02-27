@@ -30,4 +30,9 @@ public class StringConstant implements ReadOnlyString {
 
     }
 
+    @Override
+    public String toString() {
+        return value;
+    }
+
 }

@@ -2,15 +2,14 @@ package org.usfirst.frc.team1554.data;
 
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.tables.ITable;
-import org.usfirst.frc.team1554.lib.JoystickControl;
-import org.usfirst.frc.team1554.lib.JoystickControl.Hand;
-import org.usfirst.frc.team1554.lib.collect.Array;
+import org.usfirst.frc.team1554.lib.common.JoystickControl;
+import org.usfirst.frc.team1554.lib.common.JoystickControl.Hand;
 import org.usfirst.frc.team1554.lib.collect.IntMap;
 import org.usfirst.frc.team1554.lib.collect.IntMap.Entry;
 
 public class JoystickSendable implements Sendable {
 
-    private final IntMap<Array<String>> actions;
+    private final IntMap<String> actions;
     private ITable table;
 
     public JoystickSendable(JoystickControl control) {
@@ -25,10 +24,8 @@ public class JoystickSendable implements Sendable {
     public void initTable(ITable subtable) {
         this.table = subtable;
 
-        for (final Entry<Array<String>> entry : this.actions.entries()) {
-            final String list = createDesc(entry.value);
-
-            subtable.putString("Button " + entry.key, list);
+        for (final Entry<String> entry : this.actions.entries()) {
+            subtable.putString("Button " + entry.key, entry.value);
         }
     }
 
@@ -40,23 +37,5 @@ public class JoystickSendable implements Sendable {
     @Override
     public String getSmartDashboardType() {
         return "Joystick Bindings";
-    }
-
-    private final StringBuilder builder = new StringBuilder();
-
-    private String createDesc(Array<String> actionNames) {
-        this.builder.setLength(0);
-        this.builder.trimToSize();
-
-        final String last = actionNames.items[actionNames.size - 1];
-        for (final String s : actionNames.items) {
-            this.builder.append(s);
-
-            if (s != last) {
-                this.builder.append(':');
-            }
-        }
-
-        return this.builder.toString();
     }
 }

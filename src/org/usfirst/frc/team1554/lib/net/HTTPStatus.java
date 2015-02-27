@@ -44,7 +44,8 @@ public class HTTPStatus {
      */
     public static final int STATUS_ACCEPTED = 202;
     /**
-     * <tt>203 Non Authoritative Information</tt> (HTTP/1.1 - RFC 2616)
+     * <tt>203 Non Authoritative Information</tt> (HTTP/1.1 - RFC
+     * 2616)
      */
     public static final int STATUS_NON_AUTHORITATIVE_INFORMATION = 203;
     /**
@@ -127,7 +128,8 @@ public class HTTPStatus {
      */
     public static final int STATUS_NOT_ACCEPTABLE = 406;
     /**
-     * <tt>407 Proxy Authentication Required</tt> (HTTP/1.1 - RFC 2616)
+     * <tt>407 Proxy Authentication Required</tt> (HTTP/1.1 - RFC
+     * 2616)
      */
     public static final int STATUS_PROXY_AUTH_REQUIRED = 407;
     /**
@@ -163,7 +165,8 @@ public class HTTPStatus {
      */
     public static final int STATUS_UNSUPPORTED_MEDIA_TYPE = 415;
     /**
-     * <tt>416 Requested Range Not Satisfiable</tt> (HTTP/1.1 - RFC 2616)
+     * <tt>416 Requested Range Not Satisfiable</tt> (HTTP/1.1 - RFC
+     * 2616)
      */
     public static final int STATUS_REQUESTED_RANGE_NOT_SATISFIABLE = 416;
     /**
@@ -171,7 +174,8 @@ public class HTTPStatus {
      */
     public static final int STATUS_EXPECTATION_FAILED = 417;
     /**
-     * <tt>419 Insufficient Space On Resource</tt> (HTTP/1.1 - Drafts)
+     * <tt>419 Insufficient Space On Resource</tt> (HTTP/1.1 -
+     * Drafts)
      */
     public static final int STATUS_INSUFFICIENT_SPACE_ON_RESOURCE = 420;
     /**

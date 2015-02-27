@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.image.ColorImage;
 import edu.wpi.first.wpilibj.image.HSLImage;
 import edu.wpi.first.wpilibj.image.NIVisionException;
-import org.usfirst.frc.team1554.lib.Console;
+import org.usfirst.frc.team1554.lib.common.Console;
 import org.usfirst.frc.team1554.lib.util.IOUtils;
 
 import java.io.DataInputStream;
@@ -19,7 +19,9 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Implementation of WPILib's AxisCamera. Comes with quite a few optimizations and modifications to fit into this API and to use a few modern features.
+ * Implementation of WPILib's AxisCamera. Comes with quite a few
+ * optimizations and modifications to fit into this API and to use a
+ * few modern features.
  *
  * @author Matthew
  */
@@ -44,7 +46,7 @@ public class AxisCamera implements Camera {
     private final WhiteBalance wbalance = WhiteBalance.AUTO;
     private final Exposure exposure = Exposure.AUTO;
 
-    private final boolean flipImage = false;
+    private boolean flipImage = false;
     private boolean dirtyParam = true;
     private boolean dirtyStream = true;
     private boolean done = false;
@@ -229,7 +231,7 @@ public class AxisCamera implements Camera {
         return img;
     }
 
-    public boolean getImage(ColorImage img) throws NIVisionException {
+    public boolean getImage(ColorImage img) {
         if (this.imageData.limit() == 0) return false;
 
         this.imageDataLock.lock();
@@ -284,7 +286,7 @@ public class AxisCamera implements Camera {
                 request.append("&Image.I0.Stream.FPS=").append(this.fps.kFPS);
                 request.append("&Image.I0.Appearance.Resolution=").append(this.resolution.WIDTH).append('x').append(this.resolution.HEIGHT);
                 request.append("&Image.I0.Appearance.Compression=").append(this.quality.kCompression);
-                request.append("&Image.I0.Appearance.Rotation=").append(this.flipImage ? "180" : "0");
+                request.append("&Image.I0.Appearance.Rotation=").append(flipImage ? "180" : "0");
             } finally {
                 this.parameterLock.unlock();
             }

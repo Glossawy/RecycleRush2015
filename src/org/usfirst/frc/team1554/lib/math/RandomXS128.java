@@ -49,7 +49,8 @@ public class RandomXS128 extends Random {
      * @return
      */
     public long nextLong(final long n) {
-        if (n <= 0) throw new IllegalArgumentException("N must be > 0");
+        if (n <= 0)
+            throw new IllegalArgumentException("N must be > 0");
 
         while (true) {
             final long bits = nextLong() >>> 1;
@@ -130,7 +131,7 @@ public class RandomXS128 extends Random {
         return seed == 0 ? this.seed1 : this.seed2;
     }
 
-    private final static long hash(long x) {
+    private static long hash(long x) {
         // murmur hash 3
         x ^= x >>> 33;
         x *= 0xff51afd7ed558ccdL;

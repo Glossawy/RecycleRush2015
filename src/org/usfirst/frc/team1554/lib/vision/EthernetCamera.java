@@ -7,16 +7,22 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.image.ColorImage;
 import edu.wpi.first.wpilibj.image.HSLImage;
 import edu.wpi.first.wpilibj.image.NIVisionException;
-import org.usfirst.frc.team1554.lib.Console;
+import org.usfirst.frc.team1554.lib.common.Console;
 
 import java.nio.ByteBuffer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Generic Implementation of Ethernet Camera that is nearly identical to {@link USBCamera} but does an additional search for connected Ethernet Devices. <br />
+ * Generic Implementation of Ethernet Camera that is nearly identical
+ * to {@link USBCamera} but does an additional search for connected
+ * Ethernet Devices. <br />
  * <br />
- * This class is in Beta and is not guaranteed to stay or function correctly. Improvements will be made as needed since this is not guaranteed to work and will change if more NIVision functions become available or if Ethernet specific Functions need to be used. <br />
+ * This class is in Beta and is not guaranteed to stay or function
+ * correctly. Improvements will be made as needed since this is not
+ * guaranteed to work and will change if more NIVision functions
+ * become available or if Ethernet specific Functions need to be used.
+ * <br />
  * <br />
  * This class will likely become more specific over time.
  *

@@ -8,7 +8,8 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.*;
 
 /**
- * Developer Annotation. Marks the target as in development and volatile. Staying is not guaranteed, nor is usability.
+ * Developer Annotation. Marks the target as in development and
+ * volatile. Staying is not guaranteed, nor is usability.
  *
  * @author Matthew
  */

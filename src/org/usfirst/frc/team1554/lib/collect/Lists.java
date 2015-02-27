@@ -15,13 +15,13 @@ import java.util.Iterator;
 public final class Lists {
 
     public static <E> ArrayList<E> newArrayList() {
-        return new ArrayList<E>();
+        return new ArrayList<>();
     }
 
     @SafeVarargs
     public static <E> ArrayList<E> newArrayList(E... initial) {
         Preconditions.checkNotNull(initial);
-        final ArrayList<E> list = new ArrayList<E>(initial.length);
+        final ArrayList<E> list = new ArrayList<>(initial.length);
         Collections.addAll(list, initial);
 
         return list;
@@ -30,24 +30,24 @@ public final class Lists {
     public static <E> ArrayList<E> newArrayList(Iterable<E> elements) {
         Preconditions.checkNotNull(elements);
 
-        return elements instanceof Collection ? new ArrayList<E>(cast(elements)) : newArrayList(elements.iterator());
+        return elements instanceof Collection ? new ArrayList<>(cast(elements)) : newArrayList(elements.iterator());
     }
 
     public static <E> ArrayList<E> newArrayList(Iterator<E> elements) {
         Preconditions.checkNotNull(elements);
 
-        final ArrayList<E> list = new ArrayList<E>();
+        final ArrayList<E> list = new ArrayList<>();
         CollectionsUtil.addAll(list, elements);
 
         return list;
     }
 
     public static <E> ArrayList<E> newArrayListWithCapacity(int capacity) {
-        return new ArrayList<E>(capacity);
+        return new ArrayList<>(capacity);
     }
 
     public static <E> ArrayList<E> newArrayListWithExpectedSize(int estimation) {
-        return new ArrayList<E>(estimation);
+        return new ArrayList<>(estimation);
     }
 
     private static <T> Collection<T> cast(Iterable<T> iter) {

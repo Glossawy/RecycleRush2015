@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1554.lib.readonly;
 
-import org.usfirst.frc.team1554.lib.Console;
+import org.usfirst.frc.team1554.lib.common.Console;
 import org.usfirst.frc.team1554.lib.util.Preconditions;
 import org.usfirst.frc.team1554.lib.util.RoboUtils;
 

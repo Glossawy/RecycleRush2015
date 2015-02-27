@@ -13,6 +13,7 @@ import static org.usfirst.frc.team1554.lib.util.memory.UnsignedConstants.*;
  * @author Matthew
  *         Created 2/23/2015 at 5:43 PM
  */
+@SuppressWarnings("ALL")
 class DirectStackMemoryAccess extends MemoryAccess {
 
     private final ByteBuffer buf;

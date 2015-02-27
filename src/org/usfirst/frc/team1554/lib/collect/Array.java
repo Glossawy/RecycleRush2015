@@ -13,16 +13,16 @@ import static org.usfirst.frc.team1554.lib.util.ReflectionHelper.newArray;
 public class Array<T> implements Iterable<T> {
 
     public static <T> Array<T> of(Class<T> arrayType) {
-        return new Array<T>(arrayType);
+        return new Array<>(arrayType);
     }
 
     public static <T> Array<T> of(boolean ordered, int capacity, Class<T> arrayType) {
-        return new Array<T>(ordered, capacity, arrayType);
+        return new Array<>(ordered, capacity, arrayType);
     }
 
     @SafeVarargs
     public static <T> Array<T> with(T... array) {
-        return new Array<T>(array);
+        return new Array<>(array);
     }
 
     public T[] items;
@@ -327,7 +327,7 @@ public class Array<T> implements Iterable<T> {
     @Override
     public Iterator<T> iterator() {
         if (this.iterable == null) {
-            this.iterable = new ArrayIterable<T>(this);
+            this.iterable = new ArrayIterable<>(this);
         }
 
         return this.iterable.iterator();
@@ -395,7 +395,8 @@ public class Array<T> implements Iterable<T> {
             final Object o1 = i1[i];
             final Object o2 = i2[i];
 
-            if (!(o1 == null ? o2 == null : o1.equals(o2))) return false;
+            if (!(o1 == null ? o2 == null : o1.equals(o2)))
+                return false;
         }
 
         return true;
@@ -482,8 +483,8 @@ public class Array<T> implements Iterable<T> {
         @Override
         public Iterator<T> iterator() {
             if (this.iterator1 == null) {
-                this.iterator1 = new ArrayIterator<T>(this.array, this.allowRemove);
-                this.iterator2 = new ArrayIterator<T>(this.array, this.allowRemove);
+                this.iterator1 = new ArrayIterator<>(this.array, this.allowRemove);
+                this.iterator2 = new ArrayIterator<>(this.array, this.allowRemove);
             }
             if (!this.iterator1.valid) {
                 this.iterator1.index = 0;

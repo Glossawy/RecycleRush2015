@@ -10,7 +10,7 @@ import java.util.*;
 public final class Sets {
 
     public static <E> HashSet<E> newHashSet() {
-        return new HashSet<E>();
+        return new HashSet<>();
     }
 
     @SafeVarargs
@@ -22,7 +22,7 @@ public final class Sets {
     }
 
     public static <E> HashSet<E> newHashSet(Iterable<E> elements) {
-        return elements instanceof Collection ? new HashSet<E>(CollectionsUtil.cast(elements)) : newHashSet(elements.iterator());
+        return elements instanceof Collection ? new HashSet<>(CollectionsUtil.cast(elements)) : newHashSet(elements.iterator());
     }
 
     public static <E> HashSet<E> newHashSet(Iterator<E> iter) {
@@ -32,11 +32,11 @@ public final class Sets {
     }
 
     public static <E> HashSet<E> newHashSetWithExpectedSize(int estimation) {
-        return new HashSet<E>(CollectionsUtil.computeCapacity(estimation));
+        return new HashSet<>(CollectionsUtil.computeCapacity(estimation));
     }
 
     public static <E> TreeSet<E> newTreeSet() {
-        return new TreeSet<E>();
+        return new TreeSet<>();
     }
 
     @SafeVarargs
@@ -49,7 +49,7 @@ public final class Sets {
 
     public static <E> TreeSet<E> newTreeSet(Iterable<E> elements) {
         if (elements instanceof Collection)
-            return new TreeSet<E>(CollectionsUtil.cast(elements));
+            return new TreeSet<>(CollectionsUtil.cast(elements));
         else
             return newTreeSet(elements.iterator());
     }
@@ -62,7 +62,7 @@ public final class Sets {
     }
 
     public static <E> TreeSet<E> newTreeSet(Comparator<? super E> comparator) {
-        return new TreeSet<E>(comparator);
+        return new TreeSet<>(comparator);
     }
 
     public static BitSet newBitSet() {
@@ -103,14 +103,14 @@ public final class Sets {
     }
 
     public static <V> ObjectSet<V> newObjectSet() {
-        return new ObjectSet<V>();
+        return new ObjectSet<>();
     }
 
     public static <V> ObjectSet<V> newObjectSet(int initialCapacity) {
-        return new ObjectSet<V>(initialCapacity);
+        return new ObjectSet<>(initialCapacity);
     }
 
     public static <V> ObjectSet<V> newObjectSet(int initialCapacity, float loadFactor) {
-        return new ObjectSet<V>(initialCapacity, loadFactor);
+        return new ObjectSet<>(initialCapacity, loadFactor);
     }
 }

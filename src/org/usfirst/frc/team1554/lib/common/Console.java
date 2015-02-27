@@ -1,4 +1,6 @@
-package org.usfirst.frc.team1554.lib;
+package org.usfirst.frc.team1554.lib.common;
+
+import org.usfirst.frc.team1554.lib.meta.Identifier;
 
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -8,6 +10,7 @@ import java.util.logging.*;
 
 import static java.util.logging.Level.*;
 
+@SuppressWarnings("SameParameterValue")
 public class Console {
 
     private static final Logger logger;
@@ -48,11 +51,13 @@ public class Console {
     }
 
     /**
-     * Does the same as {@link #log(Object, Level)} but goes further by taking a Throwable and <br />
+     * Does the same as {@link #log(Object, Level)} but goes further
+     * by taking a Throwable and <br />
      * passing it to Logger.log to be parsed. <br />
      * <br />
      * The Throwable is parsed independently by each Appender. <br />
-     * In a normal use case this is ConsoleAppender and RollingFileAppender. <br />
+     * In a normal use case this is ConsoleAppender and
+     * RollingFileAppender. <br />
      *
      * @param msg
      * @param t
@@ -65,7 +70,8 @@ public class Console {
     }
 
     /**
-     * Takes an Object as a message and obtains its String Value <br />
+     * Takes an Object as a message and obtains its String Value <br
+     * />
      * via {@link String#valueOf(Object)} which is null-safe. <br />
      * <br />
      * The String Message and Level are passed to Logger.log <br />
@@ -81,10 +87,12 @@ public class Console {
     }
 
     /**
-     * Indicates a certain point has been reached successfully and may <br />
+     * Indicates a certain point has been reached successfully and may
+     * <br />
      * print state information. <br />
      * <br />
-     * This is the Level that should be generally used in normal cases. <br />
+     * This is the Level that should be generally used in normal
+     * cases. <br />
      *
      * @param msg
      */
@@ -109,7 +117,8 @@ public class Console {
     }
 
     /**
-     * Write a Stack Trace to the log with the given additional message. Writes 16 Stack Trace Elements at most.
+     * Write a Stack Trace to the log with the given additional
+     * message. Writes 16 Stack Trace Elements at most.
      *
      * @param msg
      */
@@ -135,7 +144,8 @@ public class Console {
     }
 
     /**
-     * Does the same as {@link #bigWarning(Object)} but prints "null" as the message.
+     * Does the same as {@link #bigWarning(Object)} but prints "null"
+     * as the message.
      */
     public static void bigWarning() {
         bigWarning("");
@@ -144,8 +154,10 @@ public class Console {
     /**
      * Prints a very noticeable warning that is bordered. <br />
      * <br />
-     * Indicates the same thing as {@link #warn(Object)} but also prints<br />
-     * a 6 line Stack Trace (will not include the call to this method). <br />
+     * Indicates the same thing as {@link #warn(Object)} but also
+     * prints<br />
+     * a 6 line Stack Trace (will not include the call to this
+     * method). <br />
      * <br />
      * <code>
      * **************************************** <br/>
@@ -176,8 +188,10 @@ public class Console {
     }
 
     /**
-     * Indicates that although the program can continue as expected, <br />
-     * the program may act unexpectedly due to receiving a valid, but <br />
+     * Indicates that although the program can continue as expected,
+     * <br />
+     * the program may act unexpectedly due to receiving a valid, but
+     * <br />
      * unexpected result or value.
      *
      * @param msg
@@ -187,8 +201,10 @@ public class Console {
     }
 
     /**
-     * Indicates an Error that is recoverable but should be noted to the <br />
-     * user or programmer since this is likely a programmer error. <br />
+     * Indicates an Error that is recoverable but should be noted to
+     * the <br />
+     * user or programmer since this is likely a programmer error. <br
+     * />
      *
      * @param msg
      */
@@ -197,7 +213,8 @@ public class Console {
     }
 
     /**
-     * Indicates a Fatal Error that has caused the program to terminate <br />
+     * Indicates a Fatal Error that has caused the program to
+     * terminate <br />
      * since the error is unrecoverable.
      *
      * @param msg
@@ -216,7 +233,8 @@ public class Console {
     }
 
     /**
-     * Write an Exception to the Log with the full Stack Trace and the given details.
+     * Write an Exception to the Log with the full Stack Trace and the
+     * given details.
      *
      * @param e
      * @param details
@@ -285,7 +303,8 @@ public class Console {
     }
 
     /**
-     * Add an Appender as a another Logging Target in addition to <br />
+     * Add an Appender as a another Logging Target in addition to <br
+     * />
      * the Console and Log File.
      *
      * @param appender
@@ -294,7 +313,7 @@ public class Console {
         logger.addHandler(appender);
     }
 
-    private static final void close(Handler handler) {
+    private static void close(Handler handler) {
         if (handler == null) return;
 
         try {

@@ -17,7 +17,8 @@ import java.util.NoSuchElementException;
 import java.util.Properties;
 
 /**
- * A Collection of Utilities dedicated to the try-catch mess that is java.io. Some java.nio utilities are provided. <br />
+ * A Collection of Utilities dedicated to the try-catch mess that is
+ * java.io. Some java.nio utilities are provided. <br />
  * <br />
  * Most of these methods are general use.
  *
@@ -26,12 +27,14 @@ import java.util.Properties;
 public class IOUtils {
 
     /**
-     * Number of Seconds between Log Messages relating to Download Rate and State.
+     * Number of Seconds between Log Messages relating to Download
+     * Rate and State.
      */
     public static final int DOWNLOAD_LOG_DELAY = 5;
 
     /**
-     * Default Buffer Size for any IOUtils created Byte[] or Char[] buffers. <br />
+     * Default Buffer Size for any IOUtils created Byte[] or Char[]
+     * buffers. <br />
      * By default this is 4096. Java's Default is 8192.
      *
      * @see java.io.BufferedReader
@@ -59,7 +62,7 @@ public class IOUtils {
      * @param to
      * @param comments
      */
-    public static final void saveProperties(Properties from, File to, String comments) {
+    public static void saveProperties(Properties from, File to, String comments) {
         Preconditions.checkNotNull(from, "Properties is Null!");
         Preconditions.checkNotNull(to, "File to Save to is Null!");
 
@@ -81,7 +84,7 @@ public class IOUtils {
      * @param to
      * @param from
      */
-    public static final void loadProperties(Properties to, File from) {
+    public static void loadProperties(Properties to, File from) {
         Preconditions.checkNotNull(to, "Properties is Null!");
         Preconditions.checkNotNull(from, "File to Load From is Null!");
 
@@ -98,13 +101,14 @@ public class IOUtils {
     }
 
     /**
-     * Loads Properties from a Properties File and stores them in a Properties object <br />
+     * Loads Properties from a Properties File and stores them in a
+     * Properties object <br />
      * which is then returned.
      *
      * @param file
      * @return Properties Object
      */
-    public static final Properties getPropertiesFromFile(File file) {
+    public static Properties getPropertiesFromFile(File file) {
         Preconditions.checkNotNull(file, "File Can't Be Null!");
         Preconditions.checkExpression(file.exists(), "File Does Not Exist! - " + file.getPath());
 
@@ -129,7 +133,7 @@ public class IOUtils {
      * @param file
      * @param string
      */
-    public static final void write(File file, String string) {
+    public static void write(File file, String string) {
         try {
             final FileWriter writer = new FileWriter(file);
             final StringReader reader = new StringReader(string);
@@ -142,14 +146,15 @@ public class IOUtils {
     // -- START READER->WRITER METHODS --//
 
     /**
-     * Writer data from Reader to Writer. Do Not Close Streams when Done!<br />
+     * Writer data from Reader to Writer. Do Not Close Streams when
+     * Done!<br />
      * <br />
      * <b><i><u>WILL NOT CLOSE STREAMS BY DEFAULT!</u></i></b>
      *
      * @param reader
      * @param writer
      */
-    public static final void write(Reader reader, Writer writer) {
+    public static void write(Reader reader, Writer writer) {
         write(reader, writer, false);
     }
 
@@ -160,12 +165,13 @@ public class IOUtils {
      * @param writer
      * @param closeStreams - Close Streams when Finished?
      */
-    public static final void write(Reader reader, Writer writer, boolean closeStreams) {
+    public static void write(Reader reader, Writer writer, boolean closeStreams) {
         write(reader, closeStreams, writer, closeStreams);
     }
 
     /**
-     * Completely write all data from a Reader object into the given Writer object. <br />
+     * Completely write all data from a Reader object into the given
+     * Writer object. <br />
      * Can close writer and reader to help clean up try-catch blocks.
      *
      * @param reader      - Reader Object to Read from
@@ -173,7 +179,7 @@ public class IOUtils {
      * @param writer      - Writer Object to Write to
      * @param closeWriter - Close Writer when done?
      */
-    public static final void write(Reader reader, boolean closeReader, Writer writer, boolean closeWriter) {
+    public static void write(Reader reader, boolean closeReader, Writer writer, boolean closeWriter) {
         if (closeReader && closeWriter) {
             write(reader, writer, true);
         } else {
@@ -197,14 +203,15 @@ public class IOUtils {
     // -- START InputStream->OutputStream METHODS -- //
 
     /**
-     * Writer data from Reader to Writer. Do Not Close Streams when Done!<br />
+     * Writer data from Reader to Writer. Do Not Close Streams when
+     * Done!<br />
      * <br />
      * <b><i><u>WILL NOT CLOSE STREAMS BY DEFAULT!</u></i></b>
      *
      * @param input
      * @param output
      */
-    public static final void write(InputStream input, OutputStream output) {
+    public static void write(InputStream input, OutputStream output) {
         write(input, output, false);
     }
 
@@ -215,12 +222,13 @@ public class IOUtils {
      * @param output
      * @param closeStreams - Close Streams when Finished?
      */
-    public static final void write(InputStream input, OutputStream output, boolean closeStreams) {
+    public static void write(InputStream input, OutputStream output, boolean closeStreams) {
         write(input, closeStreams, output, closeStreams);
     }
 
     /**
-     * Completely write all data from an InputStream into the given OutputStream. <br />
+     * Completely write all data from an InputStream into the given
+     * OutputStream. <br />
      * Can close writer and reader to help clean up try-catch blocks.
      *
      * @param input             - Input
@@ -228,7 +236,7 @@ public class IOUtils {
      * @param output            - Output
      * @param closeOutputStream - Close OutputStream when done?
      */
-    public static final void write(InputStream input, boolean closeInputStream, OutputStream output, boolean closeOutputStream) {
+    public static void write(InputStream input, boolean closeInputStream, OutputStream output, boolean closeOutputStream) {
         if (closeInputStream && closeOutputStream) {
             write(input, output, true);
         } else {
@@ -250,7 +258,7 @@ public class IOUtils {
     // -- END InputStream->OutputStream METHODS -- //
 
     // Handles Simply Moving Data from Reader to Writer using a Char Buffer
-    private static final void doWrite(Reader reader, Writer writer) throws IOException {
+    private static void doWrite(Reader reader, Writer writer) throws IOException {
         final char[] cbuf = new char[DEFAULT_BUFFER_SIZE];
         for (int c = reader.read(cbuf); c != -1; c = reader.read(cbuf)) {
             writer.write(cbuf, 0, c);
@@ -259,7 +267,7 @@ public class IOUtils {
 
     // Handles Simply Moving Data from InputStream to OutputStream using a Byte
     // Buffer
-    private static final void doStreamWrite(InputStream is, OutputStream os) throws IOException {
+    private static void doStreamWrite(InputStream is, OutputStream os) throws IOException {
         final byte[] b = new byte[DEFAULT_BUFFER_SIZE];
         for (int c = is.read(b); c != -1; c = is.read(b)) {
             os.write(b, 0, c);
@@ -267,23 +275,25 @@ public class IOUtils {
     }
 
     /**
-     * Split a String into a String Iterable made up of it's individual lines.
+     * Split a String into a String Iterable made up of it's
+     * individual lines.
      *
      * @param source
      * @return
      */
-    public static final Iterable<String> getLines(String source) {
+    public static Iterable<String> getLines(String source) {
         return Lists.newArrayList(source.split("\r?\n"));
     }
 
     /**
-     * Read in the entirety of a file and return an Iterable made up of all of <br />
+     * Read in the entirety of a file and return an Iterable made up
+     * of all of <br />
      * the individual lines.
      *
      * @param source
      * @return
      */
-    public static final Iterable<String> getLines(File source, Charset cs) {
+    public static Iterable<String> getLines(File source, Charset cs) {
         FileInputStream fis = null;
         ByteArrayOutputStream bos = null;
         String result = null;
@@ -305,7 +315,8 @@ public class IOUtils {
             IOUtils.closeSilently(bos);
         }
 
-        if (result == null) throw new IllegalStateException("Failed to Parse Lines of File!");
+        if (result == null)
+            throw new IllegalStateException("Failed to Parse Lines of File!");
 
         return getLines(result);
     }
@@ -316,20 +327,26 @@ public class IOUtils {
      * @param source
      * @return
      */
-    public static final Iterable<String> getLines(File source) {
+    public static Iterable<String> getLines(File source) {
         return getLines(source, Charset.defaultCharset());
     }
 
     /**
-     * Converts a File's contents to some object represented by T. This is done by the appropriate {@link LineProcessor}. This method uses the given {@link Charset} to read the File's InputStream. The lines are then separated and passed to the LineProcessor one-by-one. At the end a result is returned by the processor via {@link LineProcessor#result()}.
+     * Converts a File's contents to some object represented by T.
+     * This is done by the appropriate {@link LineProcessor}. This
+     * method uses the given {@link Charset} to read the File's
+     * InputStream. The lines are then separated and passed to the
+     * LineProcessor one-by-one. At the end a result is returned by
+     * the processor via {@link LineProcessor#result()}.
      *
      * @param file      - File to read
      * @param cs        - Charset to use for reading
      * @param processor - Processor to process lines one-by-one
      * @return
-     * @throws IOException - Required by {@link LineProcessor#processLine(String) processLine}.
+     * @throws IOException - Required by {@link LineProcessor#processLine(String)
+     *                     processLine}.
      */
-    public static final <T> T readLines(File file, Charset cs, LineProcessor<T> processor) throws IOException {
+    public static <T> T readLines(File file, Charset cs, LineProcessor<T> processor) throws IOException {
         final Iterator<String> lines = getLines(file, cs).iterator();
         boolean process = true;
 
@@ -341,27 +358,34 @@ public class IOUtils {
     }
 
     /**
-     * Converts a File's Contents to some object represented by T. This is done by the appropriate {@link LineProcessor}. This method will use {@link Charset#defaultCharset() the default charset} and delegate to {@link #readLines(File, Charset, LineProcessor) readLines}.
+     * Converts a File's Contents to some object represented by T.
+     * This is done by the appropriate {@link LineProcessor}. This
+     * method will use {@link Charset#defaultCharset() the default
+     * charset} and delegate to {@link #readLines(File, Charset,
+     * LineProcessor) readLines}.
      *
      * @param file
      * @param processor
      * @return
      * @throws IOException
      */
-    public static final <T> T readLines(File file, LineProcessor<T> processor) throws IOException {
+    public static <T> T readLines(File file, LineProcessor<T> processor) throws IOException {
         return readLines(file, Charset.defaultCharset(), processor);
     }
 
     /**
      * Recursively Empties then Deletes a Folder. <br />
      * <br />
-     * The boolean this method returns depends on whether or not the Directory passed is deleted. <br />
-     * If the directory can not be deleted then it returns false, though some of its contents may have been deleted anyway. <br />
+     * The boolean this method returns depends on whether or not the
+     * Directory passed is deleted. <br />
+     * If the directory can not be deleted then it returns false,
+     * though some of its contents may have been deleted anyway. <br
+     * />
      *
      * @param directory
      * @return Whether or Not the Directory passed was Deleted
      */
-    public static final boolean deleteDirectory(File directory) {
+    public static boolean deleteDirectory(File directory) {
         if (!directory.isDirectory())
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is NOT a Directory!");
 
@@ -378,7 +402,7 @@ public class IOUtils {
         return directory.delete();
     }
 
-    public static final boolean emptyDirectory(File directory, boolean preserve) {
+    public static boolean emptyDirectory(File directory, boolean preserve) {
         if (!directory.isDirectory())
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is NOT a Directory!");
 
@@ -406,12 +430,13 @@ public class IOUtils {
      * @param dest
      * @return Success/Failure
      */
-    public static final boolean copyFile(File src, File dest) {
+    public static boolean copyFile(File src, File dest) {
         FileInputStream fis = null;
         FileOutputStream fos = null;
         boolean success = true;
 
-        if (!src.exists()) throw new IllegalStateException("Source File does Not Exist!");
+        if (!src.exists())
+            throw new IllegalStateException("Source File does Not Exist!");
         if (!dest.exists()) {
             try {
                 dest.getParentFile().mkdirs(); // Ensure Trunk of Path Exists
@@ -440,7 +465,7 @@ public class IOUtils {
         return success;
     }
 
-    public static final String getSuffix(File file) {
+    public static String getSuffix(File file) {
         final String name = file.getName();
 
         if (!name.contains("."))
@@ -450,11 +475,12 @@ public class IOUtils {
     }
 
     /**
-     * Closes any Closeable, meant for Streams to clean up finally blocks.
+     * Closes any Closeable, meant for Streams to clean up finally
+     * blocks.
      *
      * @param stream
      */
-    public static final void closeSilently(Closeable stream) {
+    public static void closeSilently(Closeable stream) {
         if (stream == null) return;
 
         try {
@@ -471,11 +497,12 @@ public class IOUtils {
     }
 
     /**
-     * Small Utility to consume the InterruptedException associated with Thread.sleep. <br />
+     * Small Utility to consume the InterruptedException associated
+     * with Thread.sleep. <br />
      * <br />
-     * Deprecated for FRC use. Please use {@link Timer#delay(double) Timer.delay}.
+     * Deprecated for FRC use. Please use {@link Timer#delay(double)
+     * Timer.delay}.
      *
-     * @param l
      */
     @Deprecated
     public static void sleep(long ms) {
@@ -487,7 +514,8 @@ public class IOUtils {
     }
 
     /**
-     * Given a StackTrace, print out similarly to {@link Exception#printStackTrace()} .
+     * Given a StackTrace, print out similarly to {@link
+     * Exception#printStackTrace()} .
      *
      * @param stackTrace
      */
@@ -498,7 +526,10 @@ public class IOUtils {
     }
 
     /**
-     * Converts a File's contrents into a singular String using the given {@link Charset} via the use of {@link SingleStringProcessor} and delegates to {@link #readLines(File, Charset, LineProcessor) readLines}.
+     * Converts a File's contrents into a singular String using the
+     * given {@link Charset} via the use of {@link
+     * SingleStringProcessor} and delegates to {@link #readLines(File,
+     * Charset, LineProcessor) readLines}.
      *
      * @param file
      * @param charset
@@ -510,7 +541,10 @@ public class IOUtils {
     }
 
     /**
-     * Converts a File's contents into a singular String using {@link Charset#defaultCharset() the default charset} by default. This delegates to {@link IOUtils#readLines(File, Charset, LineProcessor) readLines} .
+     * Converts a File's contents into a singular String using {@link
+     * Charset#defaultCharset() the default charset} by default. This
+     * delegates to {@link IOUtils#readLines(File, Charset,
+     * LineProcessor) readLines} .
      *
      * @param file
      * @return
@@ -521,7 +555,10 @@ public class IOUtils {
     }
 
     /**
-     * Attempts to establish a connection to the given URL and listens for a success code (HTTP Response Code 200). If a response of 200 is received, then it is a success. Any other code is a failure.
+     * Attempts to establish a connection to the given URL and listens
+     * for a success code (HTTP Response Code 200). If a response of
+     * 200 is received, then it is a success. Any other code is a
+     * failure.
      *
      * @param url
      * @return true if Response Code == 200, else false
@@ -554,11 +591,14 @@ public class IOUtils {
     }
 
     /**
-     * Determines a Charset from either it's Canonical Name or Display Name saved to a lookup table in IOUtils. An exception is thrown if none is found.
+     * Determines a Charset from either it's Canonical Name or Display
+     * Name saved to a lookup table in IOUtils. An exception is thrown
+     * if none is found.
      *
      * @param name
      * @return
-     * @throws NoSuchElementException No Charset is tied to the given name.
+     * @throws NoSuchElementException No Charset is tied to the given
+     *                                name.
      */
     public static Charset charset(String name) throws NoSuchElementException {
         final Charset cs = charsetMap.get(name);

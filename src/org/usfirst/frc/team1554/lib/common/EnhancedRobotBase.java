@@ -1,19 +1,24 @@
-package org.usfirst.frc.team1554.lib;
+package org.usfirst.frc.team1554.lib.common;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.RobotBase;
+import org.usfirst.frc.team1554.lib.meta.Identifier;
 import org.usfirst.frc.team1554.lib.util.BufferUtils;
 
 import static edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary.*;
 
 /**
- * Base Class shared by all Enhanced Robot Implementations. Due to the critical nature of understanding
- * how RobotBase classes work and how RT Linux works (as per NI Documentation), PLEASE only subclass this class
+ * Base Class shared by all Enhanced Robot Implementations. Due to the
+ * critical nature of understanding
+ * how RobotBase classes work and how RT Linux works (as per NI
+ * Documentation), PLEASE only subclass this class
  * if you know, for sure, what you are doing. <br />
  * <br />
- * Common pitfalls (like not putting a Timer dalay of atleast 10 milliseconds to {@link #onAny()} calls) can
- * lead to a completely unusable implementation as these errors may lead to OutOfMemory Errors and crashing code.
+ * Common pitfalls (like not putting a Timer dalay of atleast 10
+ * milliseconds to {@link #onAny()} calls) can
+ * lead to a completely unusable implementation as these errors may
+ * lead to OutOfMemory Errors and crashing code.
  *
  * @author Matthew
  */
@@ -22,7 +27,9 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
     public static EnhancedRobotBase RUNNING_INSTANCE;
 
     /**
-     * Representation of Current Robot State. This is the alternative solution to the boolean flag switches in {@link IterativeRobot} that encapsulates method calls as well.
+     * Representation of Current Robot State. This is the alternative
+     * solution to the boolean flag switches in {@link IterativeRobot}
+     * that encapsulates method calls as well.
      *
      * @author Matthew
      */
@@ -155,7 +162,8 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
     }
 
     /**
-     * {@link EnhancedRobotBase} implementations must implement their own {@link #startCompetition()} implementations. <br />
+     * {@link EnhancedRobotBase} implementations must implement their
+     * own {@link #startCompetition()} implementations. <br />
      * <br />
      * This is the primary execution loop for all EnhancedRobots.
      */
@@ -163,16 +171,29 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
     abstract public void startCompetition();
 
     /**
-     * Any initialization code should be called here, it is called immediately before entering the Disabled state in ALL {@link RobotBase} implementations and therefore all {@link EnhancedRobotBase} implementations will follow this. <br />
+     * Any initialization code should be called here, it is called
+     * immediately before entering the Disabled state in ALL {@link
+     * RobotBase} implementations and therefore all {@link
+     * EnhancedRobotBase} implementations will follow this. <br />
      */
     protected abstract void onInitialization();
 
     /**
-     * This is an OPTIONAL method. The implementation is non-specific and may not be included in all {@link EnhancedRobotBase} implementations. <br />
+     * This is an OPTIONAL method. The implementation is non-specific
+     * and may not be included in all {@link EnhancedRobotBase}
+     * implementations. <br />
      * <br />
-     * It IS guaranteed that {@link EnhancedIterativeRobot} and {@link EnhancedSimpleRobot} will call {@link #onAny()} in the normal update loop immediately before the current state method but not necessarily on EVERY iteration as is true for State Methods. This would occur if it is taking an extremely long time for {@link DriverStation#isNewControlData()} to return true or {@link DriverStation#waitForData()} blocks for an excessively long time. <br />
+     * It IS guaranteed that {@link EnhancedIterativeRobot} and {@link
+     * EnhancedSimpleRobot} will call {@link #onAny()} in the normal
+     * update loop immediately before the current state method but not
+     * necessarily on EVERY iteration as is true for State Methods.
+     * This would occur if it is taking an extremely long time for
+     * {@link DriverStation#isNewControlData()} to return true or
+     * {@link DriverStation#waitForData()} blocks for an excessively
+     * long time. <br />
      * <br />
-     * Typically this is indicative of an underlying problem with lost network packets.
+     * Typically this is indicative of an underlying problem with lost
+     * network packets.
      */
     protected void onAny() {
     }
@@ -183,12 +204,14 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
     abstract public void preDisabled();
 
     /**
-     * Code to execute while Disabled. This is looped as quickly as possible.
+     * Code to execute while Disabled. This is looped as quickly as
+     * possible.
      */
     abstract public void onDisabled();
 
     /**
-     * Code to execute while leaving Disabled Mode. Free or Reset State-Dependent Resources and Objects here.
+     * Code to execute while leaving Disabled Mode. Free or Reset
+     * State-Dependent Resources and Objects here.
      */
     public void postDisabled() {
         // Console.info("DEFAULT POSTDISABLED()! Override me!");
@@ -200,12 +223,14 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
     abstract public void preAutonomous();
 
     /**
-     * Code to execute while in Autonomous. This is looped as quickly as possible.
+     * Code to execute while in Autonomous. This is looped as quickly
+     * as possible.
      */
     abstract public void onAutonomous();
 
     /**
-     * Code to execute while leaving Autonomous. Free or Reset State-Dependent Resources and Objects here.
+     * Code to execute while leaving Autonomous. Free or Reset
+     * State-Dependent Resources and Objects here.
      */
     public void postAutonomous() {
     }
@@ -216,12 +241,14 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
     abstract public void preTeleop();
 
     /**
-     * Code to execute while in Teleop. This is looped as quickly as possible.
+     * Code to execute while in Teleop. This is looped as quickly as
+     * possible.
      */
     abstract public void onTeleop();
 
     /**
-     * Code to execute while leaving Teleop. Free or Reset State-Dependent Resources and Objects here.
+     * Code to execute while leaving Teleop. Free or Reset
+     * State-Dependent Resources and Objects here.
      */
     public void postTeleop() {
     }
@@ -233,12 +260,14 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
     }
 
     /**
-     * Code to execute while in Test. This is looped as quickly as possible.
+     * Code to execute while in Test. This is looped as quickly as
+     * possible.
      */
     abstract public void onTest();
 
     /**
-     * Code to execute while leaving Test Mode. Free or Reset State-Dependent Resources and Objects here.
+     * Code to execute while leaving Test Mode. Free or Reset
+     * State-Dependent Resources and Objects here.
      */
     public void postTest() {
     }
@@ -280,8 +309,9 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
     abstract public void dispose();
 
     @Override
-    protected final void finalize() throws Exception {
+    protected final void finalize() throws Throwable {
         free();
+        super.finalize();
     }
 
 }

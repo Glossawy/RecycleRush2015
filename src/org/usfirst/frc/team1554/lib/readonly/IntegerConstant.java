@@ -35,7 +35,7 @@ public class IntegerConstant implements ReadOnlyInteger {
 
     @Override
     public Integer getValue() {
-        return Integer.valueOf(this.value);
+        return this.value;
     }
 
     @Override

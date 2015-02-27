@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1554.lib.vision;
 
+@SuppressWarnings("WeakerAccess")
 public enum CameraSize {
 
     SMALL(0, 160, 120), MEDIUM(1, 320, 240), LARGE(2, 640, 480);

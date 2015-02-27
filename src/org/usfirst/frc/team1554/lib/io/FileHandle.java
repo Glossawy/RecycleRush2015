@@ -58,14 +58,16 @@ public class FileHandle {
     }
 
     public FileHandle parent() {
-        if (path().length() <= 1) throw new RuntimeException("Cannot get parent of root!");
+        if (path().length() <= 1)
+            throw new RuntimeException("Cannot get parent of root!");
 
         final File parent = this.file.getParentFile();
         return new FileHandle(parent == null ? new File("/") : parent);
     }
 
     public FileHandle sibling(String name) {
-        if (path().length() == 0) throw new RuntimeException("Cannot get sibling of root!");
+        if (path().length() == 0)
+            throw new RuntimeException("Cannot get sibling of root!");
 
         return new FileHandle(new File(this.file.getParent(), name));
     }
@@ -107,13 +109,15 @@ public class FileHandle {
     }
 
     public boolean deleteDirectory() {
-        if (!this.file.isDirectory()) throw new RuntimeException("File is not directory: " + this.file);
+        if (!this.file.isDirectory())
+            throw new RuntimeException("File is not directory: " + this.file);
 
         return IOUtils.deleteDirectory(this.file);
     }
 
     public boolean emptyDirectory(boolean preserve) {
-        if (!this.file.isDirectory()) throw new RuntimeException("File is not directory: " + this.file);
+        if (!this.file.isDirectory())
+            throw new RuntimeException("File is not directory: " + this.file);
 
         return IOUtils.emptyDirectory(this.file, preserve);
     }
@@ -122,7 +126,8 @@ public class FileHandle {
         try {
             return new FileInputStream(this.file);
         } catch (final Exception ex) {
-            if (this.file.isDirectory()) throw new RuntimeException("Cannot open InputStream to directory...");
+            if (this.file.isDirectory())
+                throw new RuntimeException("Cannot open InputStream to directory...");
             throw new RuntimeException("Error reading file: " + this.file, ex);
         }
     }
@@ -206,7 +211,8 @@ public class FileHandle {
         try {
             return new FileOutputStream(this.file, append);
         } catch (final IOException ex) {
-            if (this.file.isDirectory()) throw new RuntimeException("Cannot open OutputStream to directory...");
+            if (this.file.isDirectory())
+                throw new RuntimeException("Cannot open OutputStream to directory...");
             throw new RuntimeException("Error writing file: " + this.file, ex);
         }
     }

@@ -1,14 +1,15 @@
 package org.usfirst.frc.team1554.control;
 
 import edu.wpi.first.wpilibj.Joystick;
-import org.usfirst.frc.team1554.lib.ButtonAction;
-import org.usfirst.frc.team1554.lib.JoystickControl;
-import org.usfirst.frc.team1554.lib.collect.Array;
+import org.usfirst.frc.team1554.lib.common.ButtonAction;
+import org.usfirst.frc.team1554.lib.common.JoystickControl;
 import org.usfirst.frc.team1554.lib.collect.IntMap;
 
 class EmulatedJoystickControl implements JoystickControl {
 
-    public final double x, y, twist;
+    private final double x;
+    private final double y;
+    private final double twist;
 
     EmulatedJoystickControl(double x, double y, double twist) {
         this.x = x;
@@ -34,6 +35,20 @@ class EmulatedJoystickControl implements JoystickControl {
     @Override
     public double getMagnitude() {
         return Math.sqrt((this.x * this.x) + (this.y * this.y));
+    }
+
+    @Override
+    public Iterable<IntMap.Entry<ButtonAction>> getButtonActions(Hand hand) {
+        return null;
+    }
+
+    /**
+     * Get the direction of the Magnitude vector of the Movement
+     * Joystick in Radians
+     */
+    @Override
+    public double getDirectionRadians() {
+        return 0;
     }
 
     @Override
@@ -126,9 +141,9 @@ class EmulatedJoystickControl implements JoystickControl {
     }
 
     @Override
-    public IntMap<Array<String>> getBindingInformation(Hand side) {
+    public IntMap<String> getBindingInformation(Hand side) {
         // TODO Auto-generated method stub
-        return null;
+        throw new UnsupportedOperationException("Cannot get binding information for AnalogStick");
     }
 
 }

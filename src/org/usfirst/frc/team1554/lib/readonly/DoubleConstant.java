@@ -42,7 +42,7 @@ public class DoubleConstant implements ReadOnlyDouble {
 
     @Override
     public Double getValue() {
-        return Double.valueOf(this.value);
+        return this.value;
     }
 
     @Override

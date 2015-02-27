@@ -25,20 +25,20 @@ public class DoubleCounter {
     public final ObservableValue<Integer> count;
     public final ObservableValue<Double> total, average;
     public final ObservableValue<Double> min, max, latest, value;
-    public final ObservableValue<Boolean> isWindowed = new ObservableValue<Boolean>(false);
+    public final ObservableValue<Boolean> isWindowed = new ObservableValue<>(false);
 
     private final WindowAverage avg;
 
     public DoubleCounter(int windowSize) {
         this.avg = windowSize > 1 ? new WindowAverage(windowSize) : null;
 
-        this.count = new ObservableValue<Integer>(0);
-        this.total = new ObservableValue<Double>(0.0);
-        this.min = new ObservableValue<Double>(Double.MIN_VALUE);
-        this.max = new ObservableValue<Double>(Double.MAX_VALUE);
-        this.average = new ObservableValue<Double>(0.0);
-        this.latest = new ObservableValue<Double>(0.0);
-        this.value = new ObservableValue<Double>(0.0);
+        this.count = new ObservableValue<>(0);
+        this.total = new ObservableValue<>(0.0);
+        this.min = new ObservableValue<>(Double.MIN_VALUE);
+        this.max = new ObservableValue<>(Double.MAX_VALUE);
+        this.average = new ObservableValue<>(0.0);
+        this.latest = new ObservableValue<>(0.0);
+        this.value = new ObservableValue<>(0.0);
 
         if (this.avg != null) {
             this.avg.clear();

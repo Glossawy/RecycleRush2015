@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1554.lib.util;
 
-import org.usfirst.frc.team1554.lib.RobotExecutionException;
-import org.usfirst.frc.team1554.lib.RobotReflectionException;
+import org.usfirst.frc.team1554.lib.common.ex.RobotExecutionException;
+import org.usfirst.frc.team1554.lib.common.ex.RobotReflectionException;
 
 import java.lang.reflect.*;
 
@@ -29,7 +29,8 @@ public class ReflectionHelper {
     }
 
     /**
-     * Retrieve Value from Static Field (Belonging to No Particular Object)
+     * Retrieve Value from Static Field (Belonging to No Particular
+     * Object)
      *
      * @param klass
      * @param fieldName
@@ -48,7 +49,8 @@ public class ReflectionHelper {
     }
 
     /**
-     * Retrieve Value from Instance Field (Belonging to the Given Object)
+     * Retrieve Value from Instance Field (Belonging to the Given
+     * Object)
      *
      * @param instance
      * @param fieldName
@@ -109,7 +111,8 @@ public class ReflectionHelper {
     }
 
     /**
-     * Set Value of Some Static Field (Not Belonging to Any Particular Object)
+     * Set Value of Some Static Field (Not Belonging to Any Particular
+     * Object)
      *
      * @param klass
      * @param fieldName
@@ -129,7 +132,8 @@ public class ReflectionHelper {
     }
 
     /**
-     * Set Value of Some Instance Field (Belonging to A Particular Object)
+     * Set Value of Some Instance Field (Belonging to A Particular
+     * Object)
      *
      * @param instance
      * @param fieldName
@@ -231,6 +235,7 @@ public class ReflectionHelper {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> T newUnknownInstance(Class<?> klass, CallParameters params) {
         try {
             return (T) klass.getDeclaredConstructor(params.callTypes).newInstance(params.callArguments);
@@ -240,13 +245,16 @@ public class ReflectionHelper {
     }
 
     /**
-     * Useful abstraction of the details required to make a call to a Constructor or Method. <br />
-     * Supports Parameters, Parameter Type Guessing and Null Parameters.
+     * Useful abstraction of the details required to make a call to a
+     * Constructor or Method. <br />
+     * Supports Parameters, Parameter Type Guessing and Null
+     * Parameters.
      */
     public static class CallParameters {
 
         /**
-         * Name Descriptor to Call (Typically Constructor or Method Name)
+         * Name Descriptor to Call (Typically Constructor or Method
+         * Name)
          */
         public final String name;
         private Object[] callArguments = new Object[0];

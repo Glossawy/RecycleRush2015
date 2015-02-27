@@ -358,7 +358,8 @@ public class Vector3 implements Vector<Vector3> {
     public Vector3 slerp(final Vector3 target, double alpha) {
         final double dot = dot(target);
         // If the inputs are too close for comfort, simply linearly interpolate.
-        if ((dot > 0.9995) || (dot < -0.9995)) return lerp(target, alpha);
+        if ((dot > 0.9995) || (dot < -0.9995))
+            return lerp(target, alpha);
 
         // theta0 = angle between input vectors
         final double theta0 = Math.acos(dot);
@@ -432,9 +433,12 @@ public class Vector3 implements Vector<Vector3> {
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
         final Vector3 other = (Vector3) obj;
-        if (FloatingPoint.toLongBits(this.x) != FloatingPoint.toLongBits(other.x)) return false;
-        if (FloatingPoint.toLongBits(this.y) != FloatingPoint.toLongBits(other.y)) return false;
-        if (FloatingPoint.toLongBits(this.z) != FloatingPoint.toLongBits(other.z)) return false;
+        if (FloatingPoint.toLongBits(this.x) != FloatingPoint.toLongBits(other.x))
+            return false;
+        if (FloatingPoint.toLongBits(this.y) != FloatingPoint.toLongBits(other.y))
+            return false;
+        if (FloatingPoint.toLongBits(this.z) != FloatingPoint.toLongBits(other.z))
+            return false;
         return true;
     }
 
@@ -443,15 +447,13 @@ public class Vector3 implements Vector<Vector3> {
         if (other == null) return false;
         if (Math.abs(other.x - this.x) > epsilon) return false;
         if (Math.abs(other.y - this.y) > epsilon) return false;
-        if (Math.abs(other.z - this.z) > epsilon) return false;
-        return true;
+        return Math.abs(other.z - this.z) <= epsilon;
     }
 
     public boolean equals(double x, double y, double z, double epsilon) {
         if (Math.abs(x - this.x) > epsilon) return false;
         if (Math.abs(y - this.y) > epsilon) return false;
-        if (Math.abs(z - this.z) > epsilon) return false;
-        return true;
+        return Math.abs(z - this.z) <= epsilon;
     }
 
     @Override
