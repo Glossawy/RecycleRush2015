@@ -1,4 +1,4 @@
 /**
- * This is meant to mimic the JavaFX value package which deals with ObservableValues. This is renamed ReadOnly in this case and emulates the Property and Binding framework in JavaFX.
- */
+ * In Progress Port of JavaFX Property System. (i.e. Java Beans on Steroids)
+ * */
 package org.usfirst.frc.team1554.lib.readonly;

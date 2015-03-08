@@ -1,5 +1,8 @@
 package org.usfirst.frc.team1554.lib.common;
 
+/**
+ * A Collection of Constants used entirely for controls relating to Xbox Specific peripherals.
+ */
 public interface XboxConstants {
 
     public static final int BUMPER_RIGHT = 4;

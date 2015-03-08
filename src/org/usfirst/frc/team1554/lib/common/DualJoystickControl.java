@@ -1,5 +1,4 @@
 package org.usfirst.frc.team1554.lib.common;
-import static org.usfirst.frc.team1554.lib.common.JoystickControl.toBindings;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Preferences;
@@ -10,6 +9,8 @@ import org.usfirst.frc.team1554.lib.math.MathUtils;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import static org.usfirst.frc.team1554.lib.common.JoystickControl.toBindings;
+
 public class DualJoystickControl implements JoystickControl {
 
     public static final String LEFT_STICK_TWIST_DISABLE = "joystick.left.twist";
@@ -19,8 +20,8 @@ public class DualJoystickControl implements JoystickControl {
 
     private Joystick leftStick, rightStick;
     private final Preferences prefs = Preferences.getInstance();
-    private IntMap<ButtonAction> leftActions = new IntMap<>(8);
-    private IntMap<ButtonAction> rightActions = new IntMap<>(8);
+    private IntMap<Action> leftActions = new IntMap<>(8);
+    private IntMap<Action> rightActions = new IntMap<>(8);
 
     private double twistLim = 0.0, magLim = 0.0;
     private boolean dampen = false;
@@ -144,7 +145,7 @@ public class DualJoystickControl implements JoystickControl {
 
     @Override
     public void swapJoysticks() {
-        final IntMap<ButtonAction> tmpMap = this.leftActions;
+        final IntMap<Action> tmpMap = this.leftActions;
         final Joystick temp = this.leftStick;
         final boolean tbool = this.prefs.getBoolean(LEFT_STICK_TWIST_DISABLE, false);
         final boolean cbool = this.prefs.getBoolean(LEFT_STICK_DO_CUTOFF, false);
@@ -212,7 +213,7 @@ public class DualJoystickControl implements JoystickControl {
     }
 
     @Override
-    public Iterable<Entry<ButtonAction>> getButtonActions(Hand hand) {
+    public Iterable<Entry<Action>> getButtonActions(Hand hand) {
         if (hand == Hand.LEFT)
             return leftActions.entries();
         else if (hand == Hand.RIGHT)
@@ -223,7 +224,7 @@ public class DualJoystickControl implements JoystickControl {
     }
 
     @Override
-    public void putButtonAction(int bId, ButtonAction action, Hand side) {
+    public void putButtonAction(int bId, Action action, Hand side) {
 
         if (side == Hand.BOTH) {
             putButtonAction(bId, action, Hand.LEFT);
@@ -231,7 +232,7 @@ public class DualJoystickControl implements JoystickControl {
             return;
         }
 
-        final IntMap<ButtonAction> actions = side == Hand.LEFT ? this.leftActions : this.rightActions;
+        final IntMap<Action> actions = side == Hand.LEFT ? this.leftActions : this.rightActions;
         final Joystick stick = side == Hand.RIGHT ? this.leftStick : this.rightStick;
 
         if (bId > stick.getButtonCount())
@@ -248,17 +249,17 @@ public class DualJoystickControl implements JoystickControl {
             removeButtonAction(bId, Hand.RIGHT);
         }
 
-        final IntMap<ButtonAction> actions = side == Hand.LEFT ? this.leftActions : this.rightActions;
+        final IntMap<Action> actions = side == Hand.LEFT ? this.leftActions : this.rightActions;
 
         actions.remove(bId);
     }
 
     @Override
     public void update() {
-        Iterator<Entry<ButtonAction>> ids = this.rightActions.iterator();
+        Iterator<Entry<Action>> ids = this.rightActions.iterator();
 
         while (ids.hasNext()) {
-            final Entry<ButtonAction> entry = ids.next();
+            final Entry<Action> entry = ids.next();
 
             if (this.rightStick.getRawButton(entry.key)) {
                 entry.value.act();
@@ -267,7 +268,7 @@ public class DualJoystickControl implements JoystickControl {
 
         ids = this.leftActions.iterator();
         while (ids.hasNext()) {
-            final Entry<ButtonAction> entry = ids.next();
+            final Entry<Action> entry = ids.next();
 
             if (this.leftStick.getRawButton(entry.key)) {
                 entry.value.act();
@@ -279,11 +280,11 @@ public class DualJoystickControl implements JoystickControl {
     public void dispose() {
     }
 
-    private static class DualEntries implements Iterator<Entry<ButtonAction>>, Iterable<Entry<ButtonAction>> {
+    private static class DualEntries implements Iterator<Entry<Action>>, Iterable<Entry<Action>> {
 
-        IntMap.Entries<ButtonAction> left, right;
+        IntMap.Entries<Action> left, right;
 
-        public DualEntries(IntMap.Entries<ButtonAction> left, IntMap.Entries<ButtonAction> right) {
+        public DualEntries(IntMap.Entries<Action> left, IntMap.Entries<Action> right) {
             this.left = left;
             this.right = right;
         }
@@ -309,7 +310,7 @@ public class DualJoystickControl implements JoystickControl {
          *                                elements
          */
         @Override
-        public Entry<ButtonAction> next() {
+        public Entry<Action> next() {
             if (left.hasNext())
                 return left.next();
             if (right.hasNext())
@@ -319,7 +320,7 @@ public class DualJoystickControl implements JoystickControl {
         }
 
         @Override
-        public Iterator<Entry<ButtonAction>> iterator() {
+        public Iterator<Entry<Action>> iterator() {
             return this;
         }
     }

@@ -20,7 +20,7 @@ public enum CameraQuality {
         int distance = MEDIUM.kCompression;
 
         for (final CameraQuality quality : values()) {
-            if(quality == best)
+            if (quality == best)
                 continue;
 
             if (Math.abs(quality.kCompression - val) < distance) {

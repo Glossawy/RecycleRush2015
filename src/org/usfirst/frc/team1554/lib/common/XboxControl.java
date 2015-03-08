@@ -6,8 +6,6 @@ import org.usfirst.frc.team1554.lib.collect.IntMap;
 import org.usfirst.frc.team1554.lib.collect.IntMap.Entry;
 import org.usfirst.frc.team1554.lib.collect.Maps;
 
-import static org.usfirst.frc.team1554.lib.common.XboxConstants.*;
-
 // FIXME Put documentation and Preconditions to try and prevent user error
 
 /**
@@ -16,15 +14,15 @@ import static org.usfirst.frc.team1554.lib.common.XboxConstants.*;
  *
  * @author Matthew
  */
-public class XboxControl implements JoystickControl {
+public class XboxControl implements JoystickControl, XboxConstants {
 
-    private final IntMap<ButtonAction> buttonMap = Maps.newIntMap(9);
+    private final IntMap<Action> buttonMap = Maps.newIntMap(9);
     private final XboxJoystickWrapper wrappedStick;
     final Joystick stick;
 
     public double twistThreshold = 0.0;
     public double magnitudeThreshold = 0.0;
-    public double triggerPressThreshold = 0.9;
+    public double triggerPressThreshold = TRIGGER_MAX * (9.0 / 10.0);
 
     public boolean twistDisabled = false;
     public boolean dampenOutputs = false;
@@ -146,7 +144,7 @@ public class XboxControl implements JoystickControl {
      * @param side
      * @return
      */
-    public JoystickControl getAnalogStick(Hand side) {
+    public XboxAnalogStick getAnalogStick(Hand side) {
         switch (side) {
             case LEFT:
                 return new XboxAnalogStick(AXIS_X_LEFT_STICK, AXIS_Y_LEFT_STICK, this);
@@ -173,12 +171,12 @@ public class XboxControl implements JoystickControl {
     }
 
     @Override
-    public Iterable<Entry<ButtonAction>> getButtonActions(Hand hand) {
+    public Iterable<Entry<Action>> getButtonActions(Hand hand) {
         return buttonMap.entries();
     }
 
     @Override
-    public void putButtonAction(int bId, ButtonAction action, Hand side) {
+    public void putButtonAction(int bId, Action action, Hand side) {
         buttonMap.put(bId, action);
     }
 
@@ -190,7 +188,7 @@ public class XboxControl implements JoystickControl {
     @Override
     public void swapJoysticks() {
         final Axes tempAxes = this.movAxes;
-        final ButtonAction tempAct = this.buttonMap.get(BUTTON_STICK_LEFT, DO_NOTHING);
+        final Action tempAct = this.buttonMap.get(BUTTON_STICK_LEFT, DO_NOTHING);
         final boolean tempCutoff = this.doMovementCutoff;
 
         this.movAxes = this.rotAxes;
@@ -243,7 +241,7 @@ public class XboxControl implements JoystickControl {
 
     @Override
     public void update() {
-        for (final Entry<ButtonAction> entry : this.buttonMap.entries())
+        for (final Entry<Action> entry : this.buttonMap.entries())
             if (this.stick.getRawButton(entry.key) && (entry.value != null)) {
                 entry.value.act();
             }
@@ -337,7 +335,7 @@ public class XboxControl implements JoystickControl {
         }
     }
 
-    private static ButtonAction DO_NOTHING = new ButtonAction("DO_NOTHING") {
+    private static Action DO_NOTHING = new Action("DO_NOTHING") {
         @Override
         public void act() {
         }

@@ -10,7 +10,7 @@ import java.util.Iterator;
 public class SingleJoystickControl implements JoystickControl {
 
     private final Joystick stick;
-    private final IntMap<ButtonAction> actions = new IntMap<>(8);
+    private final IntMap<Action> actions = new IntMap<>(8);
 
     private boolean cutoff = false;
     private boolean disableTwist = false;
@@ -119,12 +119,12 @@ public class SingleJoystickControl implements JoystickControl {
     }
 
     @Override
-    public Iterable<Entry<ButtonAction>> getButtonActions(Hand hand) {
+    public Iterable<Entry<Action>> getButtonActions(Hand hand) {
         return actions.entries();
     }
 
     @Override
-    public void putButtonAction(int bId, ButtonAction action, Hand side) {
+    public void putButtonAction(int bId, Action action, Hand side) {
         if (bId > this.stick.getButtonCount())
             throw new IllegalArgumentException("Button ID can't be greater than the joystick button count!: " + bId + " -> " + this.stick.getButtonCount() + " max");
 
@@ -141,10 +141,10 @@ public class SingleJoystickControl implements JoystickControl {
 
     @Override
     public void update() {
-        final Iterator<Entry<ButtonAction>> entries = this.actions.iterator();
+        final Iterator<Entry<Action>> entries = this.actions.iterator();
 
         while (entries.hasNext()) {
-            final Entry<ButtonAction> entry = entries.next();
+            final Entry<Action> entry = entries.next();
 
             if (this.stick.getRawButton(entry.key)) {
                 entry.value.act();

@@ -2,10 +2,10 @@ package org.usfirst.frc.team1554.data;
 
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.tables.ITable;
-import org.usfirst.frc.team1554.lib.common.JoystickControl;
-import org.usfirst.frc.team1554.lib.common.JoystickControl.Hand;
 import org.usfirst.frc.team1554.lib.collect.IntMap;
 import org.usfirst.frc.team1554.lib.collect.IntMap.Entry;
+import org.usfirst.frc.team1554.lib.common.JoystickControl;
+import org.usfirst.frc.team1554.lib.common.JoystickControl.Hand;
 
 public class JoystickSendable implements Sendable {
 

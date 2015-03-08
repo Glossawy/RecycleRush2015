@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1554.lib.net;
 
+import org.usfirst.frc.team1554.lib.common.ex.RobotIOException;
 import org.usfirst.frc.team1554.lib.util.IOUtils;
 
 import java.io.IOException;
@@ -44,7 +45,7 @@ public class RoboServerSocket implements ServerSocket {
         try {
             return new RoboSocket(this.server.accept(), params);
         } catch (final IOException e) {
-            throw new RuntimeException("Error Accepting Socket", e);
+            throw new RobotIOException("Error Accepting Socket", e);
         }
     }
 

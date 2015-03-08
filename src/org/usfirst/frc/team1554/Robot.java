@@ -8,14 +8,14 @@ import org.usfirst.frc.team1554.control.Move;
 import org.usfirst.frc.team1554.control.PneumaticControl;
 import org.usfirst.frc.team1554.control.WinchControl;
 import org.usfirst.frc.team1554.data.JoystickSendable;
+import org.usfirst.frc.team1554.lib.collect.IntMap;
 import org.usfirst.frc.team1554.lib.common.*;
 import org.usfirst.frc.team1554.lib.common.JoystickControl.Hand;
 import org.usfirst.frc.team1554.lib.common.MotorScheme.DriveManager;
-import org.usfirst.frc.team1554.lib.collect.IntMap;
 import org.usfirst.frc.team1554.lib.concurrent.AsyncExecutor;
 import org.usfirst.frc.team1554.lib.concurrent.AsyncResult;
 import org.usfirst.frc.team1554.lib.concurrent.AsyncTask;
-import org.usfirst.frc.team1554.lib.io.FileHandle;
+import org.usfirst.frc.team1554.lib.io.RoboFile;
 import org.usfirst.frc.team1554.lib.vision.CameraSize;
 import org.usfirst.frc.team1554.lib.vision.CameraStream;
 import org.usfirst.frc.team1554.lib.vision.USBCamera;
@@ -87,7 +87,7 @@ public class Robot extends EnhancedIterativeRobot {
 
     @Override
     protected void onInitialization() {
-        final FileHandle testFile = new FileHandle("Sweet.txt");
+        final RoboFile testFile = RoboFile.createUserFile("sweet.txt");
         Console.info(testFile.path() + ": " + testFile.create());
 
         this.control.putButtonAction(ID_FORKLIFT_UP, "Move Winch Up", () -> this.winch.move(UPWARDS), Hand.RIGHT);
@@ -101,7 +101,7 @@ public class Robot extends EnhancedIterativeRobot {
         initDashboard();
 
         Console.debug("Checking Button Actions...");
-        for (IntMap.Entry<ButtonAction> entry : control.getButtonActions(Hand.BOTH)) {
+        for (IntMap.Entry<Action> entry : control.getButtonActions(Hand.BOTH)) {
             Console.debug("Registered Button Action: " + entry.value.name() + " (" + entry.key + ")");
         }
 

@@ -1,12 +1,10 @@
 package org.usfirst.frc.team1554.lib.common;
 
 import edu.wpi.first.wpilibj.Joystick;
-import org.usfirst.frc.team1554.lib.common.MotorScheme.DriveManager;
 import org.usfirst.frc.team1554.lib.collect.IntMap;
 import org.usfirst.frc.team1554.lib.collect.IntMap.Entry;
+import org.usfirst.frc.team1554.lib.common.MotorScheme.DriveManager;
 import org.usfirst.frc.team1554.lib.common.ex.RoboLibOutOfDateException;
-
-// TODO Multiple Actions on Button Press (Multimap)
 
 /**
  * Abstraction of basic Joystick Controls. This allows for easier
@@ -109,20 +107,20 @@ public interface JoystickControl extends Disposable {
      */
     Joystick rightJoystick();
 
-    Iterable<Entry<ButtonAction>> getButtonActions(Hand hand);
+    Iterable<Entry<Action>> getButtonActions(Hand hand);
 
     /**
      * Add a Button Action which is a ButtonAction tied to a Button
      * ID
      */
-    void putButtonAction(int bId, ButtonAction action, Hand side);
+    void putButtonAction(int bId, Action action, Hand side);
 
     /**
      * Add a Button Action which is a ButtonAction tied to a Button
      * ID
      */
     default void putButtonAction(int bId, String actionName, Runnable action, Hand side) {
-        putButtonAction(bId, ButtonAction.as(actionName, action), side);
+        putButtonAction(bId, Action.as(actionName, action), side);
     }
 
     /**
@@ -198,10 +196,10 @@ public interface JoystickControl extends Disposable {
     @Override
     void dispose();
 
-    public static IntMap<String> toBindings(IntMap<ButtonAction> actions) {
+    public static IntMap<String> toBindings(IntMap<Action> actions) {
         final IntMap<String> bindings = new IntMap<>(actions.size);
 
-        for (final Entry<ButtonAction> entry : actions.entries()) {
+        for (final Entry<Action> entry : actions.entries()) {
             bindings.put(entry.key, entry.value.name());
         }
 

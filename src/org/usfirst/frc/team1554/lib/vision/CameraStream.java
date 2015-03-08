@@ -250,8 +250,6 @@ public enum CameraStream implements Sendable {
                         // notifyAll()
                         Data imgData = null;
                         synchronized (this) {
-                            // FIXME It May be necessary to put wait() here. Please
-                            // Test!
                             imgData = this.cameraData;
                             this.cameraData = null;
                         }

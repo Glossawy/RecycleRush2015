@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1554.lib.net;
 
+import org.usfirst.frc.team1554.lib.common.ex.RobotIOException;
 import org.usfirst.frc.team1554.lib.util.IOUtils;
 
 import java.io.IOException;
@@ -55,7 +56,7 @@ public class RoboSocket implements Socket {
         try {
             return this.socket.getInputStream();
         } catch (final IOException e) {
-            throw new RuntimeException("Error Getting Socket InputStream", e);
+            throw new RobotIOException("Error Getting Socket InputStream", e);
         }
     }
 
@@ -64,7 +65,7 @@ public class RoboSocket implements Socket {
         try {
             return this.socket.getOutputStream();
         } catch (final IOException e) {
-            throw new RuntimeException("Error Getting Socket OutputStream", e);
+            throw new RobotIOException("Error Getting Socket OutputStream", e);
         }
     }
 

@@ -1,8 +1,8 @@
 package org.usfirst.frc.team1554.lib.util;
 
+import org.usfirst.frc.team1554.lib.collect.Array;
 import org.usfirst.frc.team1554.lib.common.Console;
 import org.usfirst.frc.team1554.lib.common.ex.RobotExecutionException;
-import org.usfirst.frc.team1554.lib.collect.Array;
 import sun.misc.Cleaner;
 import sun.nio.ch.DirectBuffer;
 

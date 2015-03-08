@@ -66,12 +66,12 @@ class XboxAnalogStick implements JoystickControl {
     }
 
     @Override
-    public Iterable<IntMap.Entry<ButtonAction>> getButtonActions(Hand hand) {
+    public Iterable<IntMap.Entry<Action>> getButtonActions(Hand hand) {
         throw new UnsupportedOperationException("Unable to store ButtonActions on an Analog stick");
     }
 
     @Override
-    public void putButtonAction(int bId, ButtonAction action, Hand side) {
+    public void putButtonAction(int bId, Action action, Hand side) {
     }
 
     @Override

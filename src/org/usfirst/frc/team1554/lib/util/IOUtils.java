@@ -502,7 +502,6 @@ public class IOUtils {
      * <br />
      * Deprecated for FRC use. Please use {@link Timer#delay(double)
      * Timer.delay}.
-     *
      */
     @Deprecated
     public static void sleep(long ms) {
