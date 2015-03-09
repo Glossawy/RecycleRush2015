@@ -15,17 +15,21 @@ import static edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrar
 
 /**
  * An Alternative (and hopefully enhanced) approach to {@link
- * IterativeRobot}. For one this class is Abstract and requires the
+ * edu.wpi.first.wpilibj.IterativeRobot}. For one this class is Abstract and requires the
  * user to implement certain methods that just make sense. <br />
  * <br />
- * This implementation also uses a separate {@link RobotState} enum to
+ * This implementation also uses a separate {@link org.usfirst.frc.team1554.lib.common.EnhancedRobotBase.RobotState}
+ * enum to
  * manage State and State Transfer. This bot also uses the more
- * abstract {@link JoystickControl} and {@link MotorScheme} classes to
+ * abstract {@link JoystickControl} and {@link
+ * MotorScheme} classes to
  * make getting started much easier and providing convenience methods
- * for many things. Creating a {@link RobotDrive} is abstracted to
- * {@link RoboUtils#makeRobotDrive(MotorScheme) makeRobotDrive} and
+ * for many things. Creating a {@link edu.wpi.first.wpilibj.RobotDrive} is abstracted to
+ * {@link org.usfirst.frc.team1554.lib.util.RoboUtils#makeRobotDrive(MotorScheme)
+ * makeRobotDrive} and
  * basic movement is abstracted to {@link MotorScheme#updateDrive(edu.wpi.first.wpilibj.RobotDrive,
- * JoystickControl, BasicSense)}  MotorScheme.updateDrive} or even
+ * JoystickControl, BasicSense)}
+ * MotorScheme.updateDrive} or even
  * just {@link #updateDrive()}.<br />
  * <br />
  * This implementation is noticeably larger than IterativeBot due to
@@ -57,8 +61,9 @@ public abstract class EnhancedIterativeRobot extends EnhancedRobotBase {
 
     /**
      * Run Competition in an Infinite Loop akin to {@link
-     * IterativeRobot} but using modern Java features such as enums
-     * ({@link RobotState}) and now with "Pre", "On" and "Post"
+     * edu.wpi.first.wpilibj.IterativeRobot} but using modern Java features such as enums
+     * ({@link org.usfirst.frc.team1554.lib.common.EnhancedRobotBase.RobotState}) and now with
+     * "Pre", "On" and "Post"
      * methods. Essentially states not have an Entrance method, a
      * During method and an Exit method. <br />
      * <br />

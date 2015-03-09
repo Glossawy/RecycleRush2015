@@ -10,8 +10,8 @@ import java.util.WeakHashMap;
  * of objects at most as well as any references in the LRU that the GC
  * has not yet collected. <br />
  * <br />
- * The LRU Map is implemented as a {@link WeakHashMap} <br />
- * The MRU Map is implemented as a {@link LinkedHashMap}. <br />
+ * The LRU Map is implemented as a {@link java.util.WeakHashMap} <br />
+ * The MRU Map is implemented as a {@link java.util.LinkedHashMap}. <br />
  * <br />
  * This implementation is extremely simple and rudimentary. As such it
  * will be expanded later in an attempt to be the robotic equivalent

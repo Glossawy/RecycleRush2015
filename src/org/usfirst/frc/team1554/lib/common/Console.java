@@ -51,7 +51,7 @@ public class Console {
     }
 
     /**
-     * Does the same as {@link #log(Object, Level)} but goes further
+     * Does the same as {@link #log(Object, java.util.logging.Level)} but goes further
      * by taking a Throwable and <br />
      * passing it to Logger.log to be parsed. <br />
      * <br />

@@ -204,8 +204,14 @@ class UnsafeStackMemoryAccess extends MemoryAccess {
         }
     }
 
+    @Deprecated
     @Override
     public MemoryAccess clone() {
+        return makeCopy();
+    }
+
+    @Override
+    public UnsafeStackMemoryAccess makeCopy() {
         performCheck();
         UnsafeStackMemoryAccess mem = new UnsafeStackMemoryAccess(length());
         unsafe.copyMemory(address, mem.address, length());

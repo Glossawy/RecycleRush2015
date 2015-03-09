@@ -333,18 +333,18 @@ public class IOUtils {
 
     /**
      * Converts a File's contents to some object represented by T.
-     * This is done by the appropriate {@link LineProcessor}. This
-     * method uses the given {@link Charset} to read the File's
+     * This is done by the appropriate {@link org.usfirst.frc.team1554.lib.io.LineProcessor}. This
+     * method uses the given {@link java.nio.charset.Charset} to read the File's
      * InputStream. The lines are then separated and passed to the
      * LineProcessor one-by-one. At the end a result is returned by
-     * the processor via {@link LineProcessor#result()}.
+     * the processor via {@link org.usfirst.frc.team1554.lib.io.LineProcessor#result()}.
      *
      * @param file      - File to read
      * @param cs        - Charset to use for reading
      * @param processor - Processor to process lines one-by-one
      * @return
-     * @throws IOException - Required by {@link LineProcessor#processLine(String)
-     *                     processLine}.
+     * @throws java.io.IOException - Required by {@link org.usfirst.frc.team1554.lib.io.LineProcessor#processLine(String)
+     *                             processLine}.
      */
     public static <T> T readLines(File file, Charset cs, LineProcessor<T> processor) throws IOException {
         final Iterator<String> lines = getLines(file, cs).iterator();
@@ -359,15 +359,15 @@ public class IOUtils {
 
     /**
      * Converts a File's Contents to some object represented by T.
-     * This is done by the appropriate {@link LineProcessor}. This
-     * method will use {@link Charset#defaultCharset() the default
-     * charset} and delegate to {@link #readLines(File, Charset,
-     * LineProcessor) readLines}.
+     * This is done by the appropriate {@link org.usfirst.frc.team1554.lib.io.LineProcessor}. This
+     * method will use {@link java.nio.charset.Charset#defaultCharset() the default
+     * charset} and delegate to {@link #readLines(java.io.File, java.nio.charset.Charset,
+     * org.usfirst.frc.team1554.lib.io.LineProcessor) readLines}.
      *
      * @param file
      * @param processor
      * @return
-     * @throws IOException
+     * @throws java.io.IOException
      */
     public static <T> T readLines(File file, LineProcessor<T> processor) throws IOException {
         return readLines(file, Charset.defaultCharset(), processor);
@@ -500,7 +500,7 @@ public class IOUtils {
      * Small Utility to consume the InterruptedException associated
      * with Thread.sleep. <br />
      * <br />
-     * Deprecated for FRC use. Please use {@link Timer#delay(double)
+     * Deprecated for FRC use. Please use {@link edu.wpi.first.wpilibj.Timer#delay(double)
      * Timer.delay}.
      */
     @Deprecated
@@ -526,14 +526,15 @@ public class IOUtils {
 
     /**
      * Converts a File's contrents into a singular String using the
-     * given {@link Charset} via the use of {@link
-     * SingleStringProcessor} and delegates to {@link #readLines(File,
-     * Charset, LineProcessor) readLines}.
+     * given {@link java.nio.charset.Charset} via the use of {@link
+     * org.usfirst.frc.team1554.lib.io.SingleStringProcessor} and delegates to {@link
+     * #readLines(java.io.File,
+     * java.nio.charset.Charset, org.usfirst.frc.team1554.lib.io.LineProcessor) readLines}.
      *
      * @param file
      * @param charset
      * @return
-     * @throws IOException
+     * @throws java.io.IOException
      */
     public static String fileToString(File file, Charset charset) throws IOException {
         return IOUtils.readLines(file, charset, new SingleStringProcessor());
@@ -541,13 +542,14 @@ public class IOUtils {
 
     /**
      * Converts a File's contents into a singular String using {@link
-     * Charset#defaultCharset() the default charset} by default. This
-     * delegates to {@link IOUtils#readLines(File, Charset,
-     * LineProcessor) readLines} .
+     * java.nio.charset.Charset#defaultCharset() the default charset} by default. This
+     * delegates to {@link IOUtils#readLines(java.io.File,
+     * java.nio.charset.Charset,
+     * org.usfirst.frc.team1554.lib.io.LineProcessor) readLines} .
      *
      * @param file
      * @return
-     * @throws IOException
+     * @throws java.io.IOException
      */
     public static String fileToString(File file) throws IOException {
         return fileToString(file, Charset.defaultCharset());
@@ -561,7 +563,7 @@ public class IOUtils {
      *
      * @param url
      * @return true if Response Code == 200, else false
-     * @throws IOException if a connection can not be established
+     * @throws java.io.IOException if a connection can not be established
      */
     public static boolean checkConnectionSuccess(URL url) throws IOException {
         final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -580,7 +582,7 @@ public class IOUtils {
     /**
      * Returns the canonical name of the Charset. <br />
      * <br />
-     * Delegates to {@link Charset#name()}.
+     * Delegates to {@link java.nio.charset.Charset#name()}.
      *
      * @param cs
      * @return
@@ -596,8 +598,8 @@ public class IOUtils {
      *
      * @param name
      * @return
-     * @throws NoSuchElementException No Charset is tied to the given
-     *                                name.
+     * @throws java.util.NoSuchElementException No Charset is tied to the given
+     *                                          name.
      */
     public static Charset charset(String name) throws NoSuchElementException {
         final Charset cs = charsetMap.get(name);

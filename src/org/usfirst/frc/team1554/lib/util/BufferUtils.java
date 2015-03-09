@@ -14,7 +14,7 @@ import static org.usfirst.frc.team1554.lib.util.ReflectionHelper.getInstanceFiel
 /**
  * A Utility to Create and Manage NIO Buffers. In almost all cases,
  * this class will use DirectByteBuffer's for speed. If you desire a
- * normal ByteBuffer you should use {@link ByteBuffer#allocate(int)
+ * normal ByteBuffer you should use {@link java.nio.ByteBuffer#allocate(int)
  * ByteBuffer#allocate} or {@link #newSafeByteBuffer(int)}. <br />
  * <br />
  * Even calling {@link #newByteBuffer(int)} will createMethodCall a

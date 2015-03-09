@@ -143,8 +143,14 @@ class DirectStackMemoryAccess extends MemoryAccess {
         }
     }
 
+    @Deprecated
     @Override
     public MemoryAccess clone() {
+        return makeCopy();
+    }
+
+    @Override
+    public DirectStackMemoryAccess makeCopy() {
         DirectStackMemoryAccess mem = new DirectStackMemoryAccess(length());
         copy(0, mem, 0, length());
         return mem;

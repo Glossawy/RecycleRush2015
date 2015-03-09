@@ -631,7 +631,7 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>> {
     /**
      * Returns an iterator for the entries in the map. Remove is
      * supported. Note that the same iterator instance is returned
-     * each time this method is called. Use the {@link Entries}
+     * each time this method is called. Use the {@link org.usfirst.frc.team1554.lib.collect.ObjectMap.Entries}
      * constructor for nested or multithreaded iteration.
      */
     public Entries<K, V> entries() {
@@ -654,7 +654,7 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>> {
     /**
      * Returns an iterator for the values in the map. Remove is
      * supported. Note that the same iterator instance is returned
-     * each time this method is called. Use the {@link Values}
+     * each time this method is called. Use the {@link org.usfirst.frc.team1554.lib.collect.ObjectMap.Values}
      * constructor for nested or multithreaded iteration.
      */
     public Values<V> values() {
@@ -677,7 +677,7 @@ public class ObjectMap<K, V> implements Iterable<ObjectMap.Entry<K, V>> {
     /**
      * Returns an iterator for the keys in the map. Remove is
      * supported. Note that the same iterator instance is returned
-     * each time this method is called. Use the {@link Keys}
+     * each time this method is called. Use the {@link org.usfirst.frc.team1554.lib.collect.ObjectMap.Keys}
      * constructor for nested or multithreaded iteration.
      */
     public Keys<K> keys() {

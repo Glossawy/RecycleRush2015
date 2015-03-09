@@ -123,8 +123,14 @@ class HeapMemoryAccess extends MemoryAccess {
         return memory;
     }
 
+    @Deprecated
     @Override
     public MemoryAccess clone() {
+        return makeCopy();
+    }
+
+    @Override
+    public HeapMemoryAccess makeCopy() {
         HeapMemoryAccess mem = new HeapMemoryAccess(bits, memory.length);
         this.copy(0, mem, 0, memory.length);
         return mem;

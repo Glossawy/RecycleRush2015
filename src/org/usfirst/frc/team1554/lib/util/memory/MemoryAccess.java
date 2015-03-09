@@ -21,12 +21,14 @@ public abstract class MemoryAccess implements Freeable, Disposable {
      * If the Unsafe class cannot be loaded, then the Direct Memory
      * Accessor is provided. <br />
      * <br />
-     * Please see {@link MemoryAccess#allocateDirectMemory(int)} and
+     * Please see {@link MemoryAccess#allocateDirectMemory(int)}
+     * and
      * {@link MemoryAccess#allocateUnsafeMemory(int)} for
      * extra information.<br />
      * <br />
      * If you desire a simpler safe implementation, pease use {@link
-     * MemoryAccess#allocateHeapMemory(ByteHandler, int)} which
+     * MemoryAccess#allocateHeapMemory(ByteHandler,
+     * int)} which
      * will manage a byte array instead of JNI or Stack memory. Much
      * safer and much less critical to free.
      *
@@ -35,7 +37,8 @@ public abstract class MemoryAccess implements Freeable, Disposable {
      * @see #allocateDirectMemory(int) Direct Memory Allocator
      * @see #allocateUnsafeMemory(int) Unsafe Off-The-Heap Memory
      * Allocator
-     * @see #allocateHeapMemory(ByteHandler, int) Heap Allocator
+     * @see #allocateHeapMemory(ByteHandler, int) Heap
+     * Allocator
      */
     public static MemoryAccess allocateMemory(int bytes) {
         MemoryAccess ma;
@@ -64,7 +67,7 @@ public abstract class MemoryAccess implements Freeable, Disposable {
      *
      * @param bytes
      * @return
-     * @throws RobotReflectionException
+     * @throws org.usfirst.frc.team1554.lib.common.ex.RobotReflectionException
      */
     public static MemoryAccess allocateUnsafeMemory(int bytes) throws RobotReflectionException {
         try {
@@ -172,7 +175,18 @@ public abstract class MemoryAccess implements Freeable, Disposable {
 
     public abstract void copy(int offset, MemoryAccess dest, int destOffset, int length);
 
+    /**
+     * Returns an exact copy, including content. <br />
+     * <br />
+     * <i>Deprecated</i>, Please use {@link #makeCopy()} instead. <br />
+     * Likely to be removed completely.
+     *
+     * @return
+     */
+    @Deprecated
     public abstract MemoryAccess clone();
+
+    public abstract MemoryAccess makeCopy();
 
     protected abstract void freeMemory();
 

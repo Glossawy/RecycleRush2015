@@ -48,7 +48,7 @@ public class DirectIntArray implements Freeable, Iterable<Integer> {
 
     @Override
     public DirectIntArray clone() {
-        return new DirectIntArray(ma.clone());
+        return new DirectIntArray(ma.makeCopy());
     }
 
     /**

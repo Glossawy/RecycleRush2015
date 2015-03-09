@@ -28,7 +28,7 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
 
     /**
      * Representation of Current Robot State. This is the alternative
-     * solution to the boolean flag switches in {@link IterativeRobot}
+     * solution to the boolean flag switches in {@link edu.wpi.first.wpilibj.IterativeRobot}
      * that encapsulates method calls as well.
      *
      * @author Matthew
@@ -162,7 +162,8 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
     }
 
     /**
-     * {@link EnhancedRobotBase} implementations must implement their
+     * {@link EnhancedRobotBase} implementations must implement
+     * their
      * own {@link #startCompetition()} implementations. <br />
      * <br />
      * This is the primary execution loop for all EnhancedRobots.
@@ -173,8 +174,9 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
     /**
      * Any initialization code should be called here, it is called
      * immediately before entering the Disabled state in ALL {@link
-     * RobotBase} implementations and therefore all {@link
-     * EnhancedRobotBase} implementations will follow this. <br />
+     * edu.wpi.first.wpilibj.RobotBase} implementations and therefore all {@link
+     * EnhancedRobotBase} implementations will follow this. <br
+     * />
      */
     protected abstract void onInitialization();
 
@@ -183,13 +185,13 @@ public abstract class EnhancedRobotBase extends RobotBase implements Disposable 
      * and may not be included in all {@link EnhancedRobotBase}
      * implementations. <br />
      * <br />
-     * It IS guaranteed that {@link EnhancedIterativeRobot} and {@link
-     * EnhancedSimpleRobot} will call {@link #onAny()} in the normal
+     * It IS guaranteed that {@link org.usfirst.frc.team1554.lib.common.EnhancedIterativeRobot} and {@link
+     * org.usfirst.frc.team1554.lib.common.EnhancedSimpleRobot} will call {@link #onAny()} in the normal
      * update loop immediately before the current state method but not
      * necessarily on EVERY iteration as is true for State Methods.
      * This would occur if it is taking an extremely long time for
-     * {@link DriverStation#isNewControlData()} to return true or
-     * {@link DriverStation#waitForData()} blocks for an excessively
+     * {@link edu.wpi.first.wpilibj.DriverStation#isNewControlData()} to return true or
+     * {@link edu.wpi.first.wpilibj.DriverStation#waitForData()} blocks for an excessively
      * long time. <br />
      * <br />
      * Typically this is indicative of an underlying problem with lost

@@ -11,6 +11,7 @@ import java.nio.file.*;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
+import java.util.EnumSet;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
@@ -28,7 +29,7 @@ public class RoboFile {
     private static final Consumer<Path> DELETE_CONSUMER = (p) -> del(p);
 
     static {
-        Set<PosixFilePermission> permits = PosixFilePermissions.fromString("-rw-rw-rw-");
+        Set<PosixFilePermission> permits = PosixFilePermissions.fromString("rw-rw-rw-");
         STANDARD_ATTR = PosixFilePermissions.asFileAttribute(permits);
     }
 
@@ -38,6 +39,11 @@ public class RoboFile {
 
     public static final String getStandardPermissions_POSIX() {
         return PosixFilePermissions.toString(STANDARD_ATTR.value());
+    }
+
+    public static final FileAttribute<Set<PosixFilePermission>> getAttributes_POSIX() {
+        Set<PosixFilePermission> perms = EnumSet.copyOf(STANDARD_ATTR.value());
+        return PosixFilePermissions.asFileAttribute(perms);
     }
 
     private final Path path;

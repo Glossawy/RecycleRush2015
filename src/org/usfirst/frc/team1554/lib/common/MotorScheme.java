@@ -16,10 +16,10 @@ import static edu.wpi.first.wpilibj.RobotDrive.MotorType.*;
  * class is mostly used for managing Drive Motors though there is the
  * optional functionality of centralizing all motors and abstracting
  * them to just Channel IDs. This abstraction will force them to their
- * bare {@link SpeedController}, and tangentially their {@link PWM},
+ * bare {@link edu.wpi.first.wpilibj.SpeedController}, and tangentially their {@link edu.wpi.first.wpilibj.PWM},
  * representations. <br />
- * All Motors in a MotorScheme must be {@link PWM PWMs} and {@link
- * SpeedController SpeedControllers} to behave as expected. <br />
+ * All Motors in a MotorScheme must be {@link edu.wpi.first.wpilibj.PWM PWMs} and {@link
+ * edu.wpi.first.wpilibj.SpeedController SpeedControllers} to behave as expected. <br />
  * <br />
  * The Only Exception to the Name/ID System are {@link MotorGroup
  * MotorGroups} which are used for motor synchronization. Each of the
@@ -34,8 +34,8 @@ import static edu.wpi.first.wpilibj.RobotDrive.MotorType.*;
  * This was an odd solution to that problem.
  *
  * @author Matthew
- * @see Builder
- * @see SynchronizedMotor
+ * @see org.usfirst.frc.team1554.lib.common.MotorScheme.Builder
+ * @see org.usfirst.frc.team1554.lib.common.MotorScheme.SynchronizedMotor
  */
 public interface MotorScheme extends Disposable {
 
@@ -43,7 +43,7 @@ public interface MotorScheme extends Disposable {
      * Simple Enumeration to define RobotDrive type and possibly
      * switching between them. <br />
      * <br />
-     * Takes the {@link RobotDrive} and {@link JoystickControl}
+     * Takes the {@link edu.wpi.first.wpilibj.RobotDrive} and {@link org.usfirst.frc.team1554.lib.common.JoystickControl}
      * associated with a Robot and updates the RobotDrive motors
      * appropriately for a drive type. e.g. Using Polar Methods for
      * {@value #MECANUM_POLAR} and using Left-Right Sided Stick
@@ -297,8 +297,9 @@ public interface MotorScheme extends Disposable {
 
         /**
          * Create a MotorScheme based on a Two Channel Drive System.
-         * This defaults to a Tank Drive {@link DriveManager} and uses
-         * the two {@link SpeedController SpeedControllers} given for
+         * This defaults to a Tank Drive {@link org.usfirst.frc.team1554.lib.common.MotorScheme.DriveManager}
+         * and uses
+         * the two {@link edu.wpi.first.wpilibj.SpeedController SpeedControllers} given for
          * control.
          *
          * @param left  - Left Channel Motor
@@ -319,13 +320,14 @@ public interface MotorScheme extends Disposable {
 
         /**
          * Create a MotorScheme based on a Two Channel Drive System.
-         * This defaults to a Tank Drive {@link DriveManager} and uses
-         * the two {@link SpeedController SpeedControllers} given for
+         * This defaults to a Tank Drive {@link org.usfirst.frc.team1554.lib.common.MotorScheme.DriveManager}
+         * and uses
+         * the two {@link edu.wpi.first.wpilibj.SpeedController SpeedControllers} given for
          * control. <br />
          * <br />
-         * This method creates two {@link Talon Talons} from the two
+         * This method creates two {@link edu.wpi.first.wpilibj.Talon Talons} from the two
          * given Channel IDs and delegates to {@link
-         * #newTwoChannelDrive(SpeedController, SpeedController)
+         * #newTwoChannelDrive(edu.wpi.first.wpilibj.SpeedController, edu.wpi.first.wpilibj.SpeedController)
          * newTwoChannelDrive}
          *
          * @param leftChannel  - Left Channel ID
@@ -338,9 +340,9 @@ public interface MotorScheme extends Disposable {
 
         /**
          * Create a MotorScheme based on a Four Motor Drive System.
-         * This is the maximum accounted for in the {@link RobotDrive}
-         * class. This defaults to a Tank Drive {@link DriveManager}
-         * and uses the four {@link SpeedController SpeedControllers}
+         * This is the maximum accounted for in the {@link edu.wpi.first.wpilibj.RobotDrive}
+         * class. This defaults to a Tank Drive {@link org.usfirst.frc.team1554.lib.common.MotorScheme.DriveManager}
+         * and uses the four {@link edu.wpi.first.wpilibj.SpeedController SpeedControllers}
          * provided for control.
          *
          * @param frontLeft  - Front Left Wheel Motor
@@ -363,15 +365,15 @@ public interface MotorScheme extends Disposable {
 
         /**
          * Create a MotorScheme based on a Four Motor Drive System.
-         * This is the maximum accounted for in the {@link RobotDrive}
-         * class. This defaults to a Tank Drive {@link DriveManager}
-         * and uses the four {@link SpeedController SpeedControllers}
+         * This is the maximum accounted for in the {@link edu.wpi.first.wpilibj.RobotDrive}
+         * class. This defaults to a Tank Drive {@link org.usfirst.frc.team1554.lib.common.MotorScheme.DriveManager}
+         * and uses the four {@link edu.wpi.first.wpilibj.SpeedController SpeedControllers}
          * provided for control. <br />
          * <br />
-         * This method creates four {@link Talon Talons} from the four
+         * This method creates four {@link edu.wpi.first.wpilibj.Talon Talons} from the four
          * given Channel IDs and delegates to {@link
-         * #newFourMotorDrive(SpeedController, SpeedController,
-         * SpeedController, SpeedController) newFourMotorDrive}.
+         * #newFourMotorDrive(edu.wpi.first.wpilibj.SpeedController, edu.wpi.first.wpilibj.SpeedController,
+         * edu.wpi.first.wpilibj.SpeedController, edu.wpi.first.wpilibj.SpeedController) newFourMotorDrive}.
          *
          * @param frontLeftMotor  - Front Left Wheel Channel
          * @param rearLeftMotor   - Rear Left Wheel Channel
@@ -384,8 +386,10 @@ public interface MotorScheme extends Disposable {
         }
 
         /**
-         * Set the {@link DriveManager} used by this MotorScheme.
-         * Default: {@value DriveManager#TANK Tank Drive}.
+         * Set the {@link org.usfirst.frc.team1554.lib.common.MotorScheme.DriveManager} used by this
+         * MotorScheme.
+         * Default: {@value org.usfirst.frc.team1554.lib.common.MotorScheme.DriveManager#TANK Tank
+         * Drive}.
          *
          * @param manager
          * @return
@@ -397,8 +401,8 @@ public interface MotorScheme extends Disposable {
         }
 
         /**
-         * Add a Valid Motor (Extends {@link PWM} and implements
-         * {@link SpeedController}) to the Motor Scheme.
+         * Add a Valid Motor (Extends {@link edu.wpi.first.wpilibj.PWM} and implements
+         * {@link edu.wpi.first.wpilibj.SpeedController}) to the Motor Scheme.
          *
          * @param motor
          * @param name
@@ -412,10 +416,10 @@ public interface MotorScheme extends Disposable {
         }
 
         /**
-         * Add a Valid Motor (Extends {@link PWM} and implements
-         * {@link SpeedController}) to the Motor Scheme. <br />
+         * Add a Valid Motor (Extends {@link edu.wpi.first.wpilibj.PWM} and implements
+         * {@link edu.wpi.first.wpilibj.SpeedController}) to the Motor Scheme. <br />
          * <br />
-         * Creates a {@link Talon} from the given Channel ID.
+         * Creates a {@link edu.wpi.first.wpilibj.Talon} from the given Channel ID.
          *
          * @param name
          * @return
@@ -425,7 +429,8 @@ public interface MotorScheme extends Disposable {
         }
 
         /**
-         * Registers the entire {@link MotorGroup} by name and each of
+         * Registers the entire {@link MotorGroup} by name and
+         * each of
          * it's individual motors by channel.
          *
          * @param group
@@ -524,15 +529,17 @@ public interface MotorScheme extends Disposable {
 
     /**
      * A Simple Wrapper Class for Motors that exist in MotorGroups but
-     * follow the odd exception to {@link MotorScheme} rules for
-     * {@link MotorGroup MotorGroups}. This ensures that any attempt
+     * follow the odd exception to {@link MotorScheme} rules
+     * for
+     * {@link MotorGroup MotorGroups}. This ensures that any
+     * attempt
      * to change the individual motor will be delegated to it's
      * respective MotorGroup, providing continued synchronization. <br
      * />
      * <br />
      * In the special case it is necessary, this type cna be
-     * determined and the Motor retrieved as either a {@link PWM} or a
-     * {@link SpeedController}.
+     * determined and the Motor retrieved as either a {@link edu.wpi.first.wpilibj.PWM} or a
+     * {@link edu.wpi.first.wpilibj.SpeedController}.
      *
      * @param <T>
      * @author Matthew

@@ -3,14 +3,14 @@ package org.usfirst.frc.team1554.lib.common;
 import edu.wpi.first.wpilibj.Joystick;
 import org.usfirst.frc.team1554.lib.collect.IntMap;
 import org.usfirst.frc.team1554.lib.collect.IntMap.Entry;
-import org.usfirst.frc.team1554.lib.common.MotorScheme.DriveManager;
 import org.usfirst.frc.team1554.lib.common.ex.RoboLibOutOfDateException;
 
 /**
  * Abstraction of basic Joystick Controls. This allows for easier
  * interaction between different Joystick Configurations and
  * RobotDrive. This interaction can be even further abstracted through
- * the use of {@link DriveManager} found in {@link MotorScheme}.
+ * the use of {@link org.usfirst.frc.team1554.lib.common.MotorScheme.DriveManager} found in {@link
+ * MotorScheme}.
  *
  * @author Matthew
  */

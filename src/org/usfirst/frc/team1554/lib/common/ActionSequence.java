@@ -12,7 +12,8 @@ import org.usfirst.frc.team1554.lib.util.Callback;
  * and checks. <br />
  * <br />
  * Since forking logic creates ambiguity as to which Sequence should be returned by {@link
- * #appendIf(org.usfirst.frc.team1554.lib.util.Callback, ActionSequence, ActionSequence)}
+ * #appendIf(org.usfirst.frc.team1554.lib.util.Callback, ActionSequence,
+ * ActionSequence)}
  * appendIf},
  * it is considered a terminal action for the sequence it is called upon. As such, said sequence
  * should

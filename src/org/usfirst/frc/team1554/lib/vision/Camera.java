@@ -108,7 +108,7 @@ public interface Camera {
     void getImageData(ByteBuffer buffer);
 
     /**
-     * From a {@link ByteBuffer} of JPEG Image Data this method will
+     * From a {@link java.nio.ByteBuffer} of JPEG Image Data this method will
      * determine the JPEG size. <br />
      * <br />
      * This makes use of markers defined in the JPEG Standard: <br />

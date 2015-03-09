@@ -27,7 +27,7 @@ import static org.usfirst.frc.team1554.lib.net.SocketParams.*;
 //@on
 
 /**
- * An Alternative to {@link CameraServer} that makes use of the Camera
+ * An Alternative to {@link edu.wpi.first.wpilibj.CameraServer} that makes use of the Camera
  * API. <br />
  * <br />
  * This is currently a port of CameraServer with several
@@ -45,7 +45,7 @@ public enum CameraStream implements Sendable {
      * Data Store class for containing Image Data Buffer metadata. <br
      * />
      * <br />
-     * Typically this is just the NIVision {@link RawData} and buffer
+     * Typically this is just the NIVision {@link com.ni.vision.NIVision.RawData} and buffer
      * start position.
      *
      * @author Matthew
@@ -136,8 +136,8 @@ public enum CameraStream implements Sendable {
     /**
      * Set the Image Currently being Streamed to the Client <br />
      * <br />
-     * {@link #setImage(ImageBase) setImage} essentially calls this
-     * method with the {@link ImageBase Image's} underlying NIVision
+     * {@link #setImage(edu.wpi.first.wpilibj.image.ImageBase) setImage} essentially calls this
+     * method with the {@link edu.wpi.first.wpilibj.image.ImageBase Image's} underlying NIVision
      * Image Object.
      *
      * @param image
@@ -176,7 +176,7 @@ public enum CameraStream implements Sendable {
     /**
      * Set the Camera and Automatically Capture images in a separate
      * thread. This is useful if you don't wish to use {@link
-     * #setImage(ImageBase)} in your loop (typically for on-roboRIO
+     * #setImage(edu.wpi.first.wpilibj.image.ImageBase)} in your loop (typically for on-roboRIO
      * image processing) or wish to use the DriverStation for Image
      * Processing.
      *

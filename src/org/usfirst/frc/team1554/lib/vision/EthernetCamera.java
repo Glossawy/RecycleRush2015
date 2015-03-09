@@ -15,7 +15,8 @@ import java.util.regex.Pattern;
 
 /**
  * Generic Implementation of Ethernet Camera that is nearly identical
- * to {@link USBCamera} but does an additional search for connected
+ * to {@link USBCamera} but does an additional search for
+ * connected
  * Ethernet Devices. <br />
  * <br />
  * This class is in Beta and is not guaranteed to stay or function

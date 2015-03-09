@@ -37,7 +37,7 @@ public class BasicSense implements Disposable, NamedSendable {
 
     /**
      * Return a robot that can only sense direction, we are not using
-     * the {@link BuiltInAccelerometer}.
+     * the {@link edu.wpi.first.wpilibj.BuiltInAccelerometer}.
      *
      * @param gyro
      * @return
@@ -71,7 +71,7 @@ public class BasicSense implements Disposable, NamedSendable {
 
     /**
      * Returns a Robot that can sense direction and uses the RoboRIO
-     * {@link BuiltInAccelerometer}.
+     * {@link edu.wpi.first.wpilibj.BuiltInAccelerometer}.
      *
      * @param gyro
      * @param range
@@ -83,7 +83,7 @@ public class BasicSense implements Disposable, NamedSendable {
 
     /**
      * Returns a Robot that can sense directions and uses the RoboRIO
-     * {@link BuiltInAccelerometer}.
+     * {@link edu.wpi.first.wpilibj.BuiltInAccelerometer}.
      *
      * @param gyro
      * @return
@@ -94,7 +94,7 @@ public class BasicSense implements Disposable, NamedSendable {
 
     /**
      * Returns a robot that uses the RoboRIO {@link
-     * BuiltInAccelerometer} but cannot sense direction.
+     * edu.wpi.first.wpilibj.BuiltInAccelerometer} but cannot sense direction.
      *
      * @param range
      * @return
@@ -105,7 +105,7 @@ public class BasicSense implements Disposable, NamedSendable {
 
     /**
      * Returns a robot that uses the RoboRIO {@link
-     * BuiltInAccelerometer} in an 8G range but cannot sense
+     * edu.wpi.first.wpilibj.BuiltInAccelerometer} in an 8G range but cannot sense
      * direction.
      *
      * @return
@@ -120,7 +120,7 @@ public class BasicSense implements Disposable, NamedSendable {
     }
 
     /**
-     * Get the attached {@link Gyro}
+     * Get the attached {@link edu.wpi.first.wpilibj.Gyro}
      *
      * @return
      */
@@ -129,7 +129,7 @@ public class BasicSense implements Disposable, NamedSendable {
     }
 
     /**
-     * Get the attached {@link Accelerometer}
+     * Get the attached {@link edu.wpi.first.wpilibj.interfaces.Accelerometer}
      *
      * @return
      */
@@ -179,7 +179,7 @@ public class BasicSense implements Disposable, NamedSendable {
 
     /**
      * Get the current Acceleration as a 3D Vector. See {@link
-     * Vector3}
+     * org.usfirst.frc.team1554.lib.math.Vector3}
      *
      * @return
      */

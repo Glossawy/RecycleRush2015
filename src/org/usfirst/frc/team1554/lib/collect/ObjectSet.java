@@ -486,7 +486,8 @@ public class ObjectSet<T> implements Iterable<T> {
      * Returns an iterator for the keys in the set. Remove is
      * supported. Note that the same iterator instance is returned
      * each time this method is called. Use the {@link
-     * ObjectSetIterator} constructor for nested or multithreaded
+     * org.usfirst.frc.team1554.lib.collect.ObjectSet.ObjectSetIterator} constructor for nested or
+     * multithreaded
      * iteration.
      */
     @Override
