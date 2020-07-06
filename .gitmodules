@@ -1,0 +1,6 @@
+[submodule "RoboLib"]
+	path = RoboLib
+	url = https://github.com/Matt529/RoboLib
+[submodule "RoboLib Native Memory Access"]
+	path = RoboLib Native Memory Access
+	url = https://github.com/Matt529/RoboLib-MemAccess

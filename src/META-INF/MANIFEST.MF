@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Main-Class: org.usfirst.frc.team1554.lib.installer.LibInstallerLaunche
+ r
+

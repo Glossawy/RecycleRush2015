@@ -1,0 +1,452 @@
+commit 4f91a1addaa81d71946e97fa5478dbaa6339a7df
+Author: Matthew Crocco <MCrocco@covermymeds.com>
+Date:   Mon Jul 6 05:09:21 2020 -0400
+
+    Name change
+
+commit fbb60650cbb9b9ee9983efeefa7e30eb83aa8607
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Thu Jan 21 00:15:53 2016 -0500
+
+    Cleanup and General
+
+commit f2fc2fd5e8bc69cd7ae776df5067ca0bac385f86
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Sun Jul 12 02:03:47 2015 -0400
+
+    Submodule
+
+commit 059a1d54dca3b759971bc5931ecd66af3e27e2ac
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Sat Jul 11 16:09:53 2015 -0400
+
+    Linking RoboLib Repositories
+    
+    Signed-off-by: Matthew Crocco <matthewcrocco@gmail.com>
+
+commit 14208681e86585de6abdf12def1d40333d22d0e1
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Sat Jul 11 14:36:39 2015 -0400
+
+    Moved to MIT License, Moved RoboLib and RoboLib-MemAccess to Separate Repositories
+    
+    Signed-off-by: Matthew Crocco <matthewcrocco@gmail.com>
+
+commit 4d99cb71e51e97515b44d03eb0a07dacee915d98
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Sat Jul 11 14:27:51 2015 -0400
+
+    Updated License to MIT License
+    
+    Since we are moving RoboLib out of this repository, the robot code itself will be licensed under the MIT License
+
+commit b08f80f43a18b92320466ba632f22efc61a488ba
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Thu May 14 23:37:56 2015 -0400
+
+    NIOAccess and EmulatedJoystickControl Fix
+    
+    Delegated more actions to NIOAccess (checking if a ByteBuffer is a
+    DirectByteBuffer and doing 'dirty' instantiation of DirectByteBuffers by
+    hidden constructor) and fixed EmulatedJoystickIssue where the Direction
+    was always 0, causing the emulation to always go forward. A simple
+    Math.atan2 call has fixed this.
+
+commit d95528c40d479d937468d7978c2ffec1e613f207
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Sun May 10 21:42:37 2015 -0400
+
+    yml update
+
+commit 6982cb09a0458937f5e0058e3e48fdc0e58d1b44
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Sun May 10 21:37:38 2015 -0400
+
+    README Update
+
+commit c4e54161776e7190122ef296c92e7ca310ca06e1
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Sun May 10 21:31:47 2015 -0400
+
+    Further Documentation and Cleanup
+    
+    Added Joysticks utility class, Cleaned up NIOAccess Documentation, this
+    was basically all documentation to day. Removed package-info files from
+    development build.
+
+commit 85068b71230ace48397c98e0cb5c7e5aaf30a21e
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Fri May 8 22:34:08 2015 -0400
+
+    Licensing
+    
+    Licensing under the GPL v2
+
+commit 82d318e9ebafa7044bd48a80176f94d0b2d70ff9
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Fri May 8 22:19:06 2015 -0400
+
+    MotorScheme and Other Cleanup
+    
+    Trimmed MotorScheme to it's basic intended functionality. Removed
+    "Constant Interface" anti-pattern in XboxConstants.Made Robot slightly
+    more "functional" (functional interfaces).
+
+commit d7bfa138169ecced3fd5261e74fa90d5bf238ac5
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Fri May 8 21:41:02 2015 -0400
+
+    Middle Stage Refactoring and Documentation
+    
+    Continued the documentation effort, Collections take FOREVER to
+    document.  Switched fully to Java Predicates and Functions and
+    implemented Predicates.java for convenience as well as Defaults.java.
+
+commit 03e1d5140dfcb873cef3a06b3be3f91e1966e228
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Wed May 6 00:16:51 2015 -0400
+
+    Cleanup and Removing Redundancies
+    
+    Removed RoboLib Function and SpawnFunction implementations in favor of
+    java.util.Function and java.util.Supplier. Applied OS.java fixes,
+    santitized IOUtils, Added copyTo and moveTo methods to RoboFile
+
+commit 28e9673e2d2c8b9a2a39adea19b56e3b9e75c31b
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Sun May 3 02:10:01 2015 -0400
+
+    Cleanup and Re-Organizing
+    
+    Started removing unnecessary classes and generally cleaning up leftofer
+    features. Working on moving Move/MoveSequencer to RoboLib under the
+    Action/ActionSequence Framework.
+
+commit cda68debb464ee6d7b596adda955c7520f16b0e0
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Wed Apr 29 21:57:38 2015 -0400
+
+    Quick Commit
+
+commit 41f2aac94d9d780eb26d5e5c89c55ef25753020d
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Thu Mar 26 19:26:46 2015 -0400
+
+    Robot Competition Day 1, See TODO
+
+commit 009f4aadca2c4f2c3cf38dabce3855c4191bd0ea
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Thu Mar 26 05:37:04 2015 -0400
+
+    Pre-Competition Commit
+
+commit 1f80b0e2e17a854c8d7104cab6c09f22687cc541
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Mon Mar 9 02:08:22 2015 -0400
+
+    Deprecated clone() in favor of makeCopy() for MemoryAccess. Created executable installer for Eclipse use of RoboLib.This marks v1.0.0.
+    
+    Likely in the near future, the 2015 Robot and RoboLib will be separated into two repositories.
+
+commit b966afc28d62e1cff165d154abd662ea62f45fb1
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Sun Mar 8 03:01:23 2015 -0400
+
+    Some documentation, Cleanup. Another Button Action Re-write (Action and ActionSequence). Re-wrote FileHandle to RoboFile using NIO almost exclusively. DirectLongArray deleted in lieu of changes to the Direct Memory Access API.
+
+commit 27db35d854bbd9767f330883ca03cc16bc82f0ca
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Fri Feb 27 01:39:15 2015 -0500
+
+    More changes to ButtonAction, Restructuring
+
+commit f261b1889ada11ad61e47727281b39a09a1765cf
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Tue Feb 24 02:51:48 2015 -0500
+
+    Restructuring, Cleanup and Added Native Memory support. Soon we will have basic Native Data Structures as well like NativeArrays for all primitives and maybe a Reference array. Eventually we should add 64-bit unsafe array support. But right now this is fine.
+
+commit 47ef027b37255bd69e795f59957e9b25fe152b2a
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Tue Feb 17 21:34:21 2015 -0500
+
+    Cleanup needed
+
+commit d98c3743e5f751a972d47526f38034618932a9e9
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Tue Feb 17 03:34:17 2015 -0500
+
+    IntMap Fix
+
+commit 97246f72e08e9c96076e57ac02ba056309cfb021
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Thu Feb 12 20:20:41 2015 -0500
+
+    Test the IntMap
+
+commit 15715f038ca223939837985ec363b9d2e6adc593
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Wed Feb 11 19:02:05 2015 -0500
+
+    Finish ButtonAction Conversion and JoystickSendable
+
+commit cd86fdfb9949ff83496fd2747d0b2d8b77cca886
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Tue Feb 10 21:16:22 2015 -0500
+
+    Removed non-functional JNI Components, SimpleBot, Etc. Setup LiveWindow
+
+commit 87b0ddb21d0a5168bcfc088512343fd1df9db21f
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Mon Feb 9 23:32:55 2015 -0500
+
+    Implementing new readonly pattern, see previous commit for what to do next :)
+
+commit 7b184c1443bb1d31d234a0d9eca74cba9630a2db
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Mon Feb 9 02:19:42 2015 -0500
+
+    Started Implementing EnhancedSimpleRobot, Both styles are inheriting from EnhancedRobotBase. See previous commit message.
+
+commit 0ddf291b38a4b44fdbe0b23ee4e7cb66271661cb
+Merge: 6fd85e1 ac0b4a8
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Mon Feb 9 01:48:02 2015 -0500
+
+    Merge branch 'master' of https://github.com/Matt529/RecycleRush2015
+
+commit 6fd85e1b83383d0854b8294e311799b54df51d47
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Mon Feb 9 01:47:25 2015 -0500
+
+    TODO: Implement ReadOnlyValues, ChangeListeners and Bindings akin to JavaFX, catch up on TODO's/FIXME's
+
+commit ac0b4a88efd1a84a9e562e58b40ca61cc18d23c9
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Thu Feb 5 18:00:02 2015 -0500
+
+    Winch Motor Working with POV, Change Listeners. See TODO and FIXME
+
+commit 07dfd0ede9f68915d5f7978378e6411b3fd337f9
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Wed Feb 4 17:45:04 2015 -0500
+
+    Remove Unnecessary Line
+
+commit a7668300cd72fc3785603f156fade797f0089a81
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Wed Feb 4 17:44:51 2015 -0500
+
+    Camera Works!
+
+commit 9ce8e01fc7a0183c8401f2e832e99425481e4b39
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Wed Feb 4 15:07:48 2015 -0500
+
+    Making Entries<V> Accessible
+
+commit 11f51126f94dec8b667156c853c4ac8ace11662a
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Tue Feb 3 15:46:35 2015 -0500
+
+    New Xbox Controls thanks to Team 358's Xbox Controller Diagram. Includes Xbox Specific methods and the same possibilities as other JoystickControls, makes use of properties to manage state information. Some JoystickControl methods are now default.
+
+commit 0ac84393f50663784b240821bbd0cd052ce5070d
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Mon Feb 2 22:32:46 2015 -0500
+
+    New Collections that run best-case O(1) and implementing them elsewhere. Changes to Net. Optimizations. Refactoring.
+
+commit a17f6a92e6a2725044a2668a2fb27f91708e72c9
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Mon Feb 2 04:02:27 2015 -0500
+
+    Removed Unit Tests for Now
+
+commit 1a78fedf760760bd2338e8aa10c2562aa5d1efe9
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Mon Feb 2 04:00:15 2015 -0500
+
+    Unified Vectors, New Networking Stuff, More Math and JNI + JNI Builder from Java Comments [uses JNIGen]
+
+commit 3c1f7c65910d8b585400bbdb6551e3f848f64bf8
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Sun Feb 1 02:02:23 2015 -0500
+
+    Fix for "Huffman Table (0x00) Not Defined" error in Camera Stream. More complete documentation for the Camera API accompanies this fix.
+
+commit 9054b58b501969f4ef6c3e39e0190b75ce347c6a
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Fri Jan 30 17:48:35 2015 -0500
+
+    Camera Fixes
+
+commit 167e735e6e057e25d19de525e308c45dfab92c92
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Fri Jan 30 00:54:15 2015 -0500
+
+    Initial Commit of vision.proc (Vision Processing)
+
+commit 9da58aeabab08daf9a18efac32a396d4bcb22b0e
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Thu Jan 29 03:04:55 2015 -0500
+
+    README Update
+
+commit 56d98af5a85cf13a619056b9cabf5b272224b3fe
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Thu Jan 29 02:58:32 2015 -0500
+
+    Libs
+
+commit 1b63784dbc9400be4aaed8e3d5324604527813b7
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Thu Jan 29 02:57:56 2015 -0500
+
+    Attempt 2 at integration
+
+commit 6700c7199dcab0c200afc7412d48459f1f0a901d
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Thu Jan 29 01:48:49 2015 -0500
+
+    Removed Travis CI Integration. Will make separate build.xml later for compilation (or add it to current build.xml)
+
+commit 340e0718a3f8e301068031fdf8bd6f8bc199cb61
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Thu Jan 29 01:44:31 2015 -0500
+
+    travis.yml
+
+commit 8d018e7eb041aa64c49d56636c3f4953279ce4a4
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Thu Jan 29 01:35:38 2015 -0500
+
+    Started Including build.properties (who knows what I will do with it?), build.xml will be included if changes are made.
+
+commit cb1425e9aebe3701df4b4936cd4e230820887410
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Mon Jan 26 01:09:23 2015 -0500
+
+    Bug Cleanup (After Static Analysis) including Incorrect Bit Comparisons in getJpegSize, Souce Code Clean-Up
+    
+    Signed-off-by: Matthew Crocco <matthewcrocco@gmail.com>
+
+commit ba5a0bd32a6067a5c88c1c459fe5bc07e7f67b75
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Mon Jan 26 00:48:59 2015 -0500
+
+    Implemented Camera API found in the lib.vision Package. Implemented Disposables. JoystickControl now has DampenOutputs. DualJoystickControl uses Preferences. BasicSense.
+    
+    TODO: Use Retrieve to obtain DS "Basic" Panel keys to then modify it's subtable. See WPI ScreenstepsLive documentation.
+    
+    FileHandle is now relative to home/lvuser
+    Moved math package to lib.math as appropriate
+    RoboUtils now can write to DriverStation error panel using HAL
+    
+    Signed-off-by: Matthew Crocco <matthewcrocco@gmail.com>
+
+commit 2e2dbc91ea85cbc03c2b8d4f8346f231867cb397
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Fri Jan 23 17:09:24 2015 -0500
+
+    Camera Accessor and Camera Code
+
+commit b2971388e9dd55a32eaf93a4e1113b5619f43174
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Thu Jan 22 17:38:54 2015 -0500
+
+    VIsion Code
+
+commit 9eb9109cd0ce1ddd49e6cecc98027f36dd32b2a2
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Tue Jan 20 22:42:32 2015 -0500
+
+    Deprecation/Code Move Cleanup, Centralized Button IDs to Ref.java. Joystick fixes and SensorScheme foundations (it's a bit more nuanced), Async Foundations.
+    TODO: Async, VISION, Automated Disposable Disposal, Finish SensorScheme
+
+commit 84965a691c51c953e81c5a6d86c29afb52332898
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Tue Jan 20 17:49:22 2015 -0500
+
+    Quick
+
+commit 9c7f184412e7f70c53bc054eba83d2b19f50f9d0
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Tue Jan 20 00:05:26 2015 -0500
+
+    Random XS128 Fix and More Math! Console Fix.
+
+commit 108c1c09a1ea2cd2b2a45da8495c7cd159994f5b
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Mon Jan 19 20:57:04 2015 -0500
+
+    Implemented Magnitude and Twist Joystick Deadband in JoystickControl. Up to the implementer to implement.
+
+commit 927d27c090ddd177053364b01656c1c442aa626b
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Mon Jan 19 20:43:46 2015 -0500
+
+    Fixes for Several Issues as well as a new "RoboComms" Protocol to bypass RioLog and NetConsole.
+
+commit d5a4f0e796f5ed1b9f613f636aadb028a2d258dc
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Fri Jan 16 17:40:02 2015 -0500
+
+    Sensitivity Change, New Reflection Helpers. TODO: Joystick Deadband and Button Fix
+
+commit 8d33ee40e465f2ca96fcfd7288eed7c348d04675
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Thu Jan 15 17:52:30 2015 -0500
+
+    buttons need to be fixed, fixed motor issue. Use Field DRIVE_SCALE_FACTOR.
+
+commit a76ac31f3472b252dac464cfc12c9269e9a49128
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Wed Jan 14 17:14:28 2015 -0500
+
+    Console still broke :( convert to syso
+
+commit ae006cce2edc42f50373b67b387fcc2ad10b7803
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Tue Jan 13 23:30:55 2015 -0500
+
+    Fixed Initialization Problem. Issues may occur if they try to make calls to getDrive() during onInitialization() Solutions? Maybe. Fixed Console.
+
+commit 9c286faf1f797f9df84c55947458d4a422daa72c
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Tue Jan 13 17:42:36 2015 -0500
+
+    Got the robot to move!
+    - Fix Console
+    - Fix Initialization steps
+    
+    Signed-off-by: Matthew Crocco <matthewcrocco@gmail.com>
+
+commit 850d73f94594b58a6767df8595a4815adf55f423
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Mon Jan 12 01:59:14 2015 -0500
+
+    So much code. So little time. Lots of Mathy Stuff. MotorGroup (Motor Synch Groups basically), EnhancedIterativeBot finalized, MotorScheme finalized, and more.
+    
+    Math: Matrix3 (3x3 Matrices) and xorshift128+ PRNG (RandomXS128)
+    Signed-off-by: Matthew Crocco <matthewcrocco@gmail.com>
+
+commit 8082a6bee5cc80275b00a3f01300e77e5baec9ff
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Sun Jan 11 03:38:30 2015 -0500
+
+    Building a Library 101: The Beginning.
+    
+    Signed-off-by: Matthew Crocco <matthewcrocco@gmail.com>
+
+commit a7301f47503a3a07f80ae26bc9e4043a3b2db38a
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Wed Jan 7 22:15:43 2015 -0500
+
+    Initial Commit
+
+commit 6a1b5f61c86bd581f27313f334a1a6889eaf75ce
+Author: Glossawy <4606234+Glossawy@users.noreply.github.com>
+Date:   Wed Jan 7 22:07:14 2015 -0500
+
+    Initial commit
